@@ -1,0 +1,10 @@
+.env
+*.session
+*.session-journal
+chat_history.json
+players_stats.json
+games_data.json
+__pycache__/
+*.pyc
+.venv/
+venv/
