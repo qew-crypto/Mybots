@@ -2,6 +2,7 @@
 *.session
 *.session-journal
 chat_history.json
+freetheai_history.json
 players_stats.json
 games_data.json
 __pycache__/
