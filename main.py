@@ -1,6 +1,6 @@
 import asyncio
 import sys
-from config import API_ID, API_HASH, PHONE
+from config import API_ID, API_HASH, PHONE, API_KEY
 
 
 def check_config() -> bool:
@@ -14,13 +14,16 @@ def check_config() -> bool:
     if not PHONE:
         print("[ERROR] PHONE не задан. Укажи номер телефона в .env")
         ok = False
+    if not API_KEY:
+        print("[ERROR] API_KEY не задан. Укажи ключ API в .env")
+        ok = False
     return ok
 
 
 def main() -> None:
     print("=" * 50)
     print("   Telegram AI Girlfriend Bot (Userbot)")
-    print("   Powered by g4f (бесплатно, без ключей)")
+    print("   Powered by GPT (OpenAI-compatible API)")
     print("=" * 50)
 
     if not check_config():

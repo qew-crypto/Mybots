@@ -33,8 +33,10 @@ ALLOWED_USERS = (
     else []
 )
 
-# g4f model preferences (tried in order)
-G4F_MODELS = ["gpt-4o-mini", "gpt-4o", "gpt-4", "gpt-3.5-turbo"]
+# OpenAI-compatible API settings
+API_BASE_URL = os.getenv("API_BASE_URL", "https://api.freetheai.xyz/v1")
+API_KEY = os.getenv("API_KEY", "")
+GPT_MODEL = os.getenv("GPT_MODEL", "gpt-4o")
 
-# Max retries when all providers fail
-G4F_MAX_RETRIES = 3
+# Max retries when API fails
+GPT_MAX_RETRIES = 3
