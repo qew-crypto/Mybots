@@ -1062,6 +1062,18 @@ class Database:
             (user_id, order_id, int(rating), text, 1 if is_anonymous else 0, display_name, now_iso()),
         )
 
+    async def get_reviewable_orders(self, user_id: int, limit: int = 10):
+        return await self.fetchall(
+            """
+            SELECT orders.* FROM orders
+            LEFT JOIN reviews ON reviews.user_id = orders.user_id AND reviews.order_id = orders.id
+            WHERE orders.user_id = ? AND orders.status = 'completed' AND reviews.id IS NULL
+            ORDER BY orders.id DESC
+            LIMIT ?
+            """,
+            (user_id, limit),
+        )
+
     async def has_review_for_order(self, user_id: int, order_id: int) -> bool:
         row = await self.fetchone(
             "SELECT id FROM reviews WHERE user_id = ? AND order_id = ? LIMIT 1",

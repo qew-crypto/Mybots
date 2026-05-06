@@ -121,10 +121,19 @@ def order_created_user_kb(support_contact: str | None = None, order_id: int | No
 def reviews_kb() -> InlineKeyboardMarkup:
     return ikb(
         [
-            [("⭐ Оставить отзыв", "review:general")],
+            [("⭐ Оставить отзыв", "review:pick_order")],
             [("🔄 Обновить", "reviews:show"), ("🏠 Меню", "menu")],
         ]
     )
+
+
+def review_pick_order_kb(orders) -> InlineKeyboardMarkup:
+    rows: list[list[tuple[str, str]]] = []
+    for order in orders:
+        order_type = "Покупка" if order["order_type"] == "buy" else "Продажа"
+        rows.append([(f"#{order['id']} · {order_type} · {order['gold_amount']} голды", f"review:start:{order['id']}")])
+    rows.append([("← Назад к отзывам", "reviews:show")])
+    return ikb(rows)
 
 def review_order_kb(order_id: int) -> InlineKeyboardMarkup:
     return ikb(
