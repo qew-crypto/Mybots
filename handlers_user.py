@@ -19,6 +19,7 @@ from keyboards import (
     order_created_user_kb,
     orders_menu_kb,
     profile_kb,
+    review_pick_order_kb,
     review_rating_kb,
     review_visibility_kb,
     reviews_kb,
@@ -693,17 +694,18 @@ async def cb_reviews_show(callback: CallbackQuery, db: Database) -> None:
     await callback.answer()
 
 
-@router.callback_query(F.data == "review:general")
-async def cb_review_general(callback: CallbackQuery, state: FSMContext, db: Database) -> None:
-    await ensure_user(db, callback)
-    await state.clear()
-    await state.set_state(ReviewStates.rating)
-    await state.update_data(order_id=None)
+@router.callback_query(F.data == "review:pick_order")
+async def cb_review_pick_order(callback: CallbackQuery, db: Database) -> None:
+    user = await ensure_user(db, callback)
+    orders = await db.get_reviewable_orders(user["id"])
+    if not orders:
+        await callback.answer("У вас нет завершённых сделок без отзыва.", show_alert=True)
+        return
     await callback.message.edit_text(
-        "<b>⭐ Новый отзыв</b>\n"
+        "<b>⭐ Оставить отзыв</b>\n"
         "━━━━━━━━━━━━\n\n"
-        "Выберите оценку от 1 до 5 звёзд:",
-        reply_markup=review_rating_kb(),
+        "Выберите сделку, по которой хотите оставить отзыв:",
+        reply_markup=review_pick_order_kb(orders),
     )
     await callback.answer()
 
