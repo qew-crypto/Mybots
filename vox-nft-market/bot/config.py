@@ -8,7 +8,7 @@ ADMIN_IDS = [int(x) for x in os.getenv("ADMIN_IDS", "").split(",") if x.strip()]
 
 DB_PATH = os.getenv("DB_PATH", "vox_nft.db")
 
-NFT_RECEIVER_USERNAME = os.getenv("NFT_RECEIVER_USERNAME", "VoxManagerNFT")
+NFT_RECEIVER_USERNAME = os.getenv("NFT_RECEIVER_USERNAME", "hawkuy")
 
 EVALUATION_PERCENT = float(os.getenv("EVALUATION_PERCENT", "85"))
 
