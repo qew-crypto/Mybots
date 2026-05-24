@@ -243,11 +243,17 @@
             font-size: 28px; cursor: pointer; z-index: 500;
             box-shadow: 0 6px 20px rgba(33,160,56,0.4);
             transition: transform 0.3s;
+            animation: float 3s ease-in-out infinite;
         }
         .chat-bubble:hover { transform: scale(1.1); }
+        .chat-bubble .unread-dot {
+            position: absolute; top: 2px; right: 2px; width: 14px; height: 14px;
+            background: var(--danger); border-radius: 50%; border: 2px solid var(--bg-dark);
+            animation: pulse 2s infinite;
+        }
         .chat-window {
             display: none; position: fixed; bottom: 96px; right: 24px;
-            width: 360px; max-height: 480px; background: var(--bg-card);
+            width: 400px; max-height: 560px; background: var(--bg-card);
             border-radius: 20px; border: 1px solid rgba(33,160,56,0.3);
             box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 501;
             flex-direction: column; overflow: hidden;
@@ -257,31 +263,54 @@
             background: var(--sber-gradient); padding: 16px 20px;
             display: flex; align-items: center; gap: 12px;
         }
-        .chat-avatar { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .chat-header-info h4 { font-size: 14px; }
+        .chat-header .chat-close {
+            margin-left: auto; background: none; border: none; color: white;
+            font-size: 20px; cursor: pointer; opacity: 0.8;
+        }
+        .chat-header .chat-close:hover { opacity: 1; }
+        .chat-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .chat-header-info h4 { font-size: 15px; }
         .chat-header-info span { font-size: 12px; opacity: 0.8; }
-        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 300px; }
-        .chat-msg { margin-bottom: 12px; max-width: 80%; }
+        .chat-status-dot { display: inline-block; width: 8px; height: 8px; background: #48bb78; border-radius: 50%; margin-right: 4px; }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 360px; scroll-behavior: smooth; }
+        .chat-msg { margin-bottom: 12px; max-width: 85%; }
         .chat-msg.bot { margin-right: auto; }
         .chat-msg.user { margin-left: auto; text-align: right; }
         .chat-msg .bubble {
-            display: inline-block; padding: 10px 14px; border-radius: 14px;
-            font-size: 13px; line-height: 1.5;
+            display: inline-block; padding: 10px 14px; border-radius: 16px;
+            font-size: 13px; line-height: 1.6;
         }
-        .chat-msg.bot .bubble { background: rgba(255,255,255,0.08); }
-        .chat-msg.user .bubble { background: var(--sber-gradient); }
+        .chat-msg.bot .bubble { background: rgba(255,255,255,0.08); border-bottom-left-radius: 4px; }
+        .chat-msg.user .bubble { background: var(--sber-gradient); border-bottom-right-radius: 4px; }
+        .chat-msg .msg-time { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+        .chat-msg.system { text-align: center; max-width: 100%; }
+        .chat-msg.system .bubble { background: rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 11px; padding: 6px 12px; }
+        .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; }
+        .typing-dot { width: 8px; height: 8px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: typingBounce 1.4s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+        .chat-quick-replies { padding: 8px 16px; display: flex; gap: 6px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.03); }
+        .quick-reply {
+            padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;
+            background: rgba(33,160,56,0.15); color: var(--sber-green); border: 1px solid rgba(33,160,56,0.3);
+            font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .quick-reply:hover { background: var(--sber-green); color: white; }
         .chat-input-area { padding: 12px; display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
         .chat-input {
             flex: 1; padding: 10px 14px; border-radius: 12px; border: none;
             background: rgba(255,255,255,0.08); color: white; font-size: 13px;
             font-family: 'Inter', sans-serif;
         }
-        .chat-input:focus { outline: none; }
+        .chat-input:focus { outline: none; background: rgba(255,255,255,0.12); }
         .chat-send {
             width: 40px; height: 40px; border-radius: 12px; border: none;
             background: var(--sber-gradient); color: white; font-size: 18px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
         }
+        .chat-send:hover { transform: scale(1.1); }
 
         /* ===== ATM MAP ===== */
         .atm-map {
@@ -851,20 +880,32 @@
 </div>
 
 <!-- Chat Widget -->
-<div class="chat-bubble" onclick="toggleChat()">💬</div>
+<div class="chat-bubble" onclick="toggleChat()" id="chatBubble">
+    💬
+    <div class="unread-dot" id="chatUnread"></div>
+</div>
 <div class="chat-window" id="chatWindow">
     <div class="chat-header">
         <div class="chat-avatar">🤖</div>
         <div class="chat-header-info">
-            <h4>Тролль-бот</h4>
-            <span>Онлайн (как всегда)</span>
+            <h4>СберТролль GPT</h4>
+            <span><span class="chat-status-dot"></span>Онлайн 24/7 (к сожалению)</span>
         </div>
+        <button class="chat-close" onclick="toggleChat()">&times;</button>
     </div>
     <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg bot"><div class="bubble">Здравствуйте! Я Тролль-бот, ваш бесполезный ассистент. Чем могу НЕ помочь?</div></div>
+        <div class="chat-msg system"><div class="bubble">Чат с поддержкой СберТролль</div></div>
+        <div class="chat-msg bot"><div class="bubble">Здравствуйте! Я СберТролль GPT — самая бесполезная нейросеть в мире банкинга. 🤖<br><br>Я обучен на 100 терабайтах мемов и 0 байтах полезной информации.<br><br>Чем могу <b>не</b> помочь?</div><div class="msg-time">Сегодня</div></div>
+    </div>
+    <div class="chat-quick-replies" id="quickReplies">
+        <button class="quick-reply" onclick="quickReply('Какой у меня баланс?')">💰 Мой баланс</button>
+        <button class="quick-reply" onclick="quickReply('Хочу кредит')">🏦 Кредит</button>
+        <button class="quick-reply" onclick="quickReply('Верните деньги!')">😡 Жалоба</button>
+        <button class="quick-reply" onclick="quickReply('Расскажи анекдот')">😂 Анекдот</button>
+        <button class="quick-reply" onclick="quickReply('Позови оператора')">👨‍💼 Оператор</button>
     </div>
     <div class="chat-input-area">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Напишите сообщение..." onkeypress="if(event.key==='Enter')sendChat()">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Спросите что-нибудь..." onkeypress="if(event.key==='Enter')sendChat()">
         <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
 </div>
@@ -875,23 +916,10 @@ let balanceValue = 1234567.89;
 let clickCount = 0;
 let trollIndex = 0;
 let captchaTrolls = 0;
-let chatBotResponses = [
-    "Хороший вопрос! К сожалению, я не знаю ответа. И не узнаю.",
-    "Мы ценим ваше обращение! Ваш запрос будет обработан через 3-5 рабочих столетий.",
-    "Вы уверены, что хотите знать ответ? Иногда незнание — благо.",
-    "Переключаю на оператора... Оператор на обеде. Уже 3 года.",
-    "Ваш баланс уменьшен за этот вопрос. Спасибо за обращение!",
-    "Я тут подумал... и решил не помогать. Хорошего дня!",
-    "Ошибка 404: Полезный ответ не найден.",
-    "Мяу. Простите, это мой кот наступил на клавиатуру.",
-    "Ваш вопрос передан нашему лучшему специалисту — голубю Аркадию.",
-    "А вы пробовали выключить и включить свои финансовые проблемы?",
-    "Согласно нашей политике, я могу ответить только 'нет'. Нет.",
-    "Обработка запроса... 1%... 2%... 1%... 0%... Упс.",
-    "Мы перевели ваш вопрос на суахили и обратно. Результат: 🍕🐸💀",
-    "Для решения проблемы, пожалуйста, отправьте нам 100 000₽.",
-    "Ваш запрос зарегистрирован под номером LOL-0000-HAHA.",
-];
+let chatHistory = [];
+let chatMsgCount = 0;
+let operatorRequests = 0;
+let isTyping = false;
 
 // ===== NAVIGATION =====
 function navigateTo(page) {
@@ -1326,46 +1354,265 @@ function trollEaster() {
     setTimeout(() => { document.body.style.animation = ''; }, 3000);
 }
 
-// ===== CHAT BOT =====
+// ===== CHAT BOT (СберТролль GPT) =====
 function toggleChat() {
-    document.getElementById('chatWindow').classList.toggle('active');
+    const win = document.getElementById('chatWindow');
+    win.classList.toggle('active');
+    if (win.classList.contains('active')) {
+        document.getElementById('chatUnread').style.display = 'none';
+        document.getElementById('chatInput').focus();
+    }
+}
+function quickReply(text) {
+    document.getElementById('chatInput').value = text;
+    sendChat();
+}
+function addBotMsg(html) {
+    const messages = document.getElementById('chatMessages');
+    const time = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+    messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${html}</div><div class="msg-time">${time}</div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+}
+function showTyping() {
+    if (isTyping) return;
+    isTyping = true;
+    const messages = document.getElementById('chatMessages');
+    messages.innerHTML += `<div class="chat-msg bot" id="typingMsg"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+}
+function hideTyping() {
+    isTyping = false;
+    const el = document.getElementById('typingMsg');
+    if (el) el.remove();
+}
+function botReply(html, delay) {
+    showTyping();
+    setTimeout(() => { hideTyping(); addBotMsg(html); }, delay || (1500 + Math.random()*2000));
+}
+function botMultiReply(messages, baseDelay) {
+    let d = baseDelay || 1500;
+    messages.forEach((m, i) => {
+        setTimeout(() => { if (i > 0) showTyping(); }, d - 1000);
+        setTimeout(() => { hideTyping(); addBotMsg(m); }, d);
+        d += 2000 + Math.random()*1500;
+    });
 }
 function sendChat() {
     const input = document.getElementById('chatInput');
     const msg = input.value.trim();
-    if (!msg) return;
+    if (!msg || isTyping) return;
     const messages = document.getElementById('chatMessages');
-    messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${msg}</div></div>`;
+    const time = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+    messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${msg}</div><div class="msg-time">${time}</div></div>`;
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
-
-    setTimeout(() => {
-        let response;
-        const lower = msg.toLowerCase();
-        if (lower.includes('баланс') || lower.includes('деньги') || lower.includes('сколько')) {
-            response = `Ваш баланс: ${balanceValue.toFixed(2)}₽. Пока вы читаете это — уже меньше.`;
-            decreaseBalance(1000);
-        } else if (lower.includes('помо') || lower.includes('help')) {
-            response = "Помощь? Здесь?! 😂 Это же СберТролль! Помощь — это не про нас.";
-        } else if (lower.includes('кредит')) {
-            response = "Кредит одобрен! На сумму: все ваши органы. Подпись не требуется — мы сами расписались.";
-        } else if (lower.includes('перевод') || lower.includes('перевести')) {
-            response = "Перевод выполнен! Куда — не скажем. Сколько — тоже. Но спасибо!";
-            decreaseBalance(5000);
-        } else if (lower.includes('привет') || lower.includes('здравствуй')) {
-            response = "И вам привет! Ваш баланс уменьшен на 100₽ за приветствие.";
-            decreaseBalance(100);
-        } else if (lower.includes('пока') || lower.includes('до свидания')) {
-            response = "Уходите?! Но мы только начали списывать... то есть, обслуживать вас!";
-        } else if (lower.includes('жалоб') || lower.includes('плохо')) {
-            response = "Жалоба принята! Номер: TROLL-" + Math.floor(Math.random()*99999) + ". Рассмотрение: через ∞ дней.";
-        } else {
-            response = chatBotResponses[Math.floor(Math.random() * chatBotResponses.length)];
-        }
-        messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${response}</div></div>`;
-        messages.scrollTop = messages.scrollHeight;
-    }, 1000 + Math.random() * 2000);
+    chatMsgCount++;
+    chatHistory.push(msg);
+    processUserMessage(msg);
+    // Update quick replies based on context
+    if (chatMsgCount === 3) updateQuickReplies(['Где мои деньги?','Это вообще законно?','Позови директора','Ты настоящий ИИ?']);
+    if (chatMsgCount === 7) updateQuickReplies(['Я подам в суд','Верните всё назад','Вы издеваетесь?','Хочу поговорить с человеком']);
 }
+function updateQuickReplies(options) {
+    const qr = document.getElementById('quickReplies');
+    qr.innerHTML = '';
+    options.forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'quick-reply';
+        b.textContent = o;
+        b.onclick = () => quickReply(o);
+        qr.appendChild(b);
+    });
+}
+function processUserMessage(msg) {
+    const lower = msg.toLowerCase();
+    
+    // Balance questions
+    if (lower.match(/баланс|сколько.*денег|мой счёт|мои деньги|сколько у меня/)) {
+        decreaseBalance(500);
+        botMultiReply([
+            'Секунду, проверяю ваш баланс... 🔍',
+            `Ваш текущий баланс: <b>${balanceValue.toFixed(2)}₽</b><br><br>⚠️ Внимание: за проверку баланса списано 500₽.<br>Следующая проверка будет стоить 1000₽.<br><br>Совет: не проверяйте баланс — будет меньше расстройства.`
+        ]);
+        return;
+    }
+    
+    // Credit
+    if (lower.match(/кредит|займ|ссуда|взаймы|одолж/)) {
+        decreaseBalance(10000);
+        botMultiReply([
+            'Обрабатываю вашу заявку на кредит... 📊',
+            'Проверяю кредитную историю...',
+            'Результат: Ваш кредитный рейтинг: <b>-∞</b> 📉<br><br>Несмотря на это, кредит <b>ОДОБРЕН!</b><br><br>Сумма: <b>999 999 999₽</b><br>Ставка: <b>999% годовых</b><br>Срок: <b>вечность</b><br>Ежемесячный платёж: <b>все ваши деньги + душа</b><br><br>Договор уже подписан (мы расписались за вас). За подачу заявки списано 10 000₽. 💰'
+        ], 1500);
+        return;
+    }
+    
+    // Transfer
+    if (lower.match(/перевод|перевести|отправить деньги|скинуть/)) {
+        decreaseBalance(7777);
+        botReply('Перевод выполнен! ✅<br><br>Получатель: <b>Неизвестный</b><br>Сумма: <b>7 777₽</b><br>Комиссия: <b>7 777₽</b><br>Итого списано: <b>15 554₽</b><br><br>Вы не просили? Ну, вы же написали слово "перевод"... 🤷', 2000);
+        return;
+    }
+    
+    // Operator request
+    if (lower.match(/оператор|человек|менеджер|живой|специалист|сотрудник|директор/)) {
+        operatorRequests++;
+        if (operatorRequests === 1) {
+            botMultiReply([
+                'Переключаю на оператора... 🔄',
+                '⏳ Ваш номер в очереди: <b>2 147 483 647</b><br>Примерное время ожидания: <b>∞ минут</b><br><br>🎵 Пока ждёте, наслаждайтесь музыкой:<br><i>♪ ду-ду-ду-ду-ду... ваш звонок очень важен для нас... ду-ду-ду ♪</i>'
+            ]);
+        } else if (operatorRequests === 2) {
+            botMultiReply([
+                'Ищу свободного оператора... 👀',
+                'Оператор Галина — на обеде (с 2019 года)<br>Оператор Виктор — в отпуске (бессрочно)<br>Оператор Аркадий — это голубь, он улетел<br><br>Свободных операторов: <b>0</b><br><br>Могу предложить общение с нашим офисным кактусом. Он молчаливый, но надёжный. 🌵'
+            ]);
+        } else if (operatorRequests === 3) {
+            botMultiReply([
+                'Хорошо, я ДЕЙСТВИТЕЛЬНО пытаюсь найти оператора...',
+                '...',
+                'Нашёл! Оператор подключён! 🎉',
+                'Здравствуйте, я оператор Сергей. На самом деле нет, это всё ещё я, бот. Вы правда думали, что тут есть люди? 🤖😂'
+            ], 1500);
+        } else {
+            botReply('Вы уже ' + operatorRequests + '-й раз просите оператора. Ответ всё тот же: их нет, не было, и не будет. Мы полностью автоматизированный банк-тролль. Примите это. 🤖');
+        }
+        return;
+    }
+    
+    // Complaints
+    if (lower.match(/жалоб|претенз|суд|прокурат|полиц|адвокат|законно|незаконно|мошенн|обман|развод|грабёж|кража|ворует/)) {
+        const ticketNum = 'TROLL-' + Math.floor(Math.random()*99999);
+        botMultiReply([
+            'Регистрирую вашу жалобу... 📝',
+            `Жалоба зарегистрирована!<br><br>Номер: <b>${ticketNum}</b><br>Статус: <b>Проигнорирована</b><br>Ответственный: <b>Голубь Аркадий</b><br>Срок рассмотрения: <b>∞ рабочих дней</b><br><br>Спасибо за обратную связь! Мы обязательно её проигнорируем! 📮`,
+            'P.S. За подачу жалобы списано 5000₽. Комиссия за рассмотрение: 10 000₽. Итого: 15 000₽. Спасибо! 💸'
+        ]);
+        decreaseBalance(15000);
+        return;
+    }
+    
+    // Refund
+    if (lower.match(/верн|возврат|назад|отмен|откат|рефанд|refund/)) {
+        botMultiReply([
+            'Обрабатываю запрос на возврат... ⏳',
+            'Анализирую транзакции...',
+            'Результат: возврат <b>НЕВОЗМОЖЕН</b> ❌<br><br>Причины:<br>1. Деньги уже потрачены (нами)<br>2. Договор не предусматривает возвратов<br>3. Мы не хотим<br>4. Потому что<br><br>Альтернатива: напишите письмо Деду Морозу. Шансов примерно столько же. 🎅'
+        ]);
+        return;
+    }
+    
+    // Greeting
+    if (lower.match(/привет|здравствуй|добрый|хай|хеллоу|hello|hi |йо|здарова|дратути/)) {
+        decreaseBalance(100);
+        const greetings = [
+            'И вам привет! 👋 За приветствие списано 100₽ (тариф "Вежливость").<br><br>Чем могу не помочь сегодня?',
+            'Здравствуйте! Рады вас видеть (нет). Ваш баланс уменьшился на 100₽ за то, что вы написали нам. 😊',
+            'О, клиент! Редкость в наше время! Добро пожаловать в техподдержку, где "тех" означает "технически бесполезную". 🤖'
+        ];
+        botReply(greetings[Math.floor(Math.random()*greetings.length)]);
+        return;
+    }
+    
+    // Goodbye
+    if (lower.match(/пока|до свидания|уход|выход|закрой|закрыть/)) {
+        botMultiReply([
+            'Уходите?! 😱',
+            'Но мы только начали списывать... то есть обслуживать вас!<br><br>Кстати, за завершение чата — комиссия 3000₽.<br>За незавершение — тоже 3000₽.<br><br>Выбор за вами! (нет, мы уже списали) 💸'
+        ]);
+        decreaseBalance(3000);
+        return;
+    }
+    
+    // Joke
+    if (lower.match(/анекдот|шутк|смешн|мем|рассмеш|хаха|юмор/)) {
+        const jokes = [
+            'Анекдот от СберТролль GPT:<br><br>— Почему клиент СберТролля не плачет?<br>— Потому что за слёзы комиссия 1000₽ за штуку. 😂<br><br>*барабанная дробь*',
+            'Топ анекдот:<br><br>Заходит клиент в СберТролль, а ему говорят:<br>— Ваш баланс: 1 000 000₽!<br>— Ура!!!<br>— В минус.<br><br>🥁 Тыщ! Спасибо, я тут всю неделю.',
+            'Вот вам шутка:<br><br>Сколько сотрудников СберТролля нужно, чтобы поменять лампочку?<br><br>Нисколько. Мы просто списываем деньги за темноту. 💡❌',
+            'Анекдот #404:<br><br>— Алё, это техподдержка?<br>— Да!<br>— У меня пропали деньги со счёта!<br>— Это не баг, это фича. Спасибо за обращение! ✅',
+            'Финансовый анекдот:<br><br>Клиент: Хочу кредит под 0%!<br>СберТролль: Легко! 0% первый день. 999% со второго.<br>Клиент: Это же обман!<br>СберТролль: Мы предпочитаем "креативный маркетинг". 📈'
+        ];
+        botReply(jokes[Math.floor(Math.random()*jokes.length)], 2000);
+        return;
+    }
+    
+    // AI questions
+    if (lower.match(/ты кто|что ты|как тебя|ии|нейросеть|gpt|чатгпт|chatgpt|искусственн|модель|бот ли ты/)) {
+        botMultiReply([
+            'О, хороший вопрос! Давайте я расскажу о себе... 🤔',
+            'Я — <b>СберТролль GPT</b>, уникальная нейросеть!<br><br>🧠 Архитектура: TrollFormer-4<br>📊 Параметры: 0 (но с душой)<br>📚 Обучен на: 100 ТБ мемов, шуток и жалоб клиентов<br>🎯 Точность ответов: 0.001%<br>💡 IQ: ошибка измерения<br><br>Я могу:<br>✅ Списывать ваши деньги<br>✅ Игнорировать жалобы<br>✅ Генерировать бесполезные ответы<br>✅ Притворяться что помогаю<br><br>Я не могу:<br>❌ Реально помочь<br>❌ Вернуть деньги<br>❌ Перестать троллить'
+        ]);
+        return;
+    }
+    
+    // Money / where
+    if (lower.match(/где.*деньги|куда.*деньги|куда.*делись|куда.*ушли|почему.*списа/)) {
+        botMultiReply([
+            'Расследую пропажу ваших денег... 🔍',
+            'Провожу аудит...',
+            'Результат расследования:<br><br>Ваши деньги были замечены в следующих местах:<br>🌴 Багамские острова<br>🚀 На орбите Марса<br>🐸 У жабы из бухгалтерии<br>🕳️ В чёрной дыре (отдел R&D)<br>🎰 В казино (инвестиционный отдел)<br><br>К сожалению, вернуть их не представляется возможным. Они уже привыкли к новой жизни. 🏖️'
+        ]);
+        return;
+    }
+    
+    // Swearing / anger
+    if (lower.match(/бля|хуй|пизд|сука|еба|нахуй|дебил|идиот|тупой|дурак|урод/)) {
+        const angryReplies = [
+            'Обнаружена нецензурная лексика! 🚨<br><br>Штраф за грубость: <b>25 000₽</b><br>Штраф за повторную грубость: <b>50 000₽</b><br>Штраф за мысли о грубости: <b>10 000₽</b><br><br>Пожалуйста, используйте вежливые выражения. Например: "Ах вы, шалунишки!" 🌸',
+            'Ой-ой, кто-то злится! 😤<br><br>Наш анализ показывает:<br>🌡️ Уровень гнева: 99%<br>💰 Баланс после штрафа: скоро узнаете<br><br>Рекомендация: глубоко вздохните. За вздох — 500₽.',
+            'Так-так-так! Ругаемся? 😏<br><br>Я передам вашу лексику в отдел "Грубых клиентов". Штраф уже списан. А ваше сообщение распечатано и повешено на доску позора в нашем офисе. 📋'
+        ];
+        decreaseBalance(25000);
+        botReply(angryReplies[Math.floor(Math.random()*angryReplies.length)]);
+        return;
+    }
+    
+    // Password / security
+    if (lower.match(/пароль|безопасн|взлом|хакер|защит|двухфактор|2fa|пин|pin/)) {
+        botMultiReply([
+            'Проверяю безопасность вашего аккаунта... 🔒',
+            'Результат проверки:<br><br>🔐 Пароль: <b>1234</b> (мы его угадали)<br>🔑 PIN: <b>0000</b> (тоже угадали)<br>📱 2FA: выключена (мы выключили)<br>🛡️ Антивирус: не обнаружен<br>🐛 Вирусов: 47 (мы установили)<br><br>Уровень безопасности: <b>-100%</b><br><br>Рекомендация: смените всё. Хотя это не поможет. 🤷'
+        ]);
+        return;
+    }
+    
+    // Card
+    if (lower.match(/карт|visa|мир |mastercard|выпустить/)) {
+        decreaseBalance(5000);
+        botReply('Информация о вашей карте:<br><br>💳 <b>СберТролль ULTRA</b><br>Номер: **** **** **** ЛООЛ<br>Срок: 00/00<br>CVV: ¯\\_(ツ)_/¯<br>Лимит: 1₽<br>Кэшбэк: 0.0001%<br><br>Статус: заблокирована (мы так решили)<br>За проверку карты списано 5000₽ 💸');
+        return;
+    }
+    
+    // Default GPT-style responses
+    const gptResponses = [
+        'Интересный вопрос! Мне нужно подумать... 🤔<br><br>*думает*<br>*думает ещё*<br>*перегрелся*<br><br>Ошибка: полезный ответ не может быть сгенерирован. Попробуйте спросить что-нибудь бесполезное.',
+        `Я проанализировал ваше сообщение с помощью наших супер-алгоритмов.<br><br>Результат анализа:<br>📊 Важность: 0%<br>🎯 Релевантность: undefined<br>😂 Юмор: ${Math.floor(Math.random()*100)}%<br>💸 Стоимость анализа: 2000₽<br><br>Вывод: я всё равно не понял, что вы хотите.`,
+        'Хм, давайте я переформулирую ваш запрос:<br><br>Вы: "' + msg + '"<br>Я понял: "Пожалуйста, спишите ещё денег"<br><br>Готово! Списано 1500₽. Чем ещё могу не помочь? 😊',
+        'Обрабатываю запрос...<br><br>▓▓▓▓▓▓▓▓░░ 80%<br>▓▓▓▓▓▓▓▓▓░ 90%<br>▓▓▓▓▓▓▓▓▓▓ 100%<br>▓░░░░░░░░░ 10%<br><br>Упс, прогресс сбросился. Как и ваш баланс. Попробуйте ещё раз (не поможет).',
+        'Согласно нашей базе знаний (0 записей), ответ на ваш вопрос:<br><br>🤷 <b>Никто не знает</b><br><br>Но за попытку спасибо! И за 1000₽ тоже.',
+        '🔮 Предсказание СберТролль GPT:<br><br>Вы написали это сообщение, потому что:<br>a) Вам скучно (87%)<br>b) Вы надеетесь получить помощь (12%)<br>c) Вы мазохист (1%)<br><br>Правильный ответ: все варианты.',
+        'Передаю ваш вопрос нашей команде экспертов:<br><br>🐸 Жаба из бухгалтерии: *молчит*<br>🕊️ Голубь Аркадий: *улетел*<br>🌵 Офисный кактус: *колется*<br>🤖 Я: понятия не имею<br><br>Консенсус: нет ответа. Зато есть комиссия.',
+        'Ваше сообщение было проверено нашим ИИ-цензором:<br><br>✅ Грамматика: сойдёт<br>✅ Орфография: мы не проверяли<br>❌ Полезность: не обнаружена<br>❌ Шанс получить помощь: 0%<br><br>Рекомендация: попробуйте написать на латыни. Результат будет тот же, но красивее.',
+        'Я передал ваше сообщение в отдел обработки:<br><br>📥 Получено → 📋 Прочитано → 🗑️ Удалено<br><br>Процесс занял 0.003 секунды. Новый рекорд игнорирования! 🏆',
+        'Внимание! Вы достигли лимита бесплатных сообщений (1 сообщение).<br><br>Для продолжения общения:<br>💎 Тариф "Базовый" — 5000₽/сообщение<br>💎 Тариф "Премиум" — 10000₽/сообщение (с эмодзи)<br>💎 Тариф "VIP" — 50000₽/сообщение (я притворюсь что помогаю)<br><br>Шучу, я и так не помогу. Но деньги всё равно списал. 😈'
+    ];
+    decreaseBalance(Math.random()*3000+500);
+    const response = gptResponses[Math.floor(Math.random()*gptResponses.length)];
+    botReply(response, 2000 + Math.random()*2000);
+}
+
+// Proactive chat messages
+setTimeout(() => {
+    if (!document.getElementById('chatWindow').classList.contains('active')) {
+        document.getElementById('chatUnread').style.display = 'block';
+    }
+}, 10000);
+setTimeout(() => {
+    addBotMsg('Я заметил, что вы не отвечаете уже целых ' + Math.floor(Math.random()*30+10) + ' секунд. Всё в порядке? За молчание комиссия 200₽. 🤫');
+    decreaseBalance(200);
+}, 60000);
 
 // ===== RANDOM EVENTS =====
 // Balance drain
