@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СберТролль — Онлайн Банк</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sber-green: #21a038;
+            --sber-dark-green: #1a8a2e;
+            --sber-gradient: linear-gradient(135deg, #21a038 0%, #1db954 100%);
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, #0f3443 0%, #1a1a2e 100%);
+            padding: 16px 0;
+            border-bottom: 2px solid var(--sber-green);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: var(--sber-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 0 20px rgba(33, 160, 56, 0.4);
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            background: var(--sber-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--sber-green);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--sber-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(33, 160, 56, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 160, 56, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--sber-green);
+            border: 2px solid var(--sber-green);
+        }
+
+        .btn-outline:hover {
+            background: var(--sber-green);
+            color: white;
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: var(--sber-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-buttons .btn {
+            padding: 16px 36px;
+            font-size: 16px;
+        }
+
+        /* Balance card */
+        .balance-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #0f3443 0%, #162447 50%, #1f4068 100%);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(33, 160, 56, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(33, 160, 56, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .balance-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .balance-amount span {
+            color: var(--sber-green);
+        }
+
+        .balance-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Services grid */
+        .services {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--sber-green);
+            box-shadow: 0 10px 30px rgba(33, 160, 56, 0.15);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .service-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Promo banner */
+        .promo {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .promo-banner {
+            background: var(--sber-gradient);
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .promo-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            right: -80px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .promo-banner h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-banner p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-banner .btn {
+            background: white;
+            color: var(--sber-dark-green);
+            font-size: 16px;
+            padding: 16px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a1a;
+            padding: 40px 24px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .footer a {
+            color: var(--sber-green);
+            text-decoration: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(33, 160, 56, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalPop 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .modal .btn {
+            margin: 6px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: white;
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.6s ease;
+        }
+
+        /* Spin animation */
+        @keyframes spin360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin360 1s ease;
+        }
+
+        /* Flip animation */
+        @keyframes flipIt {
+            0% { transform: perspective(400px) rotateY(0); }
+            100% { transform: perspective(400px) rotateY(360deg); }
+        }
+
+        .flip {
+            animation: flipIt 0.8s ease;
+        }
+
+        /* Bounce */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease 3;
+        }
+
+        /* Fake cursor */
+        .fake-cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            background: red;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 0 10px red;
+        }
+
+        /* Loading screen */
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-screen.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(33, 160, 56, 0.2);
+            border-top-color: var(--sber-green);
+            border-radius: 50%;
+            animation: spin360 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Confetti container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confettiFall 3s ease forwards;
+        }
+
+        @keyframes confettiFall {
+            to {
+                top: 110%;
+                transform: rotate(720deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .balance-amount { font-size: 32px; }
+            .nav-links { display: none; }
+            .promo-banner { padding: 32px 20px; }
+            .promo-banner h2 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fake loading screen -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loadingText">Подключаемся к серверу ЦБ РФ...</div>
+</div>
+
+<!-- Fake cursor -->
+<div class="fake-cursor" id="fakeCursor"></div>
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-inner">
+        <div class="logo" onclick="trollLogo()">
+            <div class="logo-circle">C</div>
+            <span class="logo-text">СберТролль</span>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="trollNav('переводы')">Переводы</a></li>
+            <li><a onclick="trollNav('платежи')">Платежи</a></li>
+            <li><a onclick="trollNav('кредиты')">Кредиты</a></li>
+            <li><a onclick="trollNav('вклады')">Вклады</a></li>
+            <li><a onclick="trollNav('инвестиции')">Инвестиции</a></li>
+        </ul>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="trollLogin()">Войти</button>
+            <button class="btn btn-primary" onclick="trollRegister()">Открыть счёт</button>
+        </div>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>Добро пожаловать в<br><span>СберТролль Онлайн</span></h1>
+    <p>Надёжный банк, которому доверяют миллионы. Управляйте финансами с комфортом и улыбкой.</p>
+    <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="trollGetCard()">Получить карту</button>
+        <button class="btn btn-outline" onclick="trollCredit()">Взять кредит</button>
+    </div>
+</section>
+
+<!-- Balance -->
+<section class="balance-section">
+    <div class="balance-card" id="balanceCard">
+        <div class="balance-label">Ваш баланс</div>
+        <div class="balance-amount" id="balanceAmount">1 234 567,89 <span>₽</span></div>
+        <div class="balance-actions">
+            <button class="btn btn-primary" onclick="trollTransfer()">Перевести</button>
+            <button class="btn btn-outline" onclick="trollTopUp()">Пополнить</button>
+            <button class="btn btn-outline" onclick="trollWithdraw()">Снять</button>
+            <button class="btn btn-outline" onclick="trollHistory()">История</button>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section class="services">
+    <h2 class="section-title">Наши услуги</h2>
+    <div class="services-grid">
+        <div class="service-card" onclick="trollService('ипотека')">
+            <div class="service-icon">🏠</div>
+            <h3>Ипотека</h3>
+            <p>Ставка от 0.001% годовых</p>
+        </div>
+        <div class="service-card" onclick="trollService('страховка')">
+            <div class="service-icon">🛡️</div>
+            <h3>Страхование</h3>
+            <p>Застрахуем всё, даже настроение</p>
+        </div>
+        <div class="service-card" onclick="trollService('крипта')">
+            <div class="service-icon">📈</div>
+            <h3>Инвестиции</h3>
+            <p>+500% доходность гарантируем</p>
+        </div>
+        <div class="service-card" onclick="trollService('кэшбек')">
+            <div class="service-icon">💰</div>
+            <h3>Кэшбэк 200%</h3>
+            <p>Возвращаем больше, чем тратите</p>
+        </div>
+        <div class="service-card" onclick="trollService('вклад')">
+            <div class="service-icon">🏦</div>
+            <h3>Вклады</h3>
+            <p>1000% годовых, без шуток</p>
+        </div>
+        <div class="service-card" onclick="trollService('карта')">
+            <div class="service-icon">💳</div>
+            <h3>Золотая карта</h3>
+            <p>Из настоящего золота (нет)</p>
+        </div>
+        <div class="service-card" onclick="trollService('перевод')">
+            <div class="service-icon">🚀</div>
+            <h3>Мгновенный перевод</h3>
+            <p>Быстрее скорости света</p>
+        </div>
+        <div class="service-card" onclick="trollService('помощь')">
+            <div class="service-icon">🤖</div>
+            <h3>ИИ-помощник</h3>
+            <p>Решит все ваши проблемы (нет)</p>
+        </div>
+    </div>
+</section>
+
+<!-- Promo -->
+<section class="promo">
+    <div class="promo-banner">
+        <h2>🎁 Бонус 1 000 000 ₽ каждому!</h2>
+        <p>Просто нажмите кнопку и получите миллион рублей на свой счёт прямо сейчас!</p>
+        <button class="btn" onclick="trollMillion()">Получить миллион!</button>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>СберТролль &copy; 2026. Все права защищены (или нет).</p>
+    <p>Лицензия ЦБ РФ №1481 (выдана в параллельной вселенной)</p>
+    <p><a href="#" onclick="trollSupport(); return false;">Техподдержка</a> | <a href="#" onclick="trollPrivacy(); return false;">Политика конфиденциальности</a> | <a href="#" onclick="trollVacancy(); return false;">Вакансии</a></p>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal" id="modal">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <div class="modal-icon" id="modalIcon">😈</div>
+        <h2 id="modalTitle">Заголовок</h2>
+        <p id="modalText">Текст модалки</p>
+        <div id="modalButtons"></div>
+    </div>
+</div>
+
+<script>
+    const trollMessages = [
+        { icon: "😈", title: "Ой!", text: "Кажется, эта кнопка не работает... Как и все остальные!" },
+        { icon: "🤡", title: "Сюрприз!", text: "Вы думали тут реальный банк? Ха-ха-ха!" },
+        { icon: "🎪", title: "Добро пожаловать!", text: "Вы стали 1 000 000-м посетителем! Ваш приз — ничего!" },
+        { icon: "💀", title: "Ошибка 404", text: "Ваши деньги не найдены. Попробуйте в другом банке." },
+        { icon: "🐸", title: "Квааа!", text: "Этот раздел временно превращён в жабу. Приходите позже." },
+        { icon: "👻", title: "Бууу!", text: "Испугались? Не бойтесь, мы просто тролим." },
+        { icon: "🎭", title: "Маскарад!", text: "Этот банк — маскарад, и вы на него попались!" },
+        { icon: "🦆", title: "Кря!", text: "Ваш запрос обрабатывает утка. Подождите 3-5 рабочих жизней." },
+        { icon: "🍕", title: "Пицца!", text: "Вместо денег мы решили выдавать пиццу. Но и пиццы нет." },
+        { icon: "🌚", title: "Темная сторона", text: "Вы нашли секретную страницу! Но здесь ничего нет." },
+    ];
+
+    let trollIndex = 0;
+    let balanceValue = 1234567.89;
+    let clickCount = 0;
+
+    function showModal(icon, title, text, buttons) {
+        document.getElementById('modalIcon').textContent = icon;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalText').innerHTML = text;
+        const btnContainer = document.getElementById('modalButtons');
+        btnContainer.innerHTML = '';
+        if (buttons) {
+            buttons.forEach(b => {
+                const btn = document.createElement('button');
+                btn.className = 'btn ' + (b.type || 'btn-primary');
+                btn.textContent = b.text;
+                btn.onclick = b.action || closeModal;
+                btnContainer.appendChild(btn);
+            });
+        } else {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary';
+            btn.textContent = 'Ладно...';
+            btn.onclick = closeModal;
+            btnContainer.appendChild(btn);
+        }
+        document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    function getRandomTroll() {
+        const msg = trollMessages[trollIndex % trollMessages.length];
+        trollIndex++;
+        return msg;
+    }
+
+    function randomAnim(el) {
+        const anims = ['shake', 'spin', 'flip', 'bounce'];
+        const anim = anims[Math.floor(Math.random() * anims.length)];
+        el.classList.add(anim);
+        setTimeout(() => el.classList.remove(anim), 1000);
+    }
+
+    function decreaseBalance(amount) {
+        balanceValue -= amount;
+        if (balanceValue < 0) balanceValue = 0;
+        document.getElementById('balanceAmount').innerHTML =
+            balanceValue.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' <span>₽</span>';
+        randomAnim(document.getElementById('balanceCard'));
+    }
+
+    function spawnConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#ff0', '#f0f', '#0ff', '#f00', '#0f0', '#00f', '#ff8800', '#ff0088'];
+        for (let i = 0; i < 50; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = Math.random() * 100 + '%';
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDelay = Math.random() * 2 + 's';
+            c.style.width = (Math.random() * 8 + 6) + 'px';
+            c.style.height = (Math.random() * 8 + 6) + 'px';
+            c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+            container.appendChild(c);
+            setTimeout(() => c.remove(), 5000);
+        }
+    }
+
+    function showFakeLoading(text, callback, duration) {
+        const screen = document.getElementById('loadingScreen');
+        document.getElementById('loadingText').textContent = text;
+        screen.classList.add('active');
+        setTimeout(() => {
+            screen.classList.remove('active');
+            if (callback) callback();
+        }, duration || 2000);
+    }
+
+    // === TROLL FUNCTIONS ===
+
+    function trollLogo() {
+        document.body.style.transition = 'transform 0.5s';
+        document.body.style.transform = 'rotate(180deg)';
+        setTimeout(() => {
+            showModal("🙃", "Перевернули?", "А что, вам так удобнее? Мы стараемся для вас!");
+            setTimeout(() => { document.body.style.transform = 'rotate(0deg)'; }, 2000);
+        }, 600);
+    }
+
+    function trollNav(section) {
+        const messages = {
+            'переводы': { icon: "💸", title: "Переводы", text: "Мы перевели ваши деньги. Куда — не скажем." },
+            'платежи': { icon: "🧾", title: "Платежи", text: "Поздравляем! Вы оплатили подписку на 'Ничего' за 9999₽/мес." },
+            'кредиты': { icon: "🏦", title: "Кредиты", text: "Одобрен кредит на 100 000 000₽. Ежемесячный платёж: ваша душа." },
+            'вклады': { icon: "📉", title: "Вклады", text: "Ваш вклад обесценился. Спасибо за доверие!" },
+            'инвестиции': { icon: "📊", title: "Инвестиции", text: "Мы вложили ваши деньги в мемы. Доходность: -100%." },
+        };
+        const m = messages[section];
+        decreaseBalance(Math.random() * 50000);
+        showModal(m.icon, m.title, m.text);
+    }
+
+    function trollLogin() {
+        showFakeLoading("Проверяем ваши данные...", () => {
+            showModal("🔐", "Ошибка входа!", "Пароль неверный. Хотя вы его даже не вводили.<br><br>Попробуйте вспомнить пароль от жизни.", [
+                { text: "Забыл пароль", action: () => { closeModal(); trollForgotPassword(); } },
+                { text: "У меня нет пароля", action: () => { closeModal(); showModal("😱", "КАК?!", "Без пароля вы — никто! Создайте пароль за 999₽."); } },
+            ]);
+        }, 2500);
+    }
+
+    function trollForgotPassword() {
+        showModal("📧", "Восстановление пароля", "Мы отправили код на email, который вы забыли.<br>А также на номер телефона, который потеряли.<br>И голубиной почтой на всякий случай.", [
+            { text: "Жду голубя", action: () => { closeModal(); showModal("🕊️", "Голубь в пути!", "Ориентировочное время доставки: 3-5 рабочих столетий."); } }
+        ]);
+    }
+
+    function trollRegister() {
+        showFakeLoading("Создаём ваш аккаунт...", () => {
+            spawnConfetti();
+            showModal("🎉", "Аккаунт создан!", "Поздравляем! Ваш аккаунт успешно создан!<br><br>Номер счёта: <b>ХА-ХА-ХА-0000</b><br>Баланс: <b>0.00₽</b><br>Статус: <b>Лох</b>", [
+                { text: "Это шутка?", action: () => { closeModal(); showModal("🤔", "Конечно нет!", "Мы абсолютно серьёзный банк. Номер лицензии: ПРИКОЛ-228."); } },
+                { text: "Хочу удалить аккаунт", action: () => { closeModal(); showModal("🚫", "Невозможно!", "Удалить аккаунт нельзя. Вы с нами навсегда. НАВСЕГДА."); } }
+            ]);
+        }, 3000);
+    }
+
+    function trollGetCard() {
+        showFakeLoading("Выпускаем вашу карту...", () => {
+            showModal("💳", "Карта готова!", "Ваша карта:<br><br><b>**** **** **** ЛООЛ</b><br>Срок: 00/00<br>CVV: ХАХ<br><br>Доставка курьером через 999 лет.", [
+                { text: "Супер!", action: () => { closeModal(); decreaseBalance(99999); showModal("💸", "Списание", "За выпуск карты списано 99 999₽. Спасибо!"); } }
+            ]);
+        }, 2000);
+    }
+
+    function trollCredit() {
+        showModal("🏦", "Кредит одобрен!", "Поздравляем! Вам одобрен кредит на <b>∞ ₽</b>!<br><br>Ставка: 999% годовых<br>Срок: до конца времён<br>Ежемесячный платёж: все ваши деньги", [
+            { text: "Беру!", action: () => {
+                closeModal();
+                decreaseBalance(balanceValue);
+                showModal("💀", "Упс!", "Мы забрали все ваши деньги в счёт первого взноса. Спасибо за сотрудничество!");
+            }},
+            { text: "Не надо!", action: () => { closeModal(); showModal("😤", "Поздно!", "Кредит уже оформлен. Отменить нельзя. Удачи!"); decreaseBalance(100000); } }
+        ]);
+    }
+
+    function trollTransfer() {
+        decreaseBalance(Math.random() * 200000 + 50000);
+        showModal("💸", "Перевод выполнен!", "Мы перевели случайную сумму случайному человеку от вашего имени.<br><br>Получатель: <b>Василий Пупкин</b><br>Комментарий: <b>Спасибо за рыбу</b>", [
+            { text: "Я не переводил!", action: () => { closeModal(); showModal("🤷", "Ну и что?", "Кнопку-то вы нажали сами. Мы не виноваты."); } }
+        ]);
+    }
+
+    function trollTopUp() {
+        showModal("💰", "Пополнение", "Чтобы пополнить счёт, пришлите деньги голубиной почтой по адресу:<br><br><b>г. Тролльград, ул. Мемная, д. 228, кв. LOL</b><br><br>Срок зачисления: когда-нибудь.", [
+            { text: "Отправляю голубя!", action: () => { closeModal(); showModal("🕊️", "Ожидайте!", "Голубь принят на обслуживание. Ваши деньги в надёжных крыльях."); } }
+        ]);
+    }
+
+    function trollWithdraw() {
+        showFakeLoading("Обрабатываем запрос...", () => {
+            decreaseBalance(Math.random() * 300000);
+            showModal("🏧", "Снятие наличных", "Банкомат выдал вам воздух.<br><br>Комиссия за воздух: <b>50 000₽</b><br>Воздух премиум-класса, между прочим.", [
+                { text: "Хочу настоящие деньги", action: () => { closeModal(); showModal("😂", "АХАХАХА", "Настоящие деньги? В ЭТОМ банке? Вы шутите!"); } }
+            ]);
+        });
+    }
+
+    function trollHistory() {
+        showModal("📋", "История операций", `
+            <div style="text-align:left; font-size:13px; line-height:2;">
+            -500 000₽ — Покупка воздуха<br>
+            -200 000₽ — Подписка на грусть<br>
+            -150 000₽ — Комиссия за вздох<br>
+            -99 999₽ — Оплата ничего<br>
+            -50 000₽ — Налог на существование<br>
+            -1₽ — Комиссия за просмотр истории<br>
+            +0.01₽ — Кэшбэк (спасибо, что с нами!)
+            </div>
+        `, [
+            { text: "Это грабёж!", action: () => { closeModal(); showModal("🏴‍☠️", "Йо-хо-хо!", "Мы предпочитаем термин 'финансовые услуги'."); } }
+        ]);
+        decreaseBalance(1);
+    }
+
+    function trollService(type) {
+        const responses = {
+            'ипотека': { icon: "🏠", title: "Ипотека одобрена!", text: "Вам одобрена ипотека на картонную коробку!<br>Срок: 300 лет<br>Ставка: 1488% годовых<br>Первый взнос: ваша печень" },
+            'страховка': { icon: "🛡️", title: "Вы застрахованы!", text: "Мы застраховали ваше хорошее настроение.<br>К сожалению, оно только что испортилось.<br>Страховой случай не покрывается." },
+            'крипта': { icon: "📈", title: "Инвестиция!", text: "Мы вложили все ваши деньги в монету TrollCoin!<br>Курс: 1 TROLL = 0.000001₽<br>Прогноз: to the moon (нет)" },
+            'кэшбек': { icon: "💰", title: "Кэшбэк 200%!", text: "За каждые потраченные 100₽ мы возвращаем 200₽!*<br><br><small>*в виде баллов, которые нельзя потратить, обменять или использовать. Вообще никак.</small>" },
+            'вклад': { icon: "🏦", title: "Вклад открыт!", text: "Ваш вклад: 'Бесконечная грусть'<br>Ставка: -100% годовых<br>Мы будем забирать у вас деньги каждый месяц. Спасибо!" },
+            'карта': { icon: "💳", title: "Золотая карта!", text: "Карта выпущена из 100% настоящего шоколада!<br>Не подносите к огню и не ешьте<br>(хотя можете попробовать)" },
+            'перевод': { icon: "🚀", title: "Мгновенный перевод!", text: "Перевод выполнен со скоростью света!<br>К сожалению, деньги улетели в другую галактику.<br>ETA: 4.2 световых года" },
+            'помощь': { icon: "🤖", title: "ИИ-Помощник", text: "Здравствуйте! Я ваш ИИ-помощник Тролль-GPT!<br><br>Я не знаю ответов на ваши вопросы, но могу сделать вид, что знаю. Чем могу не помочь?" },
+        };
+        const r = responses[type];
+        decreaseBalance(Math.random() * 100000);
+        showModal(r.icon, r.title, r.text);
+    }
+
+    function trollMillion() {
+        showFakeLoading("Зачисляем 1 000 000₽...", () => {
+            spawnConfetti();
+            showModal("🎊", "ПОЗДРАВЛЯЕМ!!!", "Вам зачислен <b>1 000 000₽</b>!!!<br><br>...в игре 'Монополия'.<br>Для получения денег в реальности — обратитесь к деду морозу.", [
+                { text: "Хочу настоящий миллион!", action: () => {
+                    closeModal();
+                    showModal("🎅", "Дед Мороз", "Дед Мороз передал, что вы были плохим мальчиком/девочкой.<br>Миллион отменяется. Вместо него — уголёк.");
+                }},
+                { text: "Ладно, и так сойдёт", action: closeModal }
+            ]);
+        }, 3000);
+    }
+
+    function trollSupport() {
+        showModal("🤖", "Техподдержка", "Все операторы заняты... навсегда.<br><br>Ваш номер в очереди: <b>2 147 483 647</b><br>Примерное время ожидания: <b>∞</b><br><br>Пока ждёте, послушайте мелодию:", [
+            { text: "🎵 Слушаю мелодию", action: () => { closeModal(); showModal("🎶", "♪ ду-ду-ду ♪", "Тра-ля-ля, тру-лю-лю...<br>Ваш звонок очень важен для нас.<br>Оставайтесь на линии следующие 500 лет."); } },
+            { text: "Не буду ждать", action: () => { closeModal(); showModal("😤", "Куда?!", "Линия не отпускает! Вы навечно в очереди!"); } }
+        ]);
+    }
+
+    function trollPrivacy() {
+        showModal("🔍", "Политика конфиденциальности", "Мы собираем ВСЕ ваши данные:<br><br>✓ Имя, фамилия, отчество вашего кота<br>✓ Любимый цвет носков<br>✓ Количество кашлей в день<br>✓ О чём вы думали 5 минут назад<br>✓ Ваш PIN-код (мы его угадали)<br><br>Все данные передаются инопланетянам.");
+    }
+
+    function trollVacancy() {
+        showModal("👔", "Вакансии", "Открытые позиции:<br><br>🔹 <b>Нажиматель кнопок</b> — 0₽/мес<br>🔹 <b>Специалист по троллингу</b> — оплата мемами<br>🔹 <b>Главный по ничему</b> — зарплата: гордость<br>🔹 <b>Охранник воздуха</b> — дышать можно бесплатно<br><br>Резюме отправлять голубиной почтой.");
+    }
+
+    // === RANDOM TROLLING ===
+
+    // Random balance decrease
+    setInterval(() => {
+        if (balanceValue > 0) {
+            const amount = Math.random() * 1000 + 100;
+            balanceValue -= amount;
+            if (balanceValue < 0) balanceValue = 0;
+            document.getElementById('balanceAmount').innerHTML =
+                balanceValue.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' <span>₽</span>';
+        }
+    }, 5000);
+
+    // Random page flip after many clicks
+    document.addEventListener('click', () => {
+        clickCount++;
+        if (clickCount === 15) {
+            document.body.style.transition = 'filter 1s';
+            document.body.style.filter = 'hue-rotate(180deg)';
+            setTimeout(() => { document.body.style.filter = ''; }, 3000);
+        }
+        if (clickCount === 25) {
+            document.body.style.transition = 'transform 1s';
+            document.body.style.transform = 'scaleX(-1)';
+            setTimeout(() => { document.body.style.transform = ''; }, 4000);
+        }
+        if (clickCount === 40) {
+            document.querySelectorAll('*').forEach(el => {
+                el.style.transition = 'transform 2s';
+                el.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+            });
+            setTimeout(() => {
+                document.querySelectorAll('*').forEach(el => { el.style.transform = ''; });
+            }, 3000);
+        }
+    });
+
+    // Fake cursor that appears randomly
+    setInterval(() => {
+        if (Math.random() > 0.85) {
+            const cursor = document.getElementById('fakeCursor');
+            cursor.style.display = 'block';
+            cursor.style.left = Math.random() * window.innerWidth + 'px';
+            cursor.style.top = Math.random() * window.innerHeight + 'px';
+            setTimeout(() => { cursor.style.display = 'none'; }, 2000);
+        }
+    }, 8000);
+
+    // Console trolling
+    console.log('%c🚨 ВНИМАНИЕ! 🚨', 'font-size: 40px; color: red; font-weight: bold;');
+    console.log('%cВы пытаетесь взломать СберТролль?', 'font-size: 20px; color: green;');
+    console.log('%cМы уже вызвали кибер-полицию мемов!', 'font-size: 16px; color: orange;');
+    console.log('%c(шучу, тут просто троллинг)', 'font-size: 12px; color: gray;');
+</script>
+
+</body>
+</html>
