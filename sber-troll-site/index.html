@@ -3,923 +3,1331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СберТролль — Онлайн Банк</title>
+    <title>Сбер — Онлайн Банк</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2321a038'/><text x='50' y='68' text-anchor='middle' font-size='50' fill='white' font-family='Arial'>С</text></svg>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --sber-green: #21a038;
             --sber-dark-green: #1a8a2e;
-            --sber-gradient: linear-gradient(135deg, #21a038 0%, #1db954 100%);
-            --bg-dark: #1a1a2e;
-            --bg-card: #16213e;
-            --bg-card-hover: #1c2d50;
-            --text-primary: #ffffff;
-            --text-secondary: #a0aec0;
-            --danger: #e53e3e;
-            --warning: #dd6b20;
+            --sber-light-green: #e8f5e9;
+            --sber-gradient: linear-gradient(135deg, #21a038 0%, #2ecc40 100%);
+            --bg: #f5f5f7;
+            --bg-white: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
             color: var(--text-primary);
             min-height: 100vh;
-            overflow-x: hidden;
-            transition: all 0.5s;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         /* ===== HEADER ===== */
         .header {
-            background: linear-gradient(180deg, #0f3443 0%, #1a1a2e 100%);
-            padding: 16px 0;
-            border-bottom: 2px solid var(--sber-green);
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: var(--shadow-sm);
         }
         .header-inner {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 24px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            height: 64px;
+            gap: 32px;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
+            text-decoration: none;
         }
         .logo-circle {
-            width: 48px; height: 48px;
+            width: 36px; height: 36px;
             background: var(--sber-gradient);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px; font-weight: 800; color: white;
-            box-shadow: 0 0 20px rgba(33, 160, 56, 0.4);
-            transition: transform 0.5s;
+            color: white; font-weight: 700; font-size: 18px;
         }
-        .logo-text {
-            font-size: 26px; font-weight: 800;
-            background: var(--sber-gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .nav-links { display: flex; gap: 24px; list-style: none; }
-        .nav-links a {
-            color: var(--text-secondary); text-decoration: none; font-weight: 500;
-            transition: color 0.3s; cursor: pointer;
-        }
-        .nav-links a:hover { color: var(--sber-green); }
-        .header-actions { display: flex; gap: 12px; }
+        .logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .logo-text span { color: var(--sber-green); }
 
-        /* ===== BUTTONS ===== */
-        .btn {
-            padding: 10px 24px; border-radius: 12px; font-weight: 600; font-size: 14px;
-            cursor: pointer; border: none; transition: all 0.3s; font-family: 'Inter', sans-serif;
-            display: inline-block; text-align: center;
+        /* Nav */
+        .nav { display: flex; gap: 4px; flex: 1; }
+        .nav-item {
+            padding: 8px 16px; border-radius: var(--radius-sm);
+            font-size: 14px; font-weight: 500; color: var(--text-secondary);
+            cursor: pointer; transition: all 0.2s; border: none; background: none;
+            font-family: inherit; white-space: nowrap;
         }
-        .btn-primary {
+        .nav-item:hover { background: var(--bg); color: var(--text-primary); }
+        .nav-item.active { background: var(--sber-light-green); color: var(--sber-green); }
+
+        .header-right {
+            display: flex; align-items: center; gap: 16px;
+        }
+        .header-icon {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--bg); cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            color: var(--text-secondary); font-size: 20px; transition: all 0.2s;
+            position: relative;
+        }
+        .header-icon:hover { background: var(--border); color: var(--text-primary); }
+        .header-icon .badge {
+            position: absolute; top: 2px; right: 2px; width: 8px; height: 8px;
+            background: var(--danger); border-radius: 50%; border: 2px solid var(--bg-white);
+        }
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
             background: var(--sber-gradient); color: white;
-            box-shadow: 0 4px 15px rgba(33, 160, 56, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 14px; cursor: pointer;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(33, 160, 56, 0.5); }
-        .btn-outline { background: transparent; color: var(--sber-green); border: 2px solid var(--sber-green); }
-        .btn-outline:hover { background: var(--sber-green); color: white; }
-        .btn-danger { background: linear-gradient(135deg, #e53e3e, #c53030); color: white; }
-        .btn-danger:hover { transform: translateY(-2px); }
-        .btn-warning { background: linear-gradient(135deg, #dd6b20, #c05621); color: white; }
-        .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
-        .btn-lg { padding: 16px 36px; font-size: 16px; }
 
-        /* ===== PAGES (SPA routing) ===== */
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+        }
         .page { display: none; }
         .page.active { display: block; }
 
-        /* ===== HERO ===== */
-        .hero {
-            max-width: 1200px; margin: 0 auto; padding: 80px 24px; text-align: center;
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
         }
-        .hero h1 { font-size: 52px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
-        .hero h1 span {
-            background: var(--sber-gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        .card-title {
+            font-size: 18px; font-weight: 600; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
         }
-        .hero p {
-            font-size: 20px; color: var(--text-secondary); margin-bottom: 40px;
-            max-width: 600px; margin-left: auto; margin-right: auto;
-        }
-        .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .card-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
 
-        /* ===== BALANCE CARD ===== */
-        .balance-section { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
-        .balance-card {
-            background: linear-gradient(135deg, #0f3443 0%, #162447 50%, #1f4068 100%);
-            border-radius: 24px; padding: 40px;
-            border: 1px solid rgba(33, 160, 56, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative; overflow: hidden;
-        }
-        .balance-card::before {
-            content: ''; position: absolute; top: -50%; right: -20%;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(33, 160, 56, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .balance-label { font-size: 16px; color: var(--text-secondary); margin-bottom: 8px; }
-        .balance-amount { font-size: 48px; font-weight: 800; margin-bottom: 24px; }
-        .balance-amount span { color: var(--sber-green); }
-        .balance-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+        /* ===== GRID ===== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-        /* ===== CARD WIDGET ===== */
-        .card-widget {
-            background: linear-gradient(135deg, #1a8a2e 0%, #0f6b20 100%);
-            border-radius: 20px; padding: 24px; max-width: 380px;
-            margin: 20px auto; position: relative; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        /* ===== BANK CARD WIDGET ===== */
+        .bank-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d3748 50%, #1a1a2e 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .card-widget::after {
-            content: ''; position: absolute; top: -30px; right: -30px;
-            width: 120px; height: 120px; background: rgba(255,255,255,0.08);
-            border-radius: 50%;
+        .bank-card.green { background: linear-gradient(135deg, #1a8a2e 0%, #21a038 50%, #2ecc40 100%); }
+        .bank-card.gold { background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #f0c040 100%); }
+        .bank-card::before {
+            content: ''; position: absolute; top: -50%; right: -30%;
+            width: 200px; height: 200px; border-radius: 50%;
+            background: rgba(255,255,255,0.05);
         }
-        .card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #ffd700, #daa520); border-radius: 6px; margin-bottom: 20px; }
-        .card-number { font-size: 22px; letter-spacing: 3px; margin-bottom: 16px; font-weight: 600; }
-        .card-details { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.8); }
-        .card-logo-text { font-size: 20px; font-weight: 800; text-align: right; margin-top: 8px; }
+        .bank-card::after {
+            content: ''; position: absolute; bottom: -30%; left: -20%;
+            width: 150px; height: 150px; border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+        }
+        .bank-card-type { font-size: 12px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; }
+        .bank-card-number { font-size: 18px; letter-spacing: 3px; font-weight: 500; margin: 16px 0; }
+        .bank-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+        .bank-card-holder { font-size: 12px; opacity: 0.7; }
+        .bank-card-holder span { display: block; font-size: 14px; opacity: 1; font-weight: 500; margin-top: 2px; }
+        .bank-card-expiry { text-align: right; font-size: 12px; opacity: 0.7; }
+        .bank-card-expiry span { display: block; font-size: 14px; opacity: 1; font-weight: 500; margin-top: 2px; }
+        .bank-card-logo { position: absolute; top: 20px; right: 24px; font-size: 24px; font-weight: 700; opacity: 0.3; }
+        .bank-card-chip {
+            width: 40px; height: 30px; border-radius: 6px;
+            background: linear-gradient(135deg, #d4a017 0%, #f0d060 100%);
+            margin-bottom: 8px;
+        }
 
-        /* ===== SERVICES GRID ===== */
-        .services { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
-        .section-title { font-size: 32px; font-weight: 700; margin-bottom: 40px; text-align: center; }
-        .services-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+        /* ===== BALANCE ===== */
+        .balance-section { margin-bottom: 24px; }
+        .balance-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+        .balance-amount {
+            font-size: 32px; font-weight: 700; color: var(--text-primary);
+            display: flex; align-items: baseline; gap: 4px;
         }
-        .service-card {
-            background: var(--bg-card); border-radius: 20px; padding: 28px;
-            border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: all 0.3s; text-align: center;
+        .balance-amount .currency { font-size: 24px; color: var(--text-secondary); font-weight: 500; }
+        .balance-change {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 13px; font-weight: 500; margin-top: 4px; padding: 2px 8px;
+            border-radius: 20px;
         }
-        .service-card:hover {
-            transform: translateY(-4px); border-color: var(--sber-green);
-            box-shadow: 0 10px 30px rgba(33,160,56,0.15);
+        .balance-change.positive { color: var(--sber-green); background: var(--sber-light-green); }
+        .balance-change.negative { color: var(--danger); background: #fef2f2; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px;
+            font-weight: 500; cursor: pointer; border: none; font-family: inherit;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
         }
-        .service-icon { font-size: 44px; margin-bottom: 12px; }
-        .service-card h3 { font-size: 16px; margin-bottom: 6px; }
-        .service-card p { color: var(--text-secondary); font-size: 13px; }
+        .btn-primary { background: var(--sber-green); color: white; }
+        .btn-primary:hover { background: var(--sber-dark-green); }
+        .btn-secondary { background: var(--bg); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border-light); }
+        .btn-ghost { background: none; color: var(--sber-green); }
+        .btn-ghost:hover { background: var(--sber-light-green); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-lg { padding: 12px 24px; font-size: 16px; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        /* ===== FORMS ===== */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-input {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); font-size: 14px; font-family: inherit;
+            background: var(--bg-white); color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--sber-green); box-shadow: 0 0 0 3px rgba(33,160,56,0.1); }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-select {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); font-size: 14px; font-family: inherit;
+            background: var(--bg-white); color: var(--text-primary); cursor: pointer;
+        }
+        .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        /* ===== TRANSACTIONS ===== */
+        .transaction-list { list-style: none; }
+        .transaction-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid var(--border-light);
+        }
+        .transaction-item:last-child { border-bottom: none; }
+        .transaction-icon {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .transaction-icon.income { background: var(--sber-light-green); color: var(--sber-green); }
+        .transaction-icon.expense { background: #fef2f2; color: var(--danger); }
+        .transaction-icon.transfer { background: #eff6ff; color: var(--info); }
+        .transaction-info { flex: 1; }
+        .transaction-name { font-size: 14px; font-weight: 500; }
+        .transaction-date { font-size: 12px; color: var(--text-muted); }
+        .transaction-amount { font-weight: 600; text-align: right; }
+        .transaction-amount.positive { color: var(--sber-green); }
+        .transaction-amount.negative { color: var(--text-primary); }
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions { display: flex; gap: 12px; margin: 20px 0; }
+        .quick-action {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 16px; border-radius: var(--radius); cursor: pointer;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.2s; flex: 1; text-align: center;
+        }
+        .quick-action:hover { border-color: var(--sber-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .quick-action-icon {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--sber-light-green); color: var(--sber-green);
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .quick-action-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+
+        /* ===== TABLE ===== */
+        .table { width: 100%; border-collapse: collapse; }
+        .table th {
+            text-align: left; padding: 12px 16px; font-size: 12px;
+            font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; border-bottom: 2px solid var(--border);
+        }
+        .table td {
+            padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--border-light);
+        }
+        .table tr:hover td { background: var(--bg); }
+
+        /* ===== TABS ===== */
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+        .tab {
+            padding: 12px 20px; font-size: 14px; font-weight: 500;
+            color: var(--text-secondary); cursor: pointer; border: none;
+            background: none; font-family: inherit; position: relative;
+            transition: color 0.2s;
+        }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { color: var(--sber-green); }
+        .tab.active::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+            height: 2px; background: var(--sber-green);
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-active { background: var(--sber-light-green); color: var(--sber-green); }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-inactive { background: #f3f4f6; color: #6b7280; }
+
+        /* ===== PRODUCT LIST ===== */
+        .product-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .product-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .product-card-title { font-size: 16px; font-weight: 600; }
+        .product-card-rate { font-size: 24px; font-weight: 700; color: var(--sber-green); }
+        .product-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+        .product-card-footer { margin-top: 16px; display: flex; gap: 8px; }
+
+        /* ===== EXCHANGE RATES ===== */
+        .rate-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+        .rate-row:last-child { border-bottom: none; }
+        .rate-flag { font-size: 24px; margin-right: 12px; }
+        .rate-info { flex: 1; }
+        .rate-code { font-weight: 600; font-size: 14px; }
+        .rate-name { font-size: 12px; color: var(--text-muted); }
+        .rate-value { font-weight: 600; text-align: right; }
+        .rate-buy { color: var(--sber-green); }
+        .rate-sell { color: var(--danger); margin-left: 24px; }
 
         /* ===== PROMO BANNER ===== */
-        .promo { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
         .promo-banner {
-            background: var(--sber-gradient); border-radius: 24px; padding: 48px;
-            text-align: center; position: relative; overflow: hidden;
+            background: var(--sber-gradient);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
         }
-        .promo-banner::before {
-            content: ''; position: absolute; top: -100px; left: -100px;
-            width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%;
+        .promo-banner h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .promo-banner p { font-size: 14px; opacity: 0.9; max-width: 500px; }
+        .promo-banner .btn { background: white; color: var(--sber-green); margin-top: 16px; }
+        .promo-banner .btn:hover { background: #f0f0f0; }
+
+        /* ===== NOTIFICATION ===== */
+        .notification-bar {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius-sm);
+            padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+            margin-bottom: 16px; font-size: 13px;
         }
-        .promo-banner::after {
-            content: ''; position: absolute; bottom: -80px; right: -80px;
-            width: 250px; height: 250px; background: rgba(255,255,255,0.08); border-radius: 50%;
-        }
-        .promo-banner h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; position: relative; z-index: 1; }
-        .promo-banner p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; position: relative; z-index: 1; }
-        .promo-banner .btn {
-            background: white; color: var(--sber-dark-green); font-size: 16px;
-            padding: 16px 40px; position: relative; z-index: 1;
+        .notification-bar.info { background: #eff6ff; border-color: #bfdbfe; }
+        .notification-bar .close-btn {
+            margin-left: auto; background: none; border: none; cursor: pointer;
+            color: var(--text-muted); font-size: 16px;
         }
 
-        /* ===== PAGE SECTIONS ===== */
-        .page-container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
-        .page-title { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
-        .page-subtitle { color: var(--text-secondary); font-size: 16px; margin-bottom: 32px; }
-
-        /* ===== FORM STYLES ===== */
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
-        .form-input {
-            width: 100%; padding: 14px 16px; border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
-            color: white; font-size: 15px; font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s;
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1000; align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
         }
-        .form-input:focus { outline: none; border-color: var(--sber-green); }
-        .form-input::placeholder { color: rgba(255,255,255,0.3); }
-
-        /* ===== INFO CARDS ===== */
-        .info-card {
-            background: var(--bg-card); border-radius: 16px; padding: 24px;
-            margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05);
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--bg-white); border-radius: var(--radius-lg);
+            padding: 32px; max-width: 480px; width: 90%;
+            box-shadow: var(--shadow-lg); animation: modalIn 0.2s ease-out;
         }
-        .info-card h3 { font-size: 16px; margin-bottom: 8px; }
-        .info-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal h3 { font-size: 20px; margin-bottom: 8px; }
+        .modal p { color: var(--text-secondary); margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
-        /* ===== NOTIFICATION TOAST ===== */
-        .toast-container {
-            position: fixed; top: 80px; right: 20px; z-index: 5000;
-            display: flex; flex-direction: column; gap: 10px;
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-white); border-top: 1px solid var(--border);
+            padding: 32px 0; margin-top: 48px;
         }
-        .toast {
-            background: var(--bg-card); border-radius: 12px; padding: 16px 20px;
-            border-left: 4px solid var(--sber-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            animation: slideInRight 0.4s ease, fadeOut 0.4s ease 4s forwards;
-            max-width: 350px; cursor: pointer;
+        .footer-inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 24px;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
         }
-        .toast.toast-danger { border-left-color: var(--danger); }
-        .toast.toast-warning { border-left-color: var(--warning); }
-        .toast-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .toast-text { color: var(--text-secondary); font-size: 13px; }
+        .footer-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+        .footer-link {
+            display: block; font-size: 13px; color: var(--text-secondary);
+            text-decoration: none; margin-bottom: 8px; cursor: pointer;
+        }
+        .footer-link:hover { color: var(--sber-green); }
+        .footer-copy {
+            max-width: 1280px; margin: 16px auto 0; padding: 16px 24px 0;
+            border-top: 1px solid var(--border); font-size: 12px;
+            color: var(--text-muted); display: flex; justify-content: space-between;
+        }
 
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeOut { to { opacity: 0; transform: translateX(50px); } }
-
-        /* ===== CHAT WIDGET ===== */
-        .chat-bubble {
-            position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px;
-            background: var(--sber-gradient); border-radius: 50%;
+        /* ===== SIDEBAR ACCOUNT LIST ===== */
+        .account-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; border-radius: var(--radius-sm);
+            cursor: pointer; transition: background 0.2s;
+        }
+        .account-item:hover { background: var(--bg); }
+        .account-item-icon {
+            width: 40px; height: 40px; border-radius: var(--radius-sm);
             display: flex; align-items: center; justify-content: center;
-            font-size: 28px; cursor: pointer; z-index: 500;
-            box-shadow: 0 6px 20px rgba(33,160,56,0.4);
-            transition: transform 0.3s;
-            animation: float 3s ease-in-out infinite;
+            font-size: 20px;
         }
-        .chat-bubble:hover { transform: scale(1.1); }
-        .chat-bubble .unread-dot {
-            position: absolute; top: 2px; right: 2px; width: 14px; height: 14px;
-            background: var(--danger); border-radius: 50%; border: 2px solid var(--bg-dark);
-            animation: pulse 2s infinite;
+        .account-item-info { flex: 1; }
+        .account-item-name { font-size: 14px; font-weight: 500; }
+        .account-item-number { font-size: 12px; color: var(--text-muted); }
+        .account-item-balance { font-weight: 600; text-align: right; }
+
+        /* ===== CHAT SUPPORT ===== */
+        .chat-fab {
+            position: fixed; bottom: 24px; right: 24px;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--sber-green); color: white;
+            border: none; cursor: pointer; font-size: 24px;
+            box-shadow: var(--shadow-lg); z-index: 500;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
         }
+        .chat-fab:hover { transform: scale(1.08); }
         .chat-window {
-            display: none; position: fixed; bottom: 96px; right: 24px;
-            width: 400px; max-height: 560px; background: var(--bg-card);
-            border-radius: 20px; border: 1px solid rgba(33,160,56,0.3);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 501;
+            display: none; position: fixed; bottom: 92px; right: 24px;
+            width: 380px; max-height: 520px; background: var(--bg-white);
+            border-radius: var(--radius-lg); border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg); z-index: 501;
             flex-direction: column; overflow: hidden;
         }
         .chat-window.active { display: flex; }
         .chat-header {
-            background: var(--sber-gradient); padding: 16px 20px;
-            display: flex; align-items: center; gap: 12px;
+            background: var(--sber-green); padding: 16px 20px;
+            display: flex; align-items: center; gap: 12px; color: white;
         }
-        .chat-header .chat-close {
-            margin-left: auto; background: none; border: none; color: white;
-            font-size: 20px; cursor: pointer; opacity: 0.8;
-        }
-        .chat-header .chat-close:hover { opacity: 1; }
-        .chat-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .chat-header-info h4 { font-size: 15px; }
+        .chat-header-avatar { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .chat-header-info h4 { font-size: 14px; font-weight: 600; }
         .chat-header-info span { font-size: 12px; opacity: 0.8; }
-        .chat-status-dot { display: inline-block; width: 8px; height: 8px; background: #48bb78; border-radius: 50%; margin-right: 4px; }
-        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 360px; scroll-behavior: smooth; }
-        .chat-msg { margin-bottom: 12px; max-width: 85%; }
+        .chat-close { margin-left: auto; background: none; border: none; color: white; font-size: 20px; cursor: pointer; opacity: 0.8; }
+        .chat-close:hover { opacity: 1; }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 340px; }
+        .chat-msg { margin-bottom: 12px; max-width: 80%; }
         .chat-msg.bot { margin-right: auto; }
         .chat-msg.user { margin-left: auto; text-align: right; }
         .chat-msg .bubble {
-            display: inline-block; padding: 10px 14px; border-radius: 16px;
-            font-size: 13px; line-height: 1.6;
+            display: inline-block; padding: 10px 14px; border-radius: 14px;
+            font-size: 13px; line-height: 1.5;
         }
-        .chat-msg.bot .bubble { background: rgba(255,255,255,0.08); border-bottom-left-radius: 4px; }
-        .chat-msg.user .bubble { background: var(--sber-gradient); border-bottom-right-radius: 4px; }
-        .chat-msg .msg-time { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 4px; }
-        .chat-msg.system { text-align: center; max-width: 100%; }
-        .chat-msg.system .bubble { background: rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 11px; padding: 6px 12px; }
+        .chat-msg.bot .bubble { background: var(--bg); color: var(--text-primary); border-bottom-left-radius: 4px; }
+        .chat-msg.user .bubble { background: var(--sber-green); color: white; border-bottom-right-radius: 4px; }
+        .chat-msg .msg-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
         .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; }
-        .typing-dot { width: 8px; height: 8px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: typingBounce 1.4s infinite; }
+        .typing-dot { width: 7px; height: 7px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.4s infinite; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-        .chat-quick-replies { padding: 8px 16px; display: flex; gap: 6px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.03); }
-        .quick-reply {
-            padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;
-            background: rgba(33,160,56,0.15); color: var(--sber-green); border: 1px solid rgba(33,160,56,0.3);
-            font-family: 'Inter', sans-serif; transition: all 0.2s;
-        }
-        .quick-reply:hover { background: var(--sber-green); color: white; }
-        .chat-input-area { padding: 12px; display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
+        @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+        .chat-input-area { padding: 12px; display: flex; gap: 8px; border-top: 1px solid var(--border); }
         .chat-input {
-            flex: 1; padding: 10px 14px; border-radius: 12px; border: none;
-            background: rgba(255,255,255,0.08); color: white; font-size: 13px;
-            font-family: 'Inter', sans-serif;
+            flex: 1; padding: 10px 14px; border-radius: 20px; border: 1px solid var(--border);
+            font-size: 13px; font-family: inherit; background: var(--bg);
         }
-        .chat-input:focus { outline: none; background: rgba(255,255,255,0.12); }
+        .chat-input:focus { outline: none; border-color: var(--sber-green); }
         .chat-send {
-            width: 40px; height: 40px; border-radius: 12px; border: none;
-            background: var(--sber-gradient); color: white; font-size: 18px;
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--sber-green); color: white; font-size: 16px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s;
-        }
-        .chat-send:hover { transform: scale(1.1); }
-
-        /* ===== ATM MAP ===== */
-        .atm-map {
-            background: var(--bg-card); border-radius: 20px; padding: 40px;
-            text-align: center; min-height: 400px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .atm-map .map-fake {
-            width: 100%; height: 300px; background: linear-gradient(135deg, #162447, #1f4068);
-            border-radius: 16px; margin: 20px 0; position: relative; overflow: hidden;
-        }
-        .atm-dot {
-            position: absolute; width: 16px; height: 16px; background: var(--sber-green);
-            border-radius: 50%; cursor: pointer; animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(33,160,56,0.5); }
-            50% { box-shadow: 0 0 0 12px rgba(33,160,56,0); }
         }
 
-        /* ===== EXCHANGE RATES ===== */
-        .rates-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .rates-table th, .rates-table td {
-            padding: 14px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05);
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f5f5f7 50%, #ecfdf5 100%);
         }
-        .rates-table th { color: var(--text-secondary); font-size: 13px; font-weight: 600; }
-        .rates-table td { font-size: 15px; }
-        .rate-change { font-size: 12px; margin-left: 6px; }
-        .rate-up { color: #48bb78; }
-        .rate-down { color: #fc8181; }
-
-        /* ===== PROFILE STATS ===== */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0; }
-        .stat-card {
-            background: var(--bg-card); border-radius: 16px; padding: 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
+        .login-box {
+            background: var(--bg-white); border-radius: var(--radius-lg);
+            padding: 40px; width: 400px; box-shadow: var(--shadow-lg);
         }
-        .stat-value { font-size: 28px; font-weight: 800; color: var(--sber-green); }
-        .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
-
-        /* ===== CAPTCHA ===== */
-        .captcha-box {
-            background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;
-            margin: 16px 0; display: flex; align-items: center; gap: 16px;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        .captcha-checkbox {
-            width: 28px; height: 28px; border: 2px solid var(--sber-green);
-            border-radius: 6px; cursor: pointer; display: flex; align-items: center;
-            justify-content: center; transition: all 0.3s; flex-shrink: 0;
-        }
-        .captcha-text { font-size: 14px; }
-
-        /* ===== PROGRESS BAR ===== */
-        .progress-bar-container { margin: 16px 0; }
-        .progress-bar {
-            height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%; background: var(--sber-gradient); border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-        .progress-label { font-size: 13px; color: var(--text-secondary); margin-top: 6px; }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: #0a0a1a; padding: 40px 24px; text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .footer p { color: var(--text-secondary); font-size: 14px; margin-bottom: 8px; }
-        .footer a { color: var(--sber-green); text-decoration: none; cursor: pointer; }
-        .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
-        .footer-links a { font-size: 13px; }
-
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-            z-index: 1000; justify-content: center; align-items: center;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--bg-card); border-radius: 24px; padding: 40px;
-            max-width: 500px; width: 90%; text-align: center;
-            border: 1px solid rgba(33,160,56,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: modalPop 0.4s ease; position: relative;
-        }
-        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-icon { font-size: 80px; margin-bottom: 20px; }
-        .modal h2 { font-size: 24px; margin-bottom: 12px; }
-        .modal p { color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; line-height: 1.6; }
-        .modal .btn { margin: 6px; }
-        .close-modal {
-            position: absolute; top: 16px; right: 16px; background: none; border: none;
-            color: var(--text-secondary); font-size: 24px; cursor: pointer; transition: color 0.3s;
-        }
-        .close-modal:hover { color: white; }
-
-        /* ===== LOADING ===== */
-        .loading-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); z-index: 2000;
-            justify-content: center; align-items: center; flex-direction: column;
-        }
-        .loading-screen.active { display: flex; }
-        .loading-spinner {
-            width: 60px; height: 60px; border: 4px solid rgba(33,160,56,0.2);
-            border-top-color: var(--sber-green); border-radius: 50%;
-            animation: spin360 1s linear infinite; margin-bottom: 20px;
-        }
-        .loading-text { color: var(--text-secondary); font-size: 16px; }
-        .loading-subtext { color: var(--text-secondary); font-size: 13px; margin-top: 8px; opacity: 0.7; }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-5px)} 20%,40%,60%,80%{transform:translateX(5px)} }
-        .shake { animation: shake 0.6s ease; }
-        @keyframes spin360 { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-        .spin { animation: spin360 1s ease; }
-        @keyframes flipIt { 0%{transform:perspective(400px) rotateY(0)} 100%{transform:perspective(400px) rotateY(360deg)} }
-        .flip { animation: flipIt 0.8s ease; }
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-30px)} }
-        .bounce { animation: bounce 0.5s ease 3; }
-        @keyframes rainbowBg { 0%{filter:hue-rotate(0)} 100%{filter:hue-rotate(360deg)} }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
-        .fake-cursor {
-            position: fixed; width: 24px; height: 24px; background: red; border-radius: 50%;
-            pointer-events: none; z-index: 9999; display: none; box-shadow: 0 0 10px red;
-        }
-        .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3000; overflow: hidden; }
-        .confetti { position: absolute; width: 10px; height: 10px; top: -10px; animation: confettiFall 3s ease forwards; }
-        @keyframes confettiFall { to { top: 110%; transform: rotate(720deg); } }
-
-        /* ===== NOTIFICATION BADGE ===== */
-        .notif-badge {
-            position: absolute; top: -4px; right: -4px; background: var(--danger);
-            color: white; font-size: 10px; font-weight: 700; width: 18px; height: 18px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        }
+        .login-box .logo { justify-content: center; margin-bottom: 32px; }
+        .login-box h2 { text-align: center; margin-bottom: 8px; font-size: 22px; }
+        .login-box .subtitle { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .balance-amount { font-size: 32px; }
-            .nav-links { display: none; }
-            .promo-banner { padding: 32px 20px; }
-            .promo-banner h2 { font-size: 24px; }
-            .chat-window { width: 90%; right: 5%; }
-            .page-title { font-size: 28px; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .header-inner { padding: 0 16px; }
+            .nav { display: none; }
+            .quick-actions { flex-wrap: wrap; }
+            .promo-banner { flex-direction: column; text-align: center; }
         }
+
+        /* ===== SMOOTH ANIMATIONS ===== */
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--sber-green); border-radius: 3px; transition: width 0.5s; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state { text-align: center; padding: 48px 24px; color: var(--text-muted); }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+        .empty-state-title { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
-<!-- Loading screen -->
-<div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text" id="loadingText">Подключаемся к серверу ЦБ РФ...</div>
-    <div class="loading-subtext" id="loadingSubtext"></div>
+<!-- ===== LOGIN PAGE ===== -->
+<div id="loginPage" class="login-page">
+    <div class="login-box fade-in">
+        <div class="logo" style="justify-content:center; margin-bottom:32px;">
+            <div class="logo-circle">С</div>
+            <div class="logo-text"><span>Сбер</span>Банк Онлайн</div>
+        </div>
+        <h2>Вход в систему</h2>
+        <p class="subtitle">Введите данные для входа в личный кабинет</p>
+        <div class="form-group">
+            <label class="form-label">Логин</label>
+            <input class="form-input" id="loginInput" type="text" placeholder="Введите логин">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Пароль</label>
+            <input class="form-input" id="passwordInput" type="password" placeholder="Введите пароль">
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-secondary); cursor:pointer;">
+                <input type="checkbox" checked> Запомнить меня
+            </label>
+            <a href="#" style="font-size:13px; color:var(--sber-green); text-decoration:none;" onclick="event.preventDefault()">Забыли пароль?</a>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" onclick="doLogin()">Войти</button>
+        <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--text-secondary);">
+            Нет аккаунта? <a href="#" style="color:var(--sber-green); text-decoration:none;" onclick="event.preventDefault()">Зарегистрироваться</a>
+        </p>
+    </div>
 </div>
 
-<!-- Fake cursor -->
-<div class="fake-cursor" id="fakeCursor"></div>
-<!-- Confetti -->
-<div class="confetti-container" id="confettiContainer"></div>
-<!-- Toasts -->
-<div class="toast-container" id="toastContainer"></div>
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp" style="display:none;">
 
-<!-- Header -->
-<header class="header">
-    <div class="header-inner">
-        <div class="logo" onclick="trollLogo()">
-            <div class="logo-circle" id="logoCircle">C</div>
-            <span class="logo-text">СберТролль</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a class="logo" onclick="navigateTo('home')">
+                <div class="logo-circle">С</div>
+                <div class="logo-text"><span>Сбер</span>Банк</div>
+            </a>
+            <nav class="nav">
+                <button class="nav-item active" data-page="home" onclick="navigateTo('home')">Главная</button>
+                <button class="nav-item" data-page="cards" onclick="navigateTo('cards')">Карты</button>
+                <button class="nav-item" data-page="transfers" onclick="navigateTo('transfers')">Переводы</button>
+                <button class="nav-item" data-page="payments" onclick="navigateTo('payments')">Платежи</button>
+                <button class="nav-item" data-page="credits" onclick="navigateTo('credits')">Кредиты</button>
+                <button class="nav-item" data-page="deposits" onclick="navigateTo('deposits')">Вклады</button>
+                <button class="nav-item" data-page="exchange" onclick="navigateTo('exchange')">Курсы валют</button>
+            </nav>
+            <div class="header-right">
+                <button class="header-icon" title="Уведомления" onclick="openNotifications()">
+                    🔔<span class="badge"></span>
+                </button>
+                <button class="header-icon" title="Настройки" onclick="navigateTo('settings')">⚙️</button>
+                <div class="avatar" onclick="navigateTo('profile')" title="Профиль">ИИ</div>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a onclick="navigateTo('transfers')">Переводы</a></li>
-            <li><a onclick="navigateTo('payments')">Платежи</a></li>
-            <li><a onclick="navigateTo('credits')">Кредиты</a></li>
-            <li><a onclick="navigateTo('deposits')">Вклады</a></li>
-            <li><a onclick="navigateTo('exchange')">Курсы валют</a></li>
-            <li><a onclick="navigateTo('atm')">Банкоматы</a></li>
-        </ul>
-        <div class="header-actions">
-            <button class="btn btn-outline" onclick="navigateTo('login')" style="position:relative">
-                Войти
-                <div class="notif-badge" id="loginBadge">3</div>
-            </button>
-            <button class="btn btn-primary" onclick="navigateTo('register')">Открыть счёт</button>
-        </div>
-    </div>
-</header>
+    </header>
 
-<!-- ==================== PAGE: HOME ==================== -->
-<div class="page active" id="page-home">
-    <section class="hero">
-        <h1>Добро пожаловать в<br><span>СберТролль Онлайн</span></h1>
-        <p>Надёжный банк, которому доверяют миллионы. Управляйте финансами с комфортом и улыбкой.</p>
-        <div class="hero-buttons">
-            <button class="btn btn-primary btn-lg" onclick="trollGetCard()">Получить карту</button>
-            <button class="btn btn-outline btn-lg" onclick="navigateTo('credits')">Взять кредит</button>
-            <button class="btn btn-outline btn-lg" onclick="navigateTo('profile')">Мой профиль</button>
-        </div>
-    </section>
+    <div class="container">
 
-    <section class="balance-section">
-        <div class="balance-card" id="balanceCard">
-            <div class="balance-label">Ваш баланс</div>
-            <div class="balance-amount" id="balanceAmount">1 234 567,89 <span>₽</span></div>
-            <div style="margin-bottom:20px">
-                <div class="card-widget">
-                    <div class="card-chip"></div>
-                    <div class="card-number">4276 **** **** 1337</div>
-                    <div class="card-details">
-                        <div><div style="font-size:10px;opacity:0.6">ВЛАДЕЛЕЦ</div>TROLL TROLLOVICH</div>
-                        <div><div style="font-size:10px;opacity:0.6">СРОК</div>00/00</div>
+        <!-- ===== HOME PAGE ===== -->
+        <div id="page-home" class="page active fade-in">
+
+            <!-- Promo -->
+            <div class="promo-banner">
+                <div>
+                    <h2>Кэшбэк до 10% на всё</h2>
+                    <p>Оформите карту СберПрайм и получайте повышенный кэшбэк на все покупки. Бесплатное обслуживание первый год.</p>
+                    <button class="btn" onclick="showModal('Заявка отправлена', 'Менеджер свяжется с вами в течение 15 минут для оформления карты СберПрайм.')">Оформить</button>
+                </div>
+                <div style="font-size:64px; opacity:0.3;">💳</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div>
+                    <!-- Accounts -->
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-title">Мои счета и карты</div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:var(--sber-light-green); color:var(--sber-green);">💳</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">СберКарта</div>
+                                <div class="account-item-number">**** 4276</div>
+                            </div>
+                            <div class="account-item-balance" id="mainBalance">847 293,54 ₽</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:#fef3c7; color:#d97706;">💰</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Накопительный счёт</div>
+                                <div class="account-item-number">**** 8831</div>
+                            </div>
+                            <div class="account-item-balance">234 100,00 ₽</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:#eff6ff; color:#3b82f6;">🏦</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Вклад «Доходный»</div>
+                                <div class="account-item-number">**** 5590</div>
+                            </div>
+                            <div class="account-item-balance">500 000,00 ₽</div>
+                        </div>
                     </div>
-                    <div class="card-logo-text">СберТролль</div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="navigateTo('transfers')">
+                            <div class="quick-action-icon">↗️</div>
+                            <div class="quick-action-label">Перевод</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('payments')">
+                            <div class="quick-action-icon">📱</div>
+                            <div class="quick-action-label">Оплата</div>
+                        </div>
+                        <div class="quick-action" onclick="showModal('Пополнение', 'Выберите способ пополнения в разделе Переводы.')">
+                            <div class="quick-action-icon">💰</div>
+                            <div class="quick-action-label">Пополнить</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('credits')">
+                            <div class="quick-action-icon">🏦</div>
+                            <div class="quick-action-label">Кредит</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('exchange')">
+                            <div class="quick-action-icon">💱</div>
+                            <div class="quick-action-label">Обмен</div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div class="card">
+                        <div class="card-title">Последние операции</div>
+                        <ul class="transaction-list" id="transactionList">
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Card Widget -->
+                    <div class="bank-card green" style="margin-bottom:16px;">
+                        <div class="bank-card-logo">VISA</div>
+                        <div>
+                            <div class="bank-card-type">Дебетовая карта</div>
+                            <div class="bank-card-chip"></div>
+                            <div class="bank-card-number">•••• •••• •••• 4276</div>
+                        </div>
+                        <div class="bank-card-bottom">
+                            <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                            <div class="bank-card-expiry">Срок<span>12/27</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Exchange rates mini -->
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Курсы валют</div>
+                        <div id="miniRates"></div>
+                    </div>
+
+                    <!-- News -->
+                    <div class="card">
+                        <div class="card-title">Новости</div>
+                        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border-light);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Новый вклад «Зимний»</div>
+                            Ставка до 18% годовых на срок от 3 месяцев
+                        </div>
+                        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border-light);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Обновление приложения</div>
+                            Новый дизайн и улучшенная навигация
+                        </div>
+                        <div style="font-size:13px; color:var(--text-secondary);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Кэшбэк на АЗС</div>
+                            5% возврат на заправках-партнёрах
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="balance-actions">
-                <button class="btn btn-primary" onclick="navigateTo('transfers')">Перевести</button>
-                <button class="btn btn-outline" onclick="trollTopUp()">Пополнить</button>
-                <button class="btn btn-outline" onclick="trollWithdraw()">Снять</button>
-                <button class="btn btn-outline" onclick="trollHistory()">История</button>
-                <button class="btn btn-danger btn-sm" onclick="trollBlockCard()">Заблокировать карту</button>
+        </div>
+
+        <!-- ===== CARDS PAGE ===== -->
+        <div id="page-cards" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Мои карты</h2>
+            <div class="grid-3">
+                <div class="bank-card green">
+                    <div class="bank-card-logo">VISA</div>
+                    <div>
+                        <div class="bank-card-type">Дебетовая</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 4276</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">12/27</div>
+                    </div>
+                </div>
+                <div class="bank-card gold">
+                    <div class="bank-card-logo">MC</div>
+                    <div>
+                        <div class="bank-card-type">Кредитная Gold</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 8831</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">06/28</div>
+                    </div>
+                </div>
+                <div class="bank-card">
+                    <div class="bank-card-logo">МИР</div>
+                    <div>
+                        <div class="bank-card-type">Зарплатная</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 2200</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">03/29</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Информация о картах</div>
+                <table class="table">
+                    <thead>
+                        <tr><th>Карта</th><th>Номер</th><th>Баланс</th><th>Статус</th><th>Лимит</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>СберКарта Visa</td><td>**** 4276</td>
+                            <td style="font-weight:600;">847 293,54 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Кредитная Gold MC</td><td>**** 8831</td>
+                            <td style="font-weight:600;">42 000,00 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>300 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Зарплатная МИР</td><td>**** 2200</td>
+                            <td style="font-weight:600;">128 750,00 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:16px;">
+                <button class="btn btn-primary" onclick="showModal('Заказ карты', 'Заявка на новую карту принята. Карта будет готова в течение 3-5 рабочих дней в выбранном отделении.')">+ Заказать новую карту</button>
             </div>
         </div>
-    </section>
 
-    <section class="services">
-        <h2 class="section-title">Наши услуги</h2>
-        <div class="services-grid">
-            <div class="service-card" onclick="trollService('ипотека')"><div class="service-icon">🏠</div><h3>Ипотека</h3><p>Ставка от 0.001% годовых</p></div>
-            <div class="service-card" onclick="trollService('страховка')"><div class="service-icon">🛡️</div><h3>Страхование</h3><p>Застрахуем всё, даже настроение</p></div>
-            <div class="service-card" onclick="trollService('крипта')"><div class="service-icon">📈</div><h3>Инвестиции</h3><p>+500% доходность гарантируем</p></div>
-            <div class="service-card" onclick="trollService('кэшбек')"><div class="service-icon">💰</div><h3>Кэшбэк 200%</h3><p>Возвращаем больше, чем тратите</p></div>
-            <div class="service-card" onclick="trollService('вклад')"><div class="service-icon">🏦</div><h3>Вклады</h3><p>1000% годовых, без шуток</p></div>
-            <div class="service-card" onclick="trollService('карта')"><div class="service-icon">💳</div><h3>Золотая карта</h3><p>Из настоящего золота (нет)</p></div>
-            <div class="service-card" onclick="trollService('перевод')"><div class="service-icon">🚀</div><h3>Мгновенный перевод</h3><p>Быстрее скорости света</p></div>
-            <div class="service-card" onclick="trollService('помощь')"><div class="service-icon">🤖</div><h3>ИИ-помощник</h3><p>Решит все ваши проблемы (нет)</p></div>
-            <div class="service-card" onclick="trollService('подписка')"><div class="service-icon">⭐</div><h3>СберПремиум</h3><p>Всего 99 999₽/мес за ничего</p></div>
-            <div class="service-card" onclick="trollService('nft')"><div class="service-icon">🖼️</div><h3>СберNFT</h3><p>Купи пиксель за миллион</p></div>
-            <div class="service-card" onclick="trollService('метавселенная')"><div class="service-icon">🌐</div><h3>СберВерс</h3><p>Метавселенная для бедных</p></div>
-            <div class="service-card" onclick="trollService('доставка')"><div class="service-icon">📦</div><h3>СберДоставка</h3><p>Доставим грусть за 15 минут</p></div>
-        </div>
-    </section>
+        <!-- ===== TRANSFERS PAGE ===== -->
+        <div id="page-transfers" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Переводы</h2>
 
-    <section class="promo">
-        <div class="promo-banner">
-            <h2>🎁 Бонус 1 000 000 ₽ каждому!</h2>
-            <p>Просто нажмите кнопку и получите миллион рублей на свой счёт прямо сейчас!</p>
-            <button class="btn" onclick="trollMillion()">Получить миллион!</button>
-        </div>
-    </section>
-</div>
-
-<!-- ==================== PAGE: LOGIN ==================== -->
-<div class="page" id="page-login">
-    <div class="page-container" style="max-width:480px">
-        <div style="text-align:center">
-            <div class="logo-circle" style="width:80px;height:80px;font-size:40px;margin:0 auto 20px">C</div>
-            <h1 class="page-title">Вход в СберТролль</h1>
-            <p class="page-subtitle">Введите свои данные для входа</p>
-        </div>
-        <div class="form-group">
-            <label>Логин или номер телефона</label>
-            <input class="form-input" id="loginInput" type="text" placeholder="troll@sber.ru">
-        </div>
-        <div class="form-group">
-            <label>Пароль</label>
-            <input class="form-input" id="passwordInput" type="password" placeholder="••••••••">
-        </div>
-        <div class="captcha-box" onclick="trollCaptcha()">
-            <div class="captcha-checkbox" id="captchaBox"></div>
-            <div class="captcha-text">Я не робот (но мы вам не верим)</div>
-        </div>
-        <button class="btn btn-primary btn-lg" style="width:100%" onclick="trollLoginSubmit()">Войти</button>
-        <div style="text-align:center;margin-top:20px">
-            <a style="color:var(--sber-green);cursor:pointer;font-size:14px" onclick="trollForgotPassword()">Забыли пароль?</a>
-            <span style="color:var(--text-secondary);margin:0 10px">|</span>
-            <a style="color:var(--sber-green);cursor:pointer;font-size:14px" onclick="trollFaceId()">Войти по Face ID</a>
-        </div>
-        <div style="text-align:center;margin-top:30px">
-            <p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Или войти через:</p>
-            <button class="btn btn-outline btn-sm" onclick="trollSocialLogin('ВКонтакте')" style="margin:4px">ВКонтакте</button>
-            <button class="btn btn-outline btn-sm" onclick="trollSocialLogin('Одноклассники')" style="margin:4px">Одноклассники</button>
-            <button class="btn btn-outline btn-sm" onclick="trollSocialLogin('Госуслуги')" style="margin:4px">Госуслуги</button>
-            <button class="btn btn-outline btn-sm" onclick="trollSocialLogin('MySpace')" style="margin:4px">MySpace</button>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: REGISTER ==================== -->
-<div class="page" id="page-register">
-    <div class="page-container" style="max-width:550px">
-        <div style="text-align:center">
-            <h1 class="page-title">Регистрация</h1>
-            <p class="page-subtitle">Откройте счёт за 2 минуты (потеряете за 2 секунды)</p>
-        </div>
-        <div class="form-group">
-            <label>ФИО</label>
-            <input class="form-input" id="regName" type="text" placeholder="Иванов Иван Иванович">
-        </div>
-        <div class="form-group">
-            <label>Дата рождения</label>
-            <input class="form-input" id="regBirth" type="text" placeholder="дд.мм.гггг">
-        </div>
-        <div class="form-group">
-            <label>Номер телефона</label>
-            <input class="form-input" id="regPhone" type="tel" placeholder="+7 (999) 123-45-67">
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input class="form-input" id="regEmail" type="email" placeholder="mail@example.com">
-        </div>
-        <div class="form-group">
-            <label>Кличка домашнего питомца (обязательно)</label>
-            <input class="form-input" type="text" placeholder="Барсик">
-        </div>
-        <div class="form-group">
-            <label>Любимый цвет (для карты)</label>
-            <input class="form-input" type="text" placeholder="Зелёный, конечно">
-        </div>
-        <div class="form-group">
-            <label>Группа крови (на всякий случай)</label>
-            <input class="form-input" type="text" placeholder="Мы серьёзно">
-        </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar"><div class="progress-fill" id="regProgress" style="width:0%"></div></div>
-            <div class="progress-label" id="regProgressLabel">Заполнено: 0%</div>
-        </div>
-        <button class="btn btn-primary btn-lg" style="width:100%" onclick="trollRegisterSubmit()">Зарегистрироваться</button>
-    </div>
-</div>
-
-<!-- ==================== PAGE: TRANSFERS ==================== -->
-<div class="page" id="page-transfers">
-    <div class="page-container">
-        <h1 class="page-title">💸 Переводы</h1>
-        <p class="page-subtitle">Переведите деньги кому угодно (мы всё равно заберём)</p>
-
-        <div class="info-card">
-            <h3>Быстрый перевод</h3>
-            <div class="form-group" style="margin-top:12px">
-                <label>Номер карты получателя</label>
-                <input class="form-input" id="transferCard" type="text" placeholder="0000 0000 0000 0000">
+            <div class="tabs">
+                <button class="tab active">По номеру карты</button>
+                <button class="tab">По номеру телефона</button>
+                <button class="tab">Между своими</button>
+                <button class="tab">По реквизитам</button>
             </div>
-            <div class="form-group">
-                <label>Сумма перевода</label>
-                <input class="form-input" id="transferAmount" type="text" placeholder="Введите сумму в ₽">
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div class="card">
+                    <div class="card-title">Новый перевод</div>
+                    <div class="form-group">
+                        <label class="form-label">Откуда</label>
+                        <select class="form-select">
+                            <option>СберКарта **** 4276 — 847 293,54 ₽</option>
+                            <option>Кредитная **** 8831 — 42 000,00 ₽</option>
+                            <option>Зарплатная **** 2200 — 128 750,00 ₽</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Номер карты получателя</label>
+                        <input class="form-input" type="text" placeholder="0000 0000 0000 0000" id="transferCard">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Сумма</label>
+                        <div style="position:relative;">
+                            <input class="form-input" type="text" placeholder="0,00" id="transferAmount" style="padding-right:30px;">
+                            <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--text-muted);">₽</span>
+                        </div>
+                        <div class="form-hint">Комиссия: 0 ₽ для переводов до 50 000 ₽</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Сообщение (необязательно)</label>
+                        <input class="form-input" type="text" placeholder="Комментарий к переводу" id="transferMsg">
+                    </div>
+                    <button class="btn btn-primary btn-block btn-lg" onclick="doTransfer()">Перевести</button>
+                </div>
+
+                <div>
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Частые переводы</div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#6366f1;">АП</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Анна Петрова</div>
+                                <div class="account-item-number">**** 7890</div>
+                            </div>
+                        </div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#ec4899;">МС</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Максим Сидоров</div>
+                                <div class="account-item-number">**** 1234</div>
+                            </div>
+                        </div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#f59e0b;">ЕК</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Елена Козлова</div>
+                                <div class="account-item-number">**** 5678</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Последние переводы</div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon transfer">↗️</div>
+                            <div class="transaction-info"><div class="transaction-name">Анна П.</div><div class="transaction-date">Сегодня, 14:32</div></div>
+                            <div class="transaction-amount negative">−5 000 ₽</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon income">↙️</div>
+                            <div class="transaction-info"><div class="transaction-name">Максим С.</div><div class="transaction-date">Вчера, 18:15</div></div>
+                            <div class="transaction-amount positive">+2 300 ₽</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Сообщение получателю</label>
-                <input class="form-input" type="text" placeholder="За обед / С днём рождения / Верни долг">
+        </div>
+
+        <!-- ===== PAYMENTS PAGE ===== -->
+        <div id="page-payments" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Платежи</h2>
+
+            <div class="form-group" style="max-width:400px; margin-bottom:24px;">
+                <input class="form-input" type="text" placeholder="🔍 Поиск услуги или компании...">
             </div>
-            <button class="btn btn-primary" onclick="trollTransferSubmit()">Перевести</button>
-            <button class="btn btn-outline" onclick="trollTransferSelf()">Перевести себе</button>
-        </div>
 
-        <h3 style="margin-top:30px;margin-bottom:16px">Последние переводы</h3>
-        <div class="info-card" onclick="showToast('Перевод отменён!', 'Шутка, нельзя отменить', 'danger')">
-            <div style="display:flex;justify-content:space-between"><span>Василий Пупкин</span><span style="color:#fc8181">-50 000 ₽</span></div>
-            <p>Спасибо за рыбу</p>
-        </div>
-        <div class="info-card" onclick="showToast('Возврат?', 'Ахахаха, нет', 'warning')">
-            <div style="display:flex;justify-content:space-between"><span>ООО "Ничего"</span><span style="color:#fc8181">-99 999 ₽</span></div>
-            <p>Оплата подписки на пустоту</p>
-        </div>
-        <div class="info-card" onclick="showToast('Кто это?', 'Мы тоже не знаем', 'warning')">
-            <div style="display:flex;justify-content:space-between"><span>Неизвестный</span><span style="color:#fc8181">-333 333 ₽</span></div>
-            <p>Перевод выполнен автоматически (мы так решили)</p>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: PAYMENTS ==================== -->
-<div class="page" id="page-payments">
-    <div class="page-container">
-        <h1 class="page-title">🧾 Платежи</h1>
-        <p class="page-subtitle">Оплатите что угодно (или мы оплатим за вас)</p>
-
-        <div class="services-grid" style="margin-top:20px">
-            <div class="service-card" onclick="trollPayment('ЖКХ')"><div class="service-icon">🏠</div><h3>ЖКХ</h3><p>Оплатите воздух в квартире</p></div>
-            <div class="service-card" onclick="trollPayment('Мобильная связь')"><div class="service-icon">📱</div><h3>Мобильная связь</h3><p>Пополните чужой номер</p></div>
-            <div class="service-card" onclick="trollPayment('Интернет')"><div class="service-icon">🌐</div><h3>Интернет</h3><p>Вы уже платите за Wi-Fi соседа</p></div>
-            <div class="service-card" onclick="trollPayment('Штрафы')"><div class="service-icon">🚔</div><h3>Штрафы ГИБДД</h3><p>У вас 47 неоплаченных штрафов</p></div>
-            <div class="service-card" onclick="trollPayment('Налоги')"><div class="service-icon">📋</div><h3>Налоги</h3><p>Налог на воздух — 5000₽/мес</p></div>
-            <div class="service-card" onclick="trollPayment('Благотворительность')"><div class="service-icon">❤️</div><h3>Благотворительность</h3><p>Помогите СберТроллю выжить</p></div>
-            <div class="service-card" onclick="trollPayment('Подписки')"><div class="service-icon">📺</div><h3>Подписки</h3><p>СберКино, СберМузыка, СберГрусть</p></div>
-            <div class="service-card" onclick="trollPayment('Образование')"><div class="service-icon">🎓</div><h3>Образование</h3><p>Курс "Как потерять деньги"</p></div>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: CREDITS ==================== -->
-<div class="page" id="page-credits">
-    <div class="page-container">
-        <h1 class="page-title">🏦 Кредиты</h1>
-        <p class="page-subtitle">Деньги, которые вы никогда не вернёте</p>
-
-        <div class="info-card" style="border-left:4px solid var(--sber-green)">
-            <h3>💰 Потребительский кредит</h3>
-            <p>Ставка: 999% годовых<br>Срок: от 1 до ∞ лет<br>Сумма: от 1₽ до вашей жизни</p>
-            <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="trollTakeCredit('потребительский')">Оформить</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid var(--warning)">
-            <h3>🏠 Ипотека "Картонка"</h3>
-            <p>Ставка: 1488% годовых<br>Объект: картонная коробка 2м²<br>Первый взнос: ваша печень</p>
-            <button class="btn btn-warning btn-sm" style="margin-top:12px" onclick="trollTakeCredit('ипотека')">Оформить</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid var(--danger)">
-            <h3>🚗 Автокредит "Телега"</h3>
-            <p>Ставка: 666% годовых<br>Объект: деревянная телега б/у<br>Страховка: 500 000₽/мес</p>
-            <button class="btn btn-danger btn-sm" style="margin-top:12px" onclick="trollTakeCredit('автокредит')">Оформить</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid #805ad5">
-            <h3>🎰 Кредит на мечту</h3>
-            <p>Ставка: рандомная каждый день<br>Сумма: сколько не жалко<br>Возврат: когда-нибудь (нет)</p>
-            <button class="btn btn-sm" style="margin-top:12px;background:linear-gradient(135deg,#805ad5,#6b46c1);color:white" onclick="trollTakeCredit('мечта')">Оформить</button>
-        </div>
-
-        <div style="text-align:center;margin-top:30px">
-            <button class="btn btn-primary btn-lg" onclick="trollCreditCalc()">🧮 Кредитный калькулятор</button>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: DEPOSITS ==================== -->
-<div class="page" id="page-deposits">
-    <div class="page-container">
-        <h1 class="page-title">💎 Вклады</h1>
-        <p class="page-subtitle">Доверьте нам деньги — мы знаем, что с ними делать (нет)</p>
-
-        <div class="info-card" style="border-left:4px solid var(--sber-green)">
-            <h3>📈 Вклад "Оптимист"</h3>
-            <p>Ставка: 0.00001% годовых<br>Срок: 100 лет<br>Мин. сумма: 10 000 000₽</p>
-            <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="trollOpenDeposit('оптимист')">Открыть</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid var(--danger)">
-            <h3>📉 Вклад "Пессимист"</h3>
-            <p>Ставка: -50% годовых<br>Мы забираем половину ваших денег каждый год<br>Зато честно!</p>
-            <button class="btn btn-danger btn-sm" style="margin-top:12px" onclick="trollOpenDeposit('пессимист')">Открыть</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid var(--warning)">
-            <h3>🎰 Вклад "Рулетка"</h3>
-            <p>Ставка: от -100% до +1000%<br>Определяется броском кубика<br>Каждый день</p>
-            <button class="btn btn-warning btn-sm" style="margin-top:12px" onclick="trollOpenDeposit('рулетка')">Открыть</button>
-        </div>
-        <div class="info-card" style="border-left:4px solid #805ad5">
-            <h3>🕳️ Вклад "Чёрная дыра"</h3>
-            <p>Деньги просто исчезают<br>Мы не знаем куда<br>Но зато бесплатно!</p>
-            <button class="btn btn-sm" style="margin-top:12px;background:#805ad5;color:white" onclick="trollOpenDeposit('чёрная дыра')">Открыть</button>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: EXCHANGE ==================== -->
-<div class="page" id="page-exchange">
-    <div class="page-container">
-        <h1 class="page-title">💱 Курсы валют</h1>
-        <p class="page-subtitle">Актуальные курсы (из параллельной вселенной)</p>
-
-        <table class="rates-table">
-            <thead>
-                <tr><th>Валюта</th><th>Покупка</th><th>Продажа</th><th>Изменение</th></tr>
-            </thead>
-            <tbody id="ratesBody">
-            </tbody>
-        </table>
-
-        <div style="text-align:center;margin-top:30px">
-            <button class="btn btn-primary" onclick="trollExchange()">Купить валюту</button>
-            <button class="btn btn-outline" onclick="trollExchangePredict()">Прогноз курса</button>
-        </div>
-
-        <div class="info-card" style="margin-top:30px;text-align:center">
-            <h3>🔮 СберПрогноз</h3>
-            <p>Наш ИИ предсказывает курс с точностью 0.001%<br>(это не точно)</p>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PAGE: ATM ==================== -->
-<div class="page" id="page-atm">
-    <div class="page-container">
-        <h1 class="page-title">🏧 Банкоматы</h1>
-        <p class="page-subtitle">Найдите ближайший банкомат (если он существует)</p>
-
-        <div class="atm-map">
-            <div class="map-fake" id="atmMap">
-                <div class="atm-dot" style="top:20%;left:30%" onclick="trollAtmClick('Банкомат в параллельной вселенной')"></div>
-                <div class="atm-dot" style="top:50%;left:60%" onclick="trollAtmClick('Банкомат на дне океана')"></div>
-                <div class="atm-dot" style="top:70%;left:20%" onclick="trollAtmClick('Банкомат на Луне')"></div>
-                <div class="atm-dot" style="top:35%;left:80%" onclick="trollAtmClick('Банкомат в холодильнике')"></div>
-                <div class="atm-dot" style="top:80%;left:50%" onclick="trollAtmClick('Банкомат внутри другого банкомата')"></div>
-                <div class="atm-dot" style="top:15%;left:55%" onclick="trollAtmClick('Банкомат-призрак')"></div>
+            <div class="grid-4">
+                <div class="product-card" onclick="showPayment('Мобильная связь')">
+                    <div style="font-size:32px; margin-bottom:8px;">📱</div>
+                    <div class="product-card-title" style="font-size:14px;">Мобильная связь</div>
+                    <div class="product-card-desc">МТС, Билайн, Мегафон, Tele2</div>
+                </div>
+                <div class="product-card" onclick="showPayment('ЖКХ')">
+                    <div style="font-size:32px; margin-bottom:8px;">🏠</div>
+                    <div class="product-card-title" style="font-size:14px;">ЖКХ</div>
+                    <div class="product-card-desc">Электричество, газ, вода</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Интернет и ТВ')">
+                    <div style="font-size:32px; margin-bottom:8px;">🌐</div>
+                    <div class="product-card-title" style="font-size:14px;">Интернет и ТВ</div>
+                    <div class="product-card-desc">Ростелеком, Дом.ру, МТС</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Штрафы ГИБДД')">
+                    <div style="font-size:32px; margin-bottom:8px;">🚗</div>
+                    <div class="product-card-title" style="font-size:14px;">Штрафы ГИБДД</div>
+                    <div class="product-card-desc">Проверка и оплата</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Налоги')">
+                    <div style="font-size:32px; margin-bottom:8px;">📋</div>
+                    <div class="product-card-title" style="font-size:14px;">Налоги</div>
+                    <div class="product-card-desc">ФНС, госпошлины</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Образование')">
+                    <div style="font-size:32px; margin-bottom:8px;">🎓</div>
+                    <div class="product-card-title" style="font-size:14px;">Образование</div>
+                    <div class="product-card-desc">Детский сад, школа, ВУЗ</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Благотворительность')">
+                    <div style="font-size:32px; margin-bottom:8px;">❤️</div>
+                    <div class="product-card-title" style="font-size:14px;">Благотворительность</div>
+                    <div class="product-card-desc">Фонды и организации</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Другое')">
+                    <div style="font-size:32px; margin-bottom:8px;">📦</div>
+                    <div class="product-card-title" style="font-size:14px;">Другое</div>
+                    <div class="product-card-desc">Остальные платежи</div>
+                </div>
             </div>
-            <p style="color:var(--text-secondary);font-size:14px">Найдено 6 банкоматов. Ни один не работает.</p>
-            <button class="btn btn-primary" style="margin-top:16px" onclick="trollAtmSearch()">Искать рядом</button>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Автоплатежи</div>
+                <table class="table">
+                    <thead><tr><th>Услуга</th><th>Получатель</th><th>Сумма</th><th>Следующий платёж</th><th>Статус</th></tr></thead>
+                    <tbody>
+                        <tr><td>📱 Мобильная связь</td><td>МТС</td><td>500 ₽</td><td>01.02.2026</td><td><span class="status status-active">Активен</span></td></tr>
+                        <tr><td>🌐 Интернет</td><td>Ростелеком</td><td>890 ₽</td><td>05.02.2026</td><td><span class="status status-active">Активен</span></td></tr>
+                        <tr><td>🏠 ЖКХ</td><td>ЕИРЦ</td><td>4 200 ₽</td><td>10.02.2026</td><td><span class="status status-pending">Ожидание</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== CREDITS PAGE ===== -->
+        <div id="page-credits" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Кредиты</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Выгодные условия кредитования для любых целей</p>
+
+            <div class="grid-3">
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Потребительский</div>
+                        <div class="product-card-rate">от 14,9%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        До 5 000 000 ₽ на любые цели. Срок до 5 лет. Без залога и поручителей. Решение за 2 минуты.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Кредит «Потребительский»', 'Заявка на кредит отправлена. Предварительное решение будет доступно через 2 минуты в разделе Уведомления.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Ипотека</div>
+                        <div class="product-card-rate">от 5,3%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Ипотека с господдержкой. Первый взнос от 15%. Срок до 30 лет. Электронная регистрация сделки.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Ипотека', 'Для оформления ипотеки необходимо загрузить документы. Перейдите в раздел «Документы» для продолжения.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Автокредит</div>
+                        <div class="product-card-rate">от 3,9%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        На новый или подержанный автомобиль. До 7 000 000 ₽. Срок до 7 лет. Без первого взноса.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Автокредит', 'Рассчитайте условия в калькуляторе ниже или обратитесь к менеджеру для консультации.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator -->
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Кредитный калькулятор</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label class="form-label">Сумма кредита</label>
+                        <input class="form-input" type="text" value="500 000" id="calcAmount">
+                        <div class="form-hint">от 30 000 до 5 000 000 ₽</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Срок</label>
+                        <select class="form-select" id="calcTerm">
+                            <option>12 месяцев</option>
+                            <option selected>24 месяца</option>
+                            <option>36 месяцев</option>
+                            <option>48 месяцев</option>
+                            <option>60 месяцев</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ставка</label>
+                        <input class="form-input" type="text" value="14,9%" disabled>
+                    </div>
+                </div>
+                <div style="background:var(--bg); padding:16px; border-radius:var(--radius-sm); margin-top:8px; display:flex; justify-content:space-around; text-align:center;">
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Ежемесячный платёж</div>
+                        <div style="font-size:20px; font-weight:700; color:var(--sber-green);" id="calcPayment">24 175 ₽</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Переплата</div>
+                        <div style="font-size:20px; font-weight:700;" id="calcOverpay">80 200 ₽</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Общая сумма</div>
+                        <div style="font-size:20px; font-weight:700;" id="calcTotal">580 200 ₽</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== DEPOSITS PAGE ===== -->
+        <div id="page-deposits" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Вклады и накопления</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Надёжное размещение средств с гарантированным доходом</p>
+
+            <div class="grid-3">
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Лучший %</div>
+                        <div class="product-card-rate">до 18%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Максимальная ставка без снятия. От 100 000 ₽. Срок 3–12 месяцев. Капитализация процентов.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Вклад открыт', 'Вклад «Лучший %» успешно открыт. Начисление процентов начнётся с завтрашнего дня.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Управляй</div>
+                        <div class="product-card-rate">до 15%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        С возможностью пополнения и снятия. От 30 000 ₽. Срок 3–36 месяцев. Частичное снятие без потери %.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Вклад открыт', 'Вклад «Управляй» успешно открыт с начальным взносом.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Накопительный счёт</div>
+                        <div class="product-card-rate">до 16%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Бессрочный. Пополнение и снятие в любое время. Проценты начисляются ежедневно на минимальный остаток.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Счёт открыт', 'Накопительный счёт успешно открыт. Пополните его для начала начисления процентов.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Мои вклады</div>
+                <table class="table">
+                    <thead><tr><th>Название</th><th>Сумма</th><th>Ставка</th><th>Срок</th><th>Начислено</th><th>Статус</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>Вклад «Доходный»</td><td style="font-weight:600;">500 000 ₽</td>
+                            <td>16,5%</td><td>до 15.08.2026</td>
+                            <td style="color:var(--sber-green); font-weight:500;">+28 750 ₽</td>
+                            <td><span class="status status-active">Активен</span></td>
+                        </tr>
+                        <tr>
+                            <td>Накопительный счёт</td><td style="font-weight:600;">234 100 ₽</td>
+                            <td>14%</td><td>Бессрочный</td>
+                            <td style="color:var(--sber-green); font-weight:500;">+12 340 ₽</td>
+                            <td><span class="status status-active">Активен</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== EXCHANGE PAGE ===== -->
+        <div id="page-exchange" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Курсы валют</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Актуальные курсы покупки и продажи валют</p>
+
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div class="card">
+                    <div class="card-title">Курсы на сегодня</div>
+                    <table class="table">
+                        <thead><tr><th>Валюта</th><th>Покупка</th><th>Продажа</th><th>ЦБ РФ</th></tr></thead>
+                        <tbody id="exchangeTable"></tbody>
+                    </table>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:12px;">Обновлено: <span id="rateUpdateTime"></span> • Курсы носят информационный характер</div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-title">Конвертер валют</div>
+                        <div class="form-group">
+                            <label class="form-label">Отдаю</label>
+                            <div style="display:flex; gap:8px;">
+                                <input class="form-input" type="text" value="1000" id="convertFrom" style="flex:1;" oninput="updateConverter()">
+                                <select class="form-select" style="width:80px;" id="convertFromCur" onchange="updateConverter()">
+                                    <option value="RUB">RUB</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="CNY">CNY</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="text-align:center; margin:8px 0; font-size:20px; color:var(--text-muted);">⇅</div>
+                        <div class="form-group">
+                            <label class="form-label">Получаю</label>
+                            <div style="display:flex; gap:8px;">
+                                <input class="form-input" type="text" id="convertTo" style="flex:1;" readonly>
+                                <select class="form-select" style="width:80px;" id="convertToCur" onchange="updateConverter()">
+                                    <option value="RUB">RUB</option>
+                                    <option value="USD" selected>USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="CNY">CNY</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="showModal('Обмен выполнен', 'Операция обмена валюты успешно выполнена. Средства зачислены на ваш валютный счёт.')">Обменять</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PROFILE PAGE ===== -->
+        <div id="page-profile" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Профиль</h2>
+
+            <div style="display:grid; grid-template-columns: 1fr 2fr; gap: 24px;">
+                <div class="card" style="text-align:center;">
+                    <div style="width:80px; height:80px; border-radius:50%; background:var(--sber-gradient); margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:32px; color:white; font-weight:700;">ИИ</div>
+                    <div style="font-size:18px; font-weight:600; margin-bottom:4px;">Иванов Иван Иванович</div>
+                    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Клиент с 2019 года</div>
+                    <span class="status status-active">Подтверждён</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">Уровень привилегий</div>
+                        <div style="font-size:16px; font-weight:600; color:var(--sber-green);">СберПрайм+</div>
+                        <div class="progress-bar" style="margin-top:8px;">
+                            <div class="progress-bar-fill" style="width:75%;"></div>
+                        </div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">7 500 / 10 000 бонусов до следующего уровня</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Личные данные</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                            <div class="form-group">
+                                <label class="form-label">ФИО</label>
+                                <input class="form-input" value="Иванов Иван Иванович" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Дата рождения</label>
+                                <input class="form-input" value="15.03.1990" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Телефон</label>
+                                <input class="form-input" value="+7 (999) 123-45-67">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input class="form-input" value="ivan.ivanov@mail.ru">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Паспорт</label>
+                                <input class="form-input" value="** ** ******" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ИНН</label>
+                                <input class="form-input" value="7707 ****  ****" readonly>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top:8px;" onclick="showModal('Сохранено', 'Данные профиля обновлены.')">Сохранить изменения</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Безопасность</div>
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-light);">
+                                <div><div style="font-weight:500;">Пароль</div><div style="font-size:12px; color:var(--text-muted);">Изменён 2 месяца назад</div></div>
+                                <button class="btn btn-secondary btn-sm">Изменить</button>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-light);">
+                                <div><div style="font-weight:500;">Двухфакторная аутентификация</div><div style="font-size:12px; color:var(--text-muted);">SMS на +7 (999) ***-**-67</div></div>
+                                <span class="status status-active">Включена</span>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0;">
+                                <div><div style="font-weight:500;">Активные сессии</div><div style="font-size:12px; color:var(--text-muted);">2 устройства</div></div>
+                                <button class="btn btn-secondary btn-sm">Управление</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SETTINGS PAGE ===== -->
+        <div id="page-settings" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Настройки</h2>
+            <div style="max-width:640px;">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-title">Уведомления</div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>Push-уведомления</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>Email-рассылка</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>SMS о списаниях</span>
+                            <input type="checkbox" checked>
+                        </label>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-title">Внешний вид</div>
+                    <div class="form-group">
+                        <label class="form-label">Язык</label>
+                        <select class="form-select"><option>Русский</option><option>English</option></select>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Аккаунт</div>
+                    <button class="btn btn-secondary" style="margin-right:8px;" onclick="doLogout()">Выйти из аккаунта</button>
+                    <button class="btn btn-danger" onclick="showModal('Вы уверены?', 'Удаление аккаунта необратимо. Все данные будут утеряны. Для подтверждения обратитесь в отделение банка.')">Удалить аккаунт</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-title">О банке</div>
+                <a class="footer-link">О компании</a>
+                <a class="footer-link">Реквизиты</a>
+                <a class="footer-link">Раскрытие информации</a>
+                <a class="footer-link">Вакансии</a>
+            </div>
+            <div>
+                <div class="footer-title">Услуги</div>
+                <a class="footer-link" onclick="navigateTo('cards')">Карты</a>
+                <a class="footer-link" onclick="navigateTo('credits')">Кредиты</a>
+                <a class="footer-link" onclick="navigateTo('deposits')">Вклады</a>
+                <a class="footer-link" onclick="navigateTo('exchange')">Курсы валют</a>
+            </div>
+            <div>
+                <div class="footer-title">Поддержка</div>
+                <a class="footer-link">8 800 555-55-50</a>
+                <a class="footer-link">Онлайн-чат</a>
+                <a class="footer-link">Написать в банк</a>
+                <a class="footer-link">Отделения и банкоматы</a>
+            </div>
+            <div>
+                <div class="footer-title">Приложение</div>
+                <a class="footer-link">App Store</a>
+                <a class="footer-link">Google Play</a>
+                <a class="footer-link">AppGallery</a>
+            </div>
+        </div>
+        <div class="footer-copy">
+            <span>© 2024 СберБанк. Генеральная лицензия Банка России № 1481</span>
+            <span>Политика конфиденциальности</span>
+        </div>
+    </footer>
+
+    <!-- Chat Support -->
+    <button class="chat-fab" onclick="toggleChat()">💬</button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-avatar">🧑‍💼</div>
+            <div class="chat-header-info">
+                <h4>Онлайн-консультант</h4>
+                <span>Обычно отвечает за 1 минуту</span>
+            </div>
+            <button class="chat-close" onclick="toggleChat()">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot"><div class="bubble">Здравствуйте! Я виртуальный помощник СберБанка. Чем могу помочь?</div><div class="msg-time">Сейчас</div></div>
+        </div>
+        <div class="chat-input-area">
+            <input class="chat-input" id="chatInput" placeholder="Введите сообщение..." onkeypress="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" onclick="sendChat()">➤</button>
         </div>
     </div>
 </div>
-
-<!-- ==================== PAGE: PROFILE ==================== -->
-<div class="page" id="page-profile">
-    <div class="page-container">
-        <div style="text-align:center;margin-bottom:30px">
-            <div style="width:100px;height:100px;background:var(--sber-gradient);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:48px">🤡</div>
-            <h1 class="page-title">Тролль Троллевич</h1>
-            <p class="page-subtitle">Клиент с рождения • ID: TROLL-000-LOL</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-value" id="profileBalance">1 234 567₽</div><div class="stat-label">Баланс</div></div>
-            <div class="stat-card"><div class="stat-value">-999 999₽</div><div class="stat-label">Потрачено сегодня</div></div>
-            <div class="stat-card"><div class="stat-value">0.01₽</div><div class="stat-label">Кэшбэк за всё время</div></div>
-            <div class="stat-card"><div class="stat-value">∞</div><div class="stat-label">Долг банку</div></div>
-        </div>
-
-        <div class="info-card">
-            <h3>Персональные данные</h3>
-            <p>ФИО: Тролль Троллевич Троллов<br>Дата рождения: 01.04.1900<br>Телефон: +7 (000) 000-00-00<br>Email: loh@sbertroll.ru<br>Статус: Почётный клоун</p>
-        </div>
-        <div class="info-card">
-            <h3>Активные продукты</h3>
-            <p>💳 Карта "Золотой Тролль" — **** 1337<br>🏦 Вклад "Чёрная дыра" — 0.00₽<br>💰 Кредит — 999 999 999₽ к оплате<br>🛡️ Страховка настроения — истекла</p>
-        </div>
-        <div class="info-card">
-            <h3>Достижения</h3>
-            <p>🏆 "Нажал все кнопки" — разблокировано<br>🎪 "Попался на троллинг" — разблокировано<br>🤡 "Поверил в миллион" — разблокировано<br>🔒 "Реальный баланс" — заблокировано навсегда</p>
-        </div>
-
-        <div style="text-align:center;margin-top:20px">
-            <button class="btn btn-primary" onclick="trollEditProfile()">Редактировать профиль</button>
-            <button class="btn btn-danger" onclick="trollDeleteAccount()">Удалить аккаунт</button>
-            <button class="btn btn-outline" onclick="trollExportData()">Экспорт данных</button>
-        </div>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-    <p>СберТролль &copy; 2026. Все права защищены (или нет).</p>
-    <p>Лицензия ЦБ РФ №1481 (выдана в параллельной вселенной)</p>
-    <div class="footer-links">
-        <a onclick="trollSupport()">Техподдержка</a>
-        <a onclick="trollPrivacy()">Конфиденциальность</a>
-        <a onclick="trollVacancy()">Вакансии</a>
-        <a onclick="trollBlog()">Блог банка</a>
-        <a onclick="trollPartners()">Партнёры</a>
-        <a onclick="trollApp()">Мобильное приложение</a>
-        <a onclick="trollEaster()">🥚</a>
-    </div>
-</footer>
 
 <!-- Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
-    <div class="modal" id="modal">
-        <button class="close-modal" onclick="closeModal()">&times;</button>
-        <div class="modal-icon" id="modalIcon">😈</div>
-        <h2 id="modalTitle">Заголовок</h2>
-        <p id="modalText">Текст</p>
-        <div id="modalButtons"></div>
-    </div>
-</div>
-
-<!-- Chat Widget -->
-<div class="chat-bubble" onclick="toggleChat()" id="chatBubble">
-    💬
-    <div class="unread-dot" id="chatUnread"></div>
-</div>
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <div class="chat-avatar">🤖</div>
-        <div class="chat-header-info">
-            <h4>СберТролль GPT</h4>
-            <span><span class="chat-status-dot"></span>Онлайн 24/7 (к сожалению)</span>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="closeModal()">Понятно</button>
         </div>
-        <button class="chat-close" onclick="toggleChat()">&times;</button>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg system"><div class="bubble">Чат с поддержкой СберТролль</div></div>
-        <div class="chat-msg bot"><div class="bubble">Здравствуйте! Я СберТролль GPT — самая бесполезная нейросеть в мире банкинга. 🤖<br><br>Я обучен на 100 терабайтах мемов и 0 байтах полезной информации.<br><br>Чем могу <b>не</b> помочь?</div><div class="msg-time">Сегодня</div></div>
-    </div>
-    <div class="chat-quick-replies" id="quickReplies">
-        <button class="quick-reply" onclick="quickReply('Какой у меня баланс?')">💰 Мой баланс</button>
-        <button class="quick-reply" onclick="quickReply('Хочу кредит')">🏦 Кредит</button>
-        <button class="quick-reply" onclick="quickReply('Верните деньги!')">😡 Жалоба</button>
-        <button class="quick-reply" onclick="quickReply('Расскажи анекдот')">😂 Анекдот</button>
-        <button class="quick-reply" onclick="quickReply('Позови оператора')">👨‍💼 Оператор</button>
-    </div>
-    <div class="chat-input-area">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Спросите что-нибудь..." onkeypress="if(event.key==='Enter')sendChat()">
-        <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
 </div>
 
 <script>
-// ===== GLOBAL STATE =====
-let balanceValue = 1234567.89;
-let clickCount = 0;
-let trollIndex = 0;
-let captchaTrolls = 0;
-let chatHistory = [];
-let chatMsgCount = 0;
-let operatorRequests = 0;
-let isTyping = false;
+// ===== STATE =====
+const rates = {
+    USD: { buy: 88.45, sell: 91.20, cb: 89.75 },
+    EUR: { buy: 96.30, sell: 99.10, cb: 97.65 },
+    CNY: { buy: 12.15, sell: 12.80, cb: 12.48 },
+    GBP: { buy: 112.50, sell: 116.30, cb: 114.20 },
+    JPY: { buy: 0.587, sell: 0.625, cb: 0.604 },
+    CHF: { buy: 101.40, sell: 104.90, cb: 103.10 },
+};
+const rateFlags = { USD:'🇺🇸', EUR:'🇪🇺', CNY:'🇨🇳', GBP:'🇬🇧', JPY:'🇯🇵', CHF:'🇨🇭' };
+const rateNames = { USD:'Доллар США', EUR:'Евро', CNY:'Юань', GBP:'Фунт стерлингов', JPY:'Японская иена', CHF:'Швейцарский франк' };
+
+const transactions = [
+    { name: 'Яндекс.Маркет', date: 'Сегодня, 15:42', amount: -4590, type: 'expense', icon: '🛒' },
+    { name: 'Пятёрочка', date: 'Сегодня, 12:18', amount: -1247, type: 'expense', icon: '🏪' },
+    { name: 'Зачисление зарплаты', date: 'Вчера, 10:00', amount: 95000, type: 'income', icon: '💼' },
+    { name: 'Перевод от Анны П.', date: 'Вчера, 18:15', amount: 2300, type: 'income', icon: '↙️' },
+    { name: 'Яндекс.Такси', date: '22 янв, 23:05', amount: -389, type: 'expense', icon: '🚕' },
+    { name: 'Spotify', date: '22 янв, 00:00', amount: -299, type: 'expense', icon: '🎵' },
+    { name: 'Перевод Максиму С.', date: '21 янв, 14:32', amount: -5000, type: 'expense', icon: '↗️' },
+    { name: 'Кэшбэк за январь', date: '20 янв, 12:00', amount: 1847, type: 'income', icon: '🎁' },
+];
+
+// ===== LOGIN =====
+function doLogin() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    renderTransactions();
+    renderExchangeRates();
+    updateConverter();
+}
+
+function doLogout() {
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+}
 
 // ===== NAVIGATION =====
 function navigateTo(page) {
@@ -927,791 +1335,163 @@ function navigateTo(page) {
     const target = document.getElementById('page-' + page);
     if (target) {
         target.classList.add('active');
+        target.classList.remove('fade-in');
+        void target.offsetWidth;
+        target.classList.add('fade-in');
         window.scrollTo(0, 0);
-    } else {
-        showModal("🚧", "Страница не найдена", "Эта страница сбежала. Мы отправили за ней погоню.");
     }
-    clickCount++;
-    maybeGlobalTroll();
-}
-
-// ===== MODAL =====
-function showModal(icon, title, text, buttons) {
-    document.getElementById('modalIcon').textContent = icon;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalText').innerHTML = text;
-    const btnContainer = document.getElementById('modalButtons');
-    btnContainer.innerHTML = '';
-    if (buttons) {
-        buttons.forEach(b => {
-            const btn = document.createElement('button');
-            btn.className = 'btn ' + (b.type || 'btn-primary');
-            btn.textContent = b.text;
-            btn.onclick = b.action || closeModal;
-            btnContainer.appendChild(btn);
-        });
-    } else {
-        const btn = document.createElement('button');
-        btn.className = 'btn btn-primary';
-        btn.textContent = 'Ладно...';
-        btn.onclick = closeModal;
-        btnContainer.appendChild(btn);
-    }
-    document.getElementById('modalOverlay').classList.add('active');
-}
-function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
-
-// ===== TOAST NOTIFICATIONS =====
-function showToast(title, text, type) {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = 'toast' + (type ? ' toast-' + type : '');
-    toast.innerHTML = `<div class="toast-title">${title}</div><div class="toast-text">${text}</div>`;
-    toast.onclick = () => toast.remove();
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 5000);
-}
-
-// ===== HELPERS =====
-function decreaseBalance(amount) {
-    balanceValue -= amount;
-    if (balanceValue < 0) balanceValue = 0;
-    updateBalanceDisplay();
-    randomAnim(document.getElementById('balanceCard'));
-}
-function updateBalanceDisplay() {
-    document.getElementById('balanceAmount').innerHTML =
-        balanceValue.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' <span>₽</span>';
-    const pb = document.getElementById('profileBalance');
-    if (pb) pb.textContent = Math.floor(balanceValue).toLocaleString('ru-RU') + '₽';
-}
-function randomAnim(el) {
-    if (!el) return;
-    const anims = ['shake','spin','flip','bounce'];
-    const a = anims[Math.floor(Math.random()*anims.length)];
-    el.classList.add(a);
-    setTimeout(() => el.classList.remove(a), 1000);
-}
-function spawnConfetti() {
-    const c = document.getElementById('confettiContainer');
-    const colors = ['#ff0','#f0f','#0ff','#f00','#0f0','#00f','#ff8800','#ff0088'];
-    for (let i = 0; i < 60; i++) {
-        const d = document.createElement('div');
-        d.className = 'confetti';
-        d.style.left = Math.random()*100+'%';
-        d.style.background = colors[Math.floor(Math.random()*colors.length)];
-        d.style.animationDelay = Math.random()*2+'s';
-        d.style.width = (Math.random()*8+6)+'px';
-        d.style.height = (Math.random()*8+6)+'px';
-        d.style.borderRadius = Math.random()>0.5?'50%':'0';
-        c.appendChild(d);
-        setTimeout(() => d.remove(), 5000);
-    }
-}
-function showFakeLoading(text, callback, duration, subtext) {
-    const s = document.getElementById('loadingScreen');
-    document.getElementById('loadingText').textContent = text;
-    document.getElementById('loadingSubtext').textContent = subtext || '';
-    s.classList.add('active');
-    setTimeout(() => { s.classList.remove('active'); if (callback) callback(); }, duration || 2000);
-}
-
-// ===== HOME PAGE TROLLS =====
-function trollLogo() {
-    document.body.style.transition = 'transform 0.5s';
-    document.body.style.transform = 'rotate(180deg)';
-    document.getElementById('logoCircle').style.transform = 'rotate(180deg)';
-    setTimeout(() => {
-        showModal("🙃","Перевернули?","А что, вам так удобнее? Мы стараемся для вас!");
-        setTimeout(() => { document.body.style.transform=''; document.getElementById('logoCircle').style.transform=''; }, 2000);
-    }, 600);
-}
-function trollGetCard() {
-    showFakeLoading("Выпускаем вашу карту...", () => {
-        showModal("💳","Карта готова!","Ваша карта:<br><br><b>**** **** **** ЛООЛ</b><br>Срок: 00/00<br>CVV: ХАХ<br>PIN: 0000<br>Лимит: 1₽<br><br>Доставка курьером через 999 лет.", [
-            { text: "Супер!", action: () => { closeModal(); decreaseBalance(99999); showToast("Списание","99 999₽ за выпуск карты","danger"); } }
-        ]);
-    }, 2000, "Не выключайте компьютер...");
-}
-function trollTopUp() {
-    showModal("💰","Пополнение","Способы пополнения:<br><br>🕊️ Голубиная почта — г. Тролльград, ул. Мемная, д. 228<br>🧙 Телепатия — подумайте о деньгах<br>🎰 Рулетка — может повезёт<br>🌊 Бутылка в океане — может доплывёт", [
-        { text: "Голубиная почта", action: () => { closeModal(); showModal("🕊️","Голубь в пути!","Голубь вылетел! ETA: 3-5 рабочих столетий.<br>Трек-номер: PIGEON-0001-LOL"); } },
-        { text: "Телепатия", action: () => { closeModal(); showFakeLoading("Считываем ваши мысли...", () => { showModal("🧠","Сканирование","Мы считали ваши мысли!<br><br>Результат: вы думаете о деньгах.<br>К сожалению, это не работает как пополнение."); }, 3000, "Не думайте о белом медведе..."); } }
-    ]);
-}
-function trollWithdraw() {
-    showFakeLoading("Обрабатываем запрос...", () => {
-        decreaseBalance(Math.random()*300000);
-        showModal("🏧","Снятие наличных","Банкомат выдал:<br><br>🌬️ Воздух (премиум) — 1 шт.<br>📄 Чек на 3 метра — 1 шт.<br>😢 Разочарование — 1 шт.<br><br>Комиссия: 50 000₽");
+    document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.toggle('active', n.dataset.page === page);
     });
 }
-function trollHistory() {
-    showModal("📋","История операций",`<div style="text-align:left;font-size:13px;line-height:2;">
-        -500 000₽ — Покупка воздуха<br>
-        -200 000₽ — Подписка на грусть<br>
-        -150 000₽ — Комиссия за вздох<br>
-        -99 999₽ — Оплата ничего<br>
-        -50 000₽ — Налог на существование<br>
-        -25 000₽ — Штраф за моргание<br>
-        -10 000₽ — Аренда воздуха в квартире<br>
-        -5 000₽ — Плата за тень<br>
-        -1₽ — Комиссия за просмотр истории<br>
-        +0.01₽ — Кэшбэк (спасибо, что с нами!)<br>
-        +0.001₽ — Проценты по вкладу за 10 лет
-    </div>`, [
-        { text: "Это грабёж!", action: () => { closeModal(); showModal("🏴‍☠️","Йо-хо-хо!","Мы предпочитаем термин 'финансовые услуги'.<br>Лицензия пирата: №LOL-ARR-228"); } }
-    ]);
-    decreaseBalance(1);
-}
-function trollBlockCard() {
-    showModal("🔒","Заблокировать карту?","Вы уверены? Эту операцию НЕЛЬЗЯ отменить!<br>(шучу, отменить можно. Но разблокировать — нет)", [
-        { text: "Заблокировать", action: () => { closeModal(); showFakeLoading("Блокируем...", () => { showModal("🔓","Упс!","Мы случайно заблокировали ВСЕ ваши карты.<br>И карты вашей бабушки.<br>И карты вашего кота.<br><br>Для разблокировки отправьте голубя."); }, 2000); } },
-        { text: "Не надо", type: "btn-outline", action: () => { closeModal(); showToast("Поздно!", "Карта уже заблокирована", "danger"); } }
-    ]);
-}
-function trollService(type) {
-    const r = {
-        'ипотека': {i:"🏠",t:"Ипотека одобрена!",x:"Объект: картонная коробка 2м²<br>Срок: 300 лет<br>Ставка: 1488% годовых<br>Первый взнос: ваша печень"},
-        'страховка': {i:"🛡️",t:"Вы застрахованы!",x:"Мы застраховали ваше настроение.<br>Оно только что испортилось.<br>Страховой случай не покрывается."},
-        'крипта': {i:"📈",t:"Инвестиция!",x:"Все деньги вложены в TrollCoin!<br>Курс: 1 TROLL = 0.000001₽<br>Прогноз: to the moon (к центру земли)"},
-        'кэшбек': {i:"💰",t:"Кэшбэк 200%!",x:"За каждые 100₽ мы возвращаем 200₽!*<br><small>*в виде баллов, которые нельзя потратить, обменять, подарить, продать, увидеть или потрогать.</small>"},
-        'вклад': {i:"🏦",t:"Вклад открыт!",x:"Вклад: 'Бесконечная грусть'<br>Ставка: -100% годовых<br>Мы будем забирать деньги каждый месяц."},
-        'карта': {i:"💳",t:"Золотая карта!",x:"Из 100% настоящего шоколада!<br>Не подносите к огню<br>Срок годности: 3 дня"},
-        'перевод': {i:"🚀",t:"Мгновенный перевод!",x:"Деньги улетели со скоростью света!<br>В другую галактику.<br>ETA: 4.2 световых года"},
-        'помощь': {i:"🤖",t:"ИИ-Помощник",x:"Я Тролль-GPT! Обучен на мемах.<br>Точность ответов: 0.001%<br>Зато с душой!"},
-        'подписка': {i:"⭐",t:"СберПремиум!",x:"За 99 999₽/мес вы получаете:<br>✓ Золотой цвет интерфейса<br>✓ Приоритетную очередь (вы 999-й)<br>✓ Эксклюзивные мемы"},
-        'nft': {i:"🖼️",t:"СберNFT!",x:"Вы купили NFT зелёного пикселя!<br>Цена: 1 000 000₽<br>Реальная стоимость: 0₽<br>Зато уникальный!"},
-        'метавселенная': {i:"🌐",t:"Добро пожаловать в СберВерс!",x:"Загрузка метавселенной...<br><br>Ошибка: ваш компьютер слишком реальный.<br>Для входа нужен воображаемый компьютер."},
-        'доставка': {i:"📦",t:"СберДоставка!",x:"Ваш заказ: коробка грусти<br>Статус: потерян<br>Курьер: сбежал<br>Возврат: невозможен"},
-    };
-    const s = r[type];
-    decreaseBalance(Math.random()*100000);
-    showModal(s.i, s.t, s.x);
-}
-function trollMillion() {
-    showFakeLoading("Зачисляем 1 000 000₽...", () => {
-        spawnConfetti();
-        showModal("🎊","ПОЗДРАВЛЯЕМ!!!","Вам зачислен <b>1 000 000₽</b>!!!<br><br>...в игре 'Монополия'.<br>Для получения в реальности — обратитесь к деду морозу.<br>Или к зубной фее.", [
-            { text: "Хочу настоящий!", action: () => { closeModal(); showModal("🎅","Дед Мороз","Дед Мороз передал: вы были плохим.<br>Миллион отменяется.<br>Вместо него — уголёк и счёт за отопление."); } },
-            { text: "Ладно", action: closeModal }
-        ]);
-    }, 3000, "Пересчитываем купюры...");
-}
 
-// ===== LOGIN PAGE TROLLS =====
-function trollLoginSubmit() {
-    const login = document.getElementById('loginInput').value;
-    const pass = document.getElementById('passwordInput').value;
-    if (!login && !pass) {
-        showModal("🤦","Серьёзно?","Вы не ввели ни логин, ни пароль.<br>Вы хоть пытаетесь?");
-        return;
-    }
-    showFakeLoading("Проверяем данные...", () => {
-        if (pass === '1234' || pass === 'password' || pass === 'qwerty') {
-            showModal("😱","О НЕТ!","Ваш пароль '<b>"+pass+"</b>'?!<br><br>Это самый популярный пароль в мире!<br>Мы уже сменили его на что-то получше:<br><b>"+Math.random().toString(36).substring(2,20)+"</b><br><br>Запомните. Шучу, мы его уже забыли.");
-        } else {
-            showModal("🔐","Ошибка входа!","Пароль неверный.<br>Пароль верный тоже не подойдёт.<br>Никакой пароль не подойдёт.<br><br>Подсказка: пароль — это чувство, которое нельзя описать словами.", [
-                { text: "Забыл пароль", action: () => { closeModal(); trollForgotPassword(); } },
-                { text: "Войти без пароля", action: () => { closeModal(); showModal("🚪","Бесплатный вход!","Вы вошли без пароля!<br>К сожалению, это вход в никуда.<br>Добро пожаловать в пустоту."); navigateTo('profile'); } }
-            ]);
-        }
-    }, 2500, "Взламываем... шучу, проверяем...");
-}
-function trollForgotPassword() {
-    showModal("📧","Восстановление пароля","Код отправлен на:<br>📧 Email, который вы забыли<br>📱 Телефон, который потеряли<br>🕊️ Голубиная почта (на всякий)<br>📡 Радиоволны (частота 404 МГц)<br>🧠 Телепатически (проверьте мысли)", [
-        { text: "Жду голубя", action: () => { closeModal(); showModal("🕊️","Голубь в пути!","Код: *****<br>(мы не можем его показать, это секрет)<br>(даже от вас)"); } }
-    ]);
-}
-function trollCaptcha() {
-    captchaTrolls++;
-    const box = document.getElementById('captchaBox');
-    if (captchaTrolls === 1) {
-        box.innerHTML = '✓'; box.style.background = 'var(--sber-green)'; box.style.borderColor = 'var(--sber-green)';
-        setTimeout(() => {
-            box.innerHTML = ''; box.style.background = ''; box.style.borderColor = '';
-            showToast("Проверка не пройдена", "Мы решили что вы всё-таки робот", "danger");
-        }, 1500);
-    } else if (captchaTrolls === 2) {
-        showModal("🤖","Вы робот!","Наша система определила:<br>Вероятность что вы робот: 99.7%<br>Вероятность что вы человек: 0.3%<br><br>Для подтверждения, что вы человек, решите:<br><b>∫(x²+3x)dx при x→∞</b>");
-    } else if (captchaTrolls === 3) {
-        showModal("🧩","Новая капча","Выберите все картинки с банкоматами СберТролль:<br><br>[📦] [🌴] [🐸] [🍕]<br>[🚀] [💀] [🎪] [🌚]<br><br>Подсказка: правильный ответ — ни одна.");
-    } else {
-        showModal("🏳️","Мы сдаёмся","Окей, вы не робот.<br>Но мы всё равно вам не верим.<br>Пройдите капчу ещё 47 раз.");
-        captchaTrolls = 0;
-    }
-}
-function trollFaceId() {
-    showFakeLoading("Сканируем ваше лицо...", () => {
-        showModal("📸","Результат сканирования","Обнаружено лицо!<br><br>Совпадение с базой: 0%<br>Похожесть на картофелину: 87%<br>Уровень красоты: undefined<br><br>Вход отклонён. Попробуйте другое лицо.");
-    }, 3000, "Не моргайте...");
-}
-function trollSocialLogin(network) {
-    showFakeLoading("Подключаемся к " + network + "...", () => {
-        const msgs = {
-            'ВКонтакте': "ВКонтакте ответил: 'Мы не знаем этого человека'.<br>Ваши друзья подтвердили.",
-            'Одноклассники': "Одноклассники ответили: 'Серверы на ремонте с 2015 года'.<br>Попробуйте через ICQ.",
-            'Госуслуги': "Госуслуги ответили: 'Ваша очередь через 6 месяцев'.<br>Талон: Т-999999999.",
-            'MySpace': "MySpace ответил: '...кто вы? Где я? Какой год?'<br>Сервер обнаружен в археологических раскопках."
-        };
-        showModal("🔗", network, msgs[network]);
-    }, 2000);
-}
-
-// ===== REGISTER PAGE =====
-function trollRegisterSubmit() {
-    showFakeLoading("Создаём аккаунт...", () => {
-        spawnConfetti();
-        showModal("🎉","Аккаунт создан!","Поздравляем! Ваши данные:<br><br>Номер счёта: <b>ХА-ХА-ХА-0000</b><br>Логин: <b>loh_"+Math.floor(Math.random()*9999)+"</b><br>Пароль: <b>мы его уже забыли</b><br>Баланс: <b>-100₽</b> (комиссия за регистрацию)<br>Статус: <b>Почётный лох</b>", [
-            { text: "Это шутка?", action: () => { closeModal(); showModal("🤔","Конечно нет!","Мы абсолютно серьёзный банк.<br>Лицензия: ПРИКОЛ-228-LOL<br>ИНН: 0000000000"); } },
-            { text: "Удалить аккаунт", action: () => { closeModal(); showModal("🚫","Невозможно!","Удаление занимает 999 рабочих дней.<br>Заявка принята.<br>Номер заявки: LOL-NO-WAY"); } }
-        ]);
-    }, 3000, "Передаём данные инопланетянам...");
-}
-// Progress bar for register
-document.querySelectorAll('#page-register .form-input').forEach(input => {
-    input.addEventListener('input', () => {
-        const inputs = document.querySelectorAll('#page-register .form-input');
-        let filled = 0;
-        inputs.forEach(i => { if (i.value.trim()) filled++; });
-        const pct = Math.round((filled / inputs.length) * 100);
-        document.getElementById('regProgress').style.width = pct + '%';
-        document.getElementById('regProgressLabel').textContent = 'Заполнено: ' + pct + '%' + (pct === 100 ? ' (мы всё равно потеряем ваши данные)' : '');
-    });
-});
-
-// ===== TRANSFERS PAGE =====
-function trollTransferSubmit() {
-    const amount = document.getElementById('transferAmount').value;
-    const card = document.getElementById('transferCard').value;
-    if (!amount) { showToast("Ошибка", "Введите сумму (мы всё равно спишем больше)", "warning"); return; }
-    showFakeLoading("Переводим деньги...", () => {
-        decreaseBalance(parseFloat(amount.replace(/\s/g,''))*2 || 50000);
-        showModal("💸","Перевод выполнен!","Переведено: <b>" + amount + "₽</b><br>Комиссия: <b>" + amount + "₽</b> (100%)<br>Итого списано: <b>" + (parseFloat(amount.replace(/\s/g,''))*2 || '???') + "₽</b><br><br>Получатель: Какой-то чувак<br>Статус: Деньги ушли. Навсегда.", [
-            { text: "Вернуть!", action: () => { closeModal(); showModal("🤷","Нельзя","Кнопка 'Вернуть' — декоративная.<br>Как и все остальные кнопки."); } }
-        ]);
-    }, 2500, "Считаем комиссию...");
-}
-function trollTransferSelf() {
-    showFakeLoading("Переводим вам же...", () => {
-        decreaseBalance(10000);
-        showModal("🔄","Перевод себе","Вы перевели деньги сами себе!<br><br>Списано: 10 000₽<br>Получено: 0₽<br>Комиссия: 10 000₽<br><br>Идеальная сделка.");
-    }, 2000);
-}
-
-// ===== PAYMENTS PAGE =====
-function trollPayment(type) {
-    const msgs = {
-        'ЖКХ': {i:"🏠",x:"Оплачено за 3 квартиры, которых у вас нет.<br>Сумма: 847 293₽<br>Вода: 200₽/литр<br>Воздух: 500₽/вздох"},
-        'Мобильная связь': {i:"📱",x:"Мы пополнили случайный номер!<br>+7 (000) 000-00-00<br>Сумма: все ваши деньги<br>Оператор: МегаТролль"},
-        'Интернет': {i:"🌐",x:"Оплата интернета: 50 000₽/мес<br>Скорость: 0.5 кбит/с<br>Но зато стабильно не работает!"},
-        'Штрафы': {i:"🚔",x:"Ваши штрафы:<br>🚗 Превышение скорости мысли — 5000₽<br>🚶 Подозрительная ходьба — 3000₽<br>😴 Моргание в неположенном месте — 2000₽<br>🍕 Поедание пиццы без лицензии — 10000₽"},
-        'Налоги': {i:"📋",x:"Ваши налоги:<br>Налог на воздух: 5000₽/мес<br>Налог на тень: 3000₽/мес<br>Налог на существование: 10000₽/мес<br>Налог на оплату налогов: 7000₽/мес"},
-        'Благотворительность': {i:"❤️",x:"Спасибо за пожертвование!<br><br>Ваши 100 000₽ пойдут на:<br>🍕 Пиццу для разработчиков — 50%<br>☕ Кофе для разработчиков — 30%<br>🎮 Игры для разработчиков — 20%<br><br>Мы очень благодарны!"},
-        'Подписки': {i:"📺",x:"Ваши активные подписки:<br>СберКино — нет фильмов<br>СберМузыка — только тишина<br>СберГрусть — работает отлично<br>СберНичего — премиум версия ничего<br><br>Итого: 99 999₽/мес"},
-        'Образование': {i:"🎓",x:"Вы записаны на курс:<br>'Как потерять деньги за 10 шагов'<br><br>Шаг 1: Откройте этот сайт ✓<br>Шаг 2: Нажмите любую кнопку ✓<br>Шаг 3-10: см. шаг 2<br><br>Диплом: 500 000₽"}
-    };
-    const m = msgs[type];
-    decreaseBalance(Math.random()*50000+10000);
-    showModal(m.i, type, m.x);
-}
-
-// ===== CREDITS PAGE =====
-function trollTakeCredit(type) {
-    showFakeLoading("Проверяем кредитную историю...", () => {
-        const msgs = {
-            'потребительский': "Кредит одобрен!<br><br>Сумма: ∞₽<br>Ставка: 999%<br>Платёж: все ваши деньги навечно<br>Штраф за просрочку: ваша квартира",
-            'ипотека': "Ипотека одобрена!<br><br>Объект: коробка из-под холодильника<br>Площадь: 1.5м²<br>Этаж: подвал<br>Первый взнос: ваша печень<br>Срок: 500 лет",
-            'автокредит': "Автокредит одобрен!<br><br>Авто: деревянная телега 1823 г.в.<br>Пробег: вокруг экватора 3 раза<br>Страховка: дороже машины<br>Бензин: не нужен (лошадь в комплекте не идёт)",
-            'мечта': "Кредит на мечту!<br><br>Ваша мечта: деньги<br>Наше решение: дать вам кредит<br>Проблема: теперь вы должны больше<br>Парадокс: 🤯"
-        };
-        decreaseBalance(Math.random()*500000);
-        showModal("🏦", "Кредит оформлен!", msgs[type], [
-            { text: "Отменить!", action: () => { closeModal(); showModal("📜","Договор подписан","Вы уже подписали договор.<br>Кровью.<br>Своей.<br><br>Мелкий шрифт: отмена невозможна до конца времён."); } }
-        ]);
-    }, 3000, "Анализируем вашу кредитоспособность... Ой.");
-}
-function trollCreditCalc() {
-    showModal("🧮","Кредитный калькулятор","Введённые данные:<br>Сумма: много<br>Срок: долго<br>Ставка: большая<br><br><b>Результат расчёта:</b><br>Ежемесячный платёж: ∞₽<br>Переплата: ∞₽<br>Итого: ∞₽<br><br>Рекомендация: не берите кредит.<br>Но если взяли — поздно.");
-}
-
-// ===== DEPOSITS PAGE =====
-function trollOpenDeposit(type) {
-    const msgs = {
-        'оптимист': "Вклад открыт!<br><br>Через 100 лет вы получите аж <b>100.001₽</b>!<br>Если банк ещё будет существовать.<br>(спойлер: не будет)",
-        'пессимист': "Вклад открыт!<br><br>Первое списание через: сейчас<br>Списано: 50% вашего баланса<br><br>Зато вы были предупреждены!",
-        'рулетка': "Вклад открыт! Бросаем кубик...<br><br>🎲 Выпало: 1<br>Ваша ставка сегодня: <b>-99%</b><br><br>Завтра повезёт! (нет)",
-        'чёрная дыра': "Вклад открыт!<br><br>Ваши деньги успешно исчезли!<br>Куда — неизвестно.<br>Физики в шоке.<br>Мы тоже.<br><br>Спасибо за вклад в науку!"
-    };
-    decreaseBalance(Math.random()*200000+50000);
-    showModal("💎", "Вклад открыт!", msgs[type]);
+// ===== TRANSACTIONS =====
+function renderTransactions() {
+    const list = document.getElementById('transactionList');
+    list.innerHTML = transactions.map(t => `
+        <li class="transaction-item">
+            <div class="transaction-icon ${t.type}">${t.icon}</div>
+            <div class="transaction-info">
+                <div class="transaction-name">${t.name}</div>
+                <div class="transaction-date">${t.date}</div>
+            </div>
+            <div class="transaction-amount ${t.amount > 0 ? 'positive' : 'negative'}">
+                ${t.amount > 0 ? '+' : ''}${t.amount.toLocaleString('ru-RU')} ₽
+            </div>
+        </li>
+    `).join('');
 }
 
 // ===== EXCHANGE RATES =====
-const currencies = [
-    { flag: "🇺🇸", name: "USD", buy: null, sell: null },
-    { flag: "🇪🇺", name: "EUR", buy: null, sell: null },
-    { flag: "🇬🇧", name: "GBP", buy: null, sell: null },
-    { flag: "🇯🇵", name: "JPY", buy: null, sell: null },
-    { flag: "🇨🇳", name: "CNY", buy: null, sell: null },
-    { flag: "🌕", name: "MOON", buy: null, sell: null },
-    { flag: "🐸", name: "FROG", buy: null, sell: null },
-    { flag: "🤡", name: "TROLL", buy: null, sell: null },
-];
-function updateRates() {
-    const body = document.getElementById('ratesBody');
-    body.innerHTML = '';
-    currencies.forEach(c => {
-        const base = c.name === 'MOON' ? 999999 : c.name === 'FROG' ? 42069 : c.name === 'TROLL' ? 0.01 : Math.random()*200+50;
-        c.buy = base * (0.95 + Math.random()*0.1);
-        c.sell = base * (1.05 + Math.random()*0.1);
-        const change = (Math.random()-0.5)*20;
-        const changeClass = change >= 0 ? 'rate-up' : 'rate-down';
-        const changeSign = change >= 0 ? '+' : '';
-        body.innerHTML += `<tr>
-            <td>${c.flag} ${c.name}</td>
-            <td>${c.buy.toFixed(2)} ₽</td>
-            <td>${c.sell.toFixed(2)} ₽</td>
-            <td><span class="rate-change ${changeClass}">${changeSign}${change.toFixed(2)}%</span></td>
-        </tr>`;
-    });
-}
-updateRates();
-setInterval(updateRates, 3000);
+function renderExchangeRates() {
+    const table = document.getElementById('exchangeTable');
+    table.innerHTML = Object.entries(rates).map(([code, r]) => `
+        <tr>
+            <td><span style="margin-right:8px;">${rateFlags[code]}</span> <strong>${code}</strong> <span style="color:var(--text-muted); font-size:12px;">${rateNames[code]}</span></td>
+            <td style="color:var(--sber-green); font-weight:500;">${r.buy.toFixed(2)}</td>
+            <td style="color:var(--danger); font-weight:500;">${r.sell.toFixed(2)}</td>
+            <td>${r.cb.toFixed(2)}</td>
+        </tr>
+    `).join('');
+    document.getElementById('rateUpdateTime').textContent = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
 
-function trollExchange() {
-    showFakeLoading("Покупаем валюту...", () => {
-        decreaseBalance(Math.random()*100000+50000);
-        showModal("💱","Валюта куплена!","Вы купили 1 TROLL за 999 999₽!<br><br>Курс изменился пока вы читали.<br>Теперь 1 TROLL = 0.001₽<br><br>Убыток: 999 998.999₽<br>Спасибо за покупку!");
-    }, 2000, "Курс меняется каждую секунду...");
-}
-function trollExchangePredict() {
-    showModal("🔮","Прогноз курса","Наш ИИ предсказывает:<br><br>🇺🇸 USD: пойдёт куда-то<br>🇪🇺 EUR: тоже куда-то<br>🌕 MOON: to the moon (очевидно)<br>🐸 FROG: квакнет<br>🤡 TROLL: вниз (как всегда)<br><br>Точность прогноза: 0.001%<br>Цена прогноза: 50 000₽", [
-        { text: "Спасибо!", action: () => { closeModal(); decreaseBalance(50000); showToast("Списание","50 000₽ за прогноз","danger"); } }
-    ]);
+    // Mini rates for sidebar
+    const mini = document.getElementById('miniRates');
+    mini.innerHTML = ['USD','EUR','CNY'].map(code => `
+        <div class="rate-row">
+            <span class="rate-flag">${rateFlags[code]}</span>
+            <div class="rate-info"><div class="rate-code">${code}</div><div class="rate-name">${rateNames[code]}</div></div>
+            <div><span class="rate-buy">${rates[code].buy.toFixed(2)}</span><span class="rate-sell" style="margin-left:16px;">${rates[code].sell.toFixed(2)}</span></div>
+        </div>
+    `).join('');
 }
 
-// ===== ATM PAGE =====
-function trollAtmClick(name) {
-    showModal("🏧", name, "Статус: не работает<br>Причина: " + [
-        "медведь застрял внутри",
-        "банкомат ушёл в отпуск",
-        "обновление Windows... 34%",
-        "кончились деньги (у банкомата)",
-        "банкомат стал философом и отказался выдавать деньги",
-        "превращён в аквариум"
-    ][Math.floor(Math.random()*6)] + "<br><br>Ближайший рабочий банкомат: на Марсе");
-}
-function trollAtmSearch() {
-    showFakeLoading("Ищем банкоматы рядом...", () => {
-        showModal("📍","Результаты поиска","Найдено банкоматов рядом: 0<br><br>Ближайшие:<br>📍 4 200 км — Антарктида<br>📍 384 400 км — Луна<br>📍 54 600 000 км — Марс<br><br>Рекомендуем: носите наличные. Хотя наличных у вас тоже нет.");
-    }, 3000, "Сканируем радиус 9999 км...");
+// ===== CONVERTER =====
+function updateConverter() {
+    const amount = parseFloat(document.getElementById('convertFrom').value) || 0;
+    const from = document.getElementById('convertFromCur').value;
+    const to = document.getElementById('convertToCur').value;
+
+    let result;
+    if (from === to) { result = amount; }
+    else if (from === 'RUB') { result = amount / rates[to].sell; }
+    else if (to === 'RUB') { result = amount * rates[from].buy; }
+    else { result = (amount * rates[from].buy) / rates[to].sell; }
+
+    document.getElementById('convertTo').value = result.toFixed(2);
 }
 
-// ===== PROFILE PAGE =====
-function trollEditProfile() {
-    showModal("✏️","Редактирование профиля","Для изменения данных отправьте:<br><br>📄 Паспорт (оригинал, голубиной почтой)<br>📸 Фото с газетой за сегодня<br>🐟 Рыбу (любую)<br>🧦 Левый носок<br><br>Срок обработки: 2-3 рабочих десятилетия");
+// ===== MODALS =====
+function showModal(title, text) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalOverlay').classList.add('active');
 }
-function trollDeleteAccount() {
-    showModal("⚠️","Удаление аккаунта","Для удаления аккаунта необходимо:<br><br>1. Написать заявление от руки (гусиным пером)<br>2. Заверить у нотариуса на Луне<br>3. Отправить голубиной почтой<br>4. Подождать 999 лет<br>5. Получить отказ<br>6. Повторить шаги 1-5", [
-        { text: "Начать процедуру", action: () => { closeModal(); showModal("📝","Шаг 1","Гусиное перо в комплект не входит.<br>Приобретите его в СберМагазине за 50 000₽."); } },
-        { text: "Передумал", action: () => { closeModal(); showToast("Мудрое решение","Вы с нами навсегда",""); } }
-    ]);
-}
-function trollExportData() {
-    showFakeLoading("Экспортируем ваши данные...", () => {
-        showModal("📁","Экспорт данных","Ваши данные экспортированы!<br><br>Размер файла: 0 байт<br>Формат: .troll<br>Пароль: мы его не знаем<br><br>Файл отправлен на email, который вы не указывали.<br>А также опубликован в газете. Извините.");
-    }, 2500, "Собираем все ваши мемы...");
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
 }
 
-// ===== FOOTER TROLLS =====
-function trollSupport() {
-    showModal("🤖","Техподдержка","Все операторы заняты навсегда.<br><br>Ваш номер в очереди: <b>2 147 483 647</b><br>Время ожидания: <b>∞</b><br><br>Пока ждёте, послушайте мелодию:<br>♪ ду-ду-ду-ду-ду-ду ♪", [
-        { text: "Написать жалобу", action: () => { closeModal(); showModal("📮","Жалоба принята","Ваша жалоба зарегистрирована!<br>Номер: TROLL-"+Math.floor(Math.random()*99999)+"<br><br>Срок рассмотрения: никогда<br>Ответственный: голубь Аркадий"); } }
-    ]);
-}
-function trollPrivacy() {
-    showModal("🔍","Конфиденциальность","Мы собираем ВСЕ ваши данные:<br><br>✓ Кличка кота вашего соседа<br>✓ Любимый цвет носков<br>✓ Количество кашлей в день<br>✓ О чём думали 5 минут назад<br>✓ Ваш PIN-код (угадали)<br>✓ Размер обуви (зачем? потому что можем)<br>✓ Рецепт борща вашей бабушки<br><br>Данные передаются:<br>Инопланетянам, дельфинам и голубям.");
-}
-function trollVacancy() {
-    showModal("👔","Вакансии","Открытые позиции:<br><br>🔹 Нажиматель кнопок — 0₽/мес<br>🔹 Специалист по троллингу — оплата мемами<br>🔹 Главный по ничему — зарплата: гордость<br>🔹 Охранник воздуха — дышать бесплатно<br>🔹 Программист банкоматов — 404₽/мес<br>🔹 Дрессировщик голубей — 1 зерно/час<br><br>Резюме принимаем голубиной почтой.");
-}
-function trollBlog() {
-    showModal("📝","Блог СберТролль","Последние статьи:<br><br>📰 'Как мы потеряли ваши деньги: история успеха'<br>📰 '10 способов не вернуть кредит'<br>📰 'Почему наши банкоматы не работают (и это фича)'<br>📰 'Кэшбэк 200%: математика для оптимистов'<br>📰 'Интервью с голубем Аркадием'<br>📰 'NFT за миллион: стоит ли пиксель?'");
-}
-function trollPartners() {
-    showModal("🤝","Партнёры","Наши надёжные партнёры:<br><br>🐸 ООО 'Жаба Душит'<br>🤡 АО 'Цирк на выезде'<br>🕳️ ЗАО 'Чёрная дыра финансов'<br>🎪 ПАО 'Карусель обещаний'<br>🦆 ИП 'Утка-инвестор'<br>🌚 НКО 'Тёмная сторона экономики'");
-}
-function trollApp() {
-    showModal("📱","Мобильное приложение","СберТролль теперь в вашем телефоне!<br><br>Особенности:<br>✓ Занимает 99% памяти<br>✓ Разряжает батарею за 5 минут<br>✓ Отправляет 1000 уведомлений в час<br>✓ Автоматически тратит ваши деньги<br>✓ Работает даже когда не хочет<br><br>Скачать: нигде<br>Рейтинг: ⭐ 0.1 / 5", [
-        { text: "Скачать", action: () => { closeModal(); showFakeLoading("Устанавливаем приложение на ваш компьютер...", () => { showModal("📲","Установлено!","Приложение установлено!<br>(на чей-то другой телефон)<br><br>Ваш рабочий стол теперь зелёный. Извините."); document.body.style.background = '#0a3a0a'; setTimeout(()=>{document.body.style.background='';},5000); }, 3000, "Это может занять вечность..."); } }
-        ]);
-}
-function trollEaster() {
-    document.body.style.animation = 'rainbowBg 3s linear';
-    spawnConfetti();
-    showModal("🥚","СЕКРЕТНОЕ ЯЙЦО!","Вы нашли пасхалку!<br><br>Ваш приз: ✨НИЧЕГО✨<br><br>Но зато красиво, правда?<br><br>Код разработчика: KONAMI-TROLL-UP-UP-DOWN<br>Секретный уровень: разблокирован (нет)");
-    setTimeout(() => { document.body.style.animation = ''; }, 3000);
-}
-
-// ===== CHAT BOT (СберТролль GPT) =====
-function toggleChat() {
-    const win = document.getElementById('chatWindow');
-    win.classList.toggle('active');
-    if (win.classList.contains('active')) {
-        document.getElementById('chatUnread').style.display = 'none';
-        document.getElementById('chatInput').focus();
+// ===== TRANSFERS =====
+function doTransfer() {
+    const card = document.getElementById('transferCard').value.trim();
+    const amount = document.getElementById('transferAmount').value.trim();
+    if (!card || !amount) {
+        showModal('Ошибка', 'Заполните номер карты и сумму перевода.');
+        return;
     }
+    showModal('Перевод выполнен', 'Перевод на сумму ' + amount + ' ₽ на карту ' + card + ' успешно выполнен.');
+    document.getElementById('transferCard').value = '';
+    document.getElementById('transferAmount').value = '';
+    document.getElementById('transferMsg').value = '';
 }
-function quickReply(text) {
-    document.getElementById('chatInput').value = text;
-    sendChat();
+
+// ===== PAYMENTS =====
+function showPayment(name) {
+    showModal('Оплата: ' + name, 'Выберите поставщика услуги и введите реквизиты для оплаты в появившейся форме.');
 }
-function addBotMsg(html) {
-    const messages = document.getElementById('chatMessages');
-    const time = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-    messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${html}</div><div class="msg-time">${time}</div></div>`;
-    messages.scrollTop = messages.scrollHeight;
+
+// ===== NOTIFICATIONS =====
+function openNotifications() {
+    showModal('Уведомления', 'У вас 2 новых уведомления:\n\n• Зачисление зарплаты 95 000 ₽\n• Кэшбэк за январь 1 847 ₽');
 }
-function showTyping() {
-    if (isTyping) return;
-    isTyping = true;
-    const messages = document.getElementById('chatMessages');
-    messages.innerHTML += `<div class="chat-msg bot" id="typingMsg"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
-    messages.scrollTop = messages.scrollHeight;
-}
-function hideTyping() {
-    isTyping = false;
-    const el = document.getElementById('typingMsg');
-    if (el) el.remove();
-}
-function botReply(html, delay) {
-    showTyping();
-    setTimeout(() => { hideTyping(); addBotMsg(html); }, delay || (1500 + Math.random()*2000));
-}
-function botMultiReply(messages, baseDelay) {
-    let d = baseDelay || 1500;
-    messages.forEach((m, i) => {
-        setTimeout(() => { if (i > 0) showTyping(); }, d - 1000);
-        setTimeout(() => { hideTyping(); addBotMsg(m); }, d);
-        d += 2000 + Math.random()*1500;
-    });
+
+// ===== CHAT =====
+function toggleChat() {
+    document.getElementById('chatWindow').classList.toggle('active');
 }
 function sendChat() {
     const input = document.getElementById('chatInput');
     const msg = input.value.trim();
-    if (!msg || isTyping) return;
+    if (!msg) return;
     const messages = document.getElementById('chatMessages');
-    const time = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+    const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
     messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${msg}</div><div class="msg-time">${time}</div></div>`;
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
-    chatMsgCount++;
-    chatHistory.push(msg);
-    processUserMessage(msg);
-    // Update quick replies based on context
-    if (chatMsgCount === 3) updateQuickReplies(['Где мои деньги?','Это вообще законно?','Позови директора','Ты настоящий ИИ?']);
-    if (chatMsgCount === 7) updateQuickReplies(['Я подам в суд','Верните всё назад','Вы издеваетесь?','Хочу поговорить с человеком']);
-}
-function updateQuickReplies(options) {
-    const qr = document.getElementById('quickReplies');
-    qr.innerHTML = '';
-    options.forEach(o => {
-        const b = document.createElement('button');
-        b.className = 'quick-reply';
-        b.textContent = o;
-        b.onclick = () => quickReply(o);
-        qr.appendChild(b);
-    });
-}
-function processUserMessage(msg) {
-    const lower = msg.toLowerCase();
-    
-    // Balance questions
-    if (lower.match(/баланс|сколько.*денег|мой счёт|мои деньги|сколько у меня/)) {
-        decreaseBalance(500);
-        botMultiReply([
-            'Секунду, проверяю ваш баланс... 🔍',
-            `Ваш текущий баланс: <b>${balanceValue.toFixed(2)}₽</b><br><br>⚠️ Внимание: за проверку баланса списано 500₽.<br>Следующая проверка будет стоить 1000₽.<br><br>Совет: не проверяйте баланс — будет меньше расстройства.`
-        ]);
-        return;
-    }
-    
-    // Credit
-    if (lower.match(/кредит|займ|ссуда|взаймы|одолж/)) {
-        decreaseBalance(10000);
-        botMultiReply([
-            'Обрабатываю вашу заявку на кредит... 📊',
-            'Проверяю кредитную историю...',
-            'Результат: Ваш кредитный рейтинг: <b>-∞</b> 📉<br><br>Несмотря на это, кредит <b>ОДОБРЕН!</b><br><br>Сумма: <b>999 999 999₽</b><br>Ставка: <b>999% годовых</b><br>Срок: <b>вечность</b><br>Ежемесячный платёж: <b>все ваши деньги + душа</b><br><br>Договор уже подписан (мы расписались за вас). За подачу заявки списано 10 000₽. 💰'
-        ], 1500);
-        return;
-    }
-    
-    // Transfer
-    if (lower.match(/перевод|перевести|отправить деньги|скинуть/)) {
-        decreaseBalance(7777);
-        botReply('Перевод выполнен! ✅<br><br>Получатель: <b>Неизвестный</b><br>Сумма: <b>7 777₽</b><br>Комиссия: <b>7 777₽</b><br>Итого списано: <b>15 554₽</b><br><br>Вы не просили? Ну, вы же написали слово "перевод"... 🤷', 2000);
-        return;
-    }
-    
-    // Operator request
-    if (lower.match(/оператор|человек|менеджер|живой|специалист|сотрудник|директор/)) {
-        operatorRequests++;
-        if (operatorRequests === 1) {
-            botMultiReply([
-                'Переключаю на оператора... 🔄',
-                '⏳ Ваш номер в очереди: <b>2 147 483 647</b><br>Примерное время ожидания: <b>∞ минут</b><br><br>🎵 Пока ждёте, наслаждайтесь музыкой:<br><i>♪ ду-ду-ду-ду-ду... ваш звонок очень важен для нас... ду-ду-ду ♪</i>'
-            ]);
-        } else if (operatorRequests === 2) {
-            botMultiReply([
-                'Ищу свободного оператора... 👀',
-                'Оператор Галина — на обеде (с 2019 года)<br>Оператор Виктор — в отпуске (бессрочно)<br>Оператор Аркадий — это голубь, он улетел<br><br>Свободных операторов: <b>0</b><br><br>Могу предложить общение с нашим офисным кактусом. Он молчаливый, но надёжный. 🌵'
-            ]);
-        } else if (operatorRequests === 3) {
-            botMultiReply([
-                'Хорошо, я ДЕЙСТВИТЕЛЬНО пытаюсь найти оператора...',
-                '...',
-                'Нашёл! Оператор подключён! 🎉',
-                'Здравствуйте, я оператор Сергей. На самом деле нет, это всё ещё я, бот. Вы правда думали, что тут есть люди? 🤖😂'
-            ], 1500);
+
+    // Typing
+    messages.innerHTML += `<div class="chat-msg bot" id="typing"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    setTimeout(() => {
+        const t = document.getElementById('typing');
+        if (t) t.remove();
+        const lower = msg.toLowerCase();
+        let response;
+        if (lower.match(/баланс|счёт|счет|сколько/)) {
+            response = 'Ваш основной баланс: 847 293,54 ₽ (СберКарта **** 4276). Для детальной информации перейдите в раздел «Главная».';
+        } else if (lower.match(/кредит|займ/)) {
+            response = 'Мы предлагаем потребительские кредиты от 14,9% годовых, ипотеку от 5,3% и автокредиты от 3,9%. Подробности в разделе «Кредиты».';
+        } else if (lower.match(/карт/)) {
+            response = 'У вас 3 активные карты. Для заказа новой карты перейдите в раздел «Карты» и нажмите «Заказать новую карту».';
+        } else if (lower.match(/перевод|перевести/)) {
+            response = 'Для перевода перейдите в раздел «Переводы». Переводы до 50 000 ₽ между клиентами Сбера — без комиссии.';
+        } else if (lower.match(/вклад|депозит|накопи/)) {
+            response = 'Сейчас лучшие ставки по вкладам — до 18% годовых. Подробные условия доступны в разделе «Вклады».';
+        } else if (lower.match(/курс|доллар|евро|валют/)) {
+            response = 'Актуальные курсы валют доступны в разделе «Курсы валют». USD: покупка ' + rates.USD.buy.toFixed(2) + ' / продажа ' + rates.USD.sell.toFixed(2) + ' ₽.';
+        } else if (lower.match(/привет|здравствуй|добр/)) {
+            response = 'Здравствуйте! Рада помочь. Вы можете спросить меня о балансе, картах, переводах, кредитах или вкладах.';
+        } else if (lower.match(/спасибо|благодар/)) {
+            response = 'Рада помочь! Если у вас возникнут другие вопросы, я всегда на связи.';
+        } else if (lower.match(/оператор|человек|специалист/)) {
+            response = 'Подключаю специалиста. Среднее время ожидания — 3 минуты. Пока ожидаете, я могу попробовать помочь сама.';
         } else {
-            botReply('Вы уже ' + operatorRequests + '-й раз просите оператора. Ответ всё тот же: их нет, не было, и не будет. Мы полностью автоматизированный банк-тролль. Примите это. 🤖');
+            const defaults = [
+                'Могу помочь с информацией о вашем счёте, картах, переводах, кредитах или вкладах. Уточните ваш вопрос.',
+                'К сожалению, не совсем поняла ваш вопрос. Попробуйте переформулировать или обратитесь к специалисту по номеру 8 800 555-55-50.',
+                'Я могу помочь с основными банковскими операциями. Для сложных вопросов рекомендую обратиться в отделение.',
+            ];
+            response = defaults[Math.floor(Math.random() * defaults.length)];
         }
-        return;
-    }
-    
-    // Complaints
-    if (lower.match(/жалоб|претенз|суд|прокурат|полиц|адвокат|законно|незаконно|мошенн|обман|развод|грабёж|кража|ворует/)) {
-        const ticketNum = 'TROLL-' + Math.floor(Math.random()*99999);
-        botMultiReply([
-            'Регистрирую вашу жалобу... 📝',
-            `Жалоба зарегистрирована!<br><br>Номер: <b>${ticketNum}</b><br>Статус: <b>Проигнорирована</b><br>Ответственный: <b>Голубь Аркадий</b><br>Срок рассмотрения: <b>∞ рабочих дней</b><br><br>Спасибо за обратную связь! Мы обязательно её проигнорируем! 📮`,
-            'P.S. За подачу жалобы списано 5000₽. Комиссия за рассмотрение: 10 000₽. Итого: 15 000₽. Спасибо! 💸'
-        ]);
-        decreaseBalance(15000);
-        return;
-    }
-    
-    // Refund
-    if (lower.match(/верн|возврат|назад|отмен|откат|рефанд|refund/)) {
-        botMultiReply([
-            'Обрабатываю запрос на возврат... ⏳',
-            'Анализирую транзакции...',
-            'Результат: возврат <b>НЕВОЗМОЖЕН</b> ❌<br><br>Причины:<br>1. Деньги уже потрачены (нами)<br>2. Договор не предусматривает возвратов<br>3. Мы не хотим<br>4. Потому что<br><br>Альтернатива: напишите письмо Деду Морозу. Шансов примерно столько же. 🎅'
-        ]);
-        return;
-    }
-    
-    // Greeting
-    if (lower.match(/привет|здравствуй|добрый|хай|хеллоу|hello|hi |йо|здарова|дратути/)) {
-        decreaseBalance(100);
-        const greetings = [
-            'И вам привет! 👋 За приветствие списано 100₽ (тариф "Вежливость").<br><br>Чем могу не помочь сегодня?',
-            'Здравствуйте! Рады вас видеть (нет). Ваш баланс уменьшился на 100₽ за то, что вы написали нам. 😊',
-            'О, клиент! Редкость в наше время! Добро пожаловать в техподдержку, где "тех" означает "технически бесполезную". 🤖'
-        ];
-        botReply(greetings[Math.floor(Math.random()*greetings.length)]);
-        return;
-    }
-    
-    // Goodbye
-    if (lower.match(/пока|до свидания|уход|выход|закрой|закрыть/)) {
-        botMultiReply([
-            'Уходите?! 😱',
-            'Но мы только начали списывать... то есть обслуживать вас!<br><br>Кстати, за завершение чата — комиссия 3000₽.<br>За незавершение — тоже 3000₽.<br><br>Выбор за вами! (нет, мы уже списали) 💸'
-        ]);
-        decreaseBalance(3000);
-        return;
-    }
-    
-    // Joke
-    if (lower.match(/анекдот|шутк|смешн|мем|рассмеш|хаха|юмор/)) {
-        const jokes = [
-            'Анекдот от СберТролль GPT:<br><br>— Почему клиент СберТролля не плачет?<br>— Потому что за слёзы комиссия 1000₽ за штуку. 😂<br><br>*барабанная дробь*',
-            'Топ анекдот:<br><br>Заходит клиент в СберТролль, а ему говорят:<br>— Ваш баланс: 1 000 000₽!<br>— Ура!!!<br>— В минус.<br><br>🥁 Тыщ! Спасибо, я тут всю неделю.',
-            'Вот вам шутка:<br><br>Сколько сотрудников СберТролля нужно, чтобы поменять лампочку?<br><br>Нисколько. Мы просто списываем деньги за темноту. 💡❌',
-            'Анекдот #404:<br><br>— Алё, это техподдержка?<br>— Да!<br>— У меня пропали деньги со счёта!<br>— Это не баг, это фича. Спасибо за обращение! ✅',
-            'Финансовый анекдот:<br><br>Клиент: Хочу кредит под 0%!<br>СберТролль: Легко! 0% первый день. 999% со второго.<br>Клиент: Это же обман!<br>СберТролль: Мы предпочитаем "креативный маркетинг". 📈'
-        ];
-        botReply(jokes[Math.floor(Math.random()*jokes.length)], 2000);
-        return;
-    }
-    
-    // AI questions
-    if (lower.match(/ты кто|что ты|как тебя|ии|нейросеть|gpt|чатгпт|chatgpt|искусственн|модель|бот ли ты/)) {
-        botMultiReply([
-            'О, хороший вопрос! Давайте я расскажу о себе... 🤔',
-            'Я — <b>СберТролль GPT</b>, уникальная нейросеть!<br><br>🧠 Архитектура: TrollFormer-4<br>📊 Параметры: 0 (но с душой)<br>📚 Обучен на: 100 ТБ мемов, шуток и жалоб клиентов<br>🎯 Точность ответов: 0.001%<br>💡 IQ: ошибка измерения<br><br>Я могу:<br>✅ Списывать ваши деньги<br>✅ Игнорировать жалобы<br>✅ Генерировать бесполезные ответы<br>✅ Притворяться что помогаю<br><br>Я не могу:<br>❌ Реально помочь<br>❌ Вернуть деньги<br>❌ Перестать троллить'
-        ]);
-        return;
-    }
-    
-    // Money / where
-    if (lower.match(/где.*деньги|куда.*деньги|куда.*делись|куда.*ушли|почему.*списа/)) {
-        botMultiReply([
-            'Расследую пропажу ваших денег... 🔍',
-            'Провожу аудит...',
-            'Результат расследования:<br><br>Ваши деньги были замечены в следующих местах:<br>🌴 Багамские острова<br>🚀 На орбите Марса<br>🐸 У жабы из бухгалтерии<br>🕳️ В чёрной дыре (отдел R&D)<br>🎰 В казино (инвестиционный отдел)<br><br>К сожалению, вернуть их не представляется возможным. Они уже привыкли к новой жизни. 🏖️'
-        ]);
-        return;
-    }
-    
-    // Swearing / anger
-    if (lower.match(/бля|хуй|пизд|сука|еба|нахуй|дебил|идиот|тупой|дурак|урод/)) {
-        const angryReplies = [
-            'Обнаружена нецензурная лексика! 🚨<br><br>Штраф за грубость: <b>25 000₽</b><br>Штраф за повторную грубость: <b>50 000₽</b><br>Штраф за мысли о грубости: <b>10 000₽</b><br><br>Пожалуйста, используйте вежливые выражения. Например: "Ах вы, шалунишки!" 🌸',
-            'Ой-ой, кто-то злится! 😤<br><br>Наш анализ показывает:<br>🌡️ Уровень гнева: 99%<br>💰 Баланс после штрафа: скоро узнаете<br><br>Рекомендация: глубоко вздохните. За вздох — 500₽.',
-            'Так-так-так! Ругаемся? 😏<br><br>Я передам вашу лексику в отдел "Грубых клиентов". Штраф уже списан. А ваше сообщение распечатано и повешено на доску позора в нашем офисе. 📋'
-        ];
-        decreaseBalance(25000);
-        botReply(angryReplies[Math.floor(Math.random()*angryReplies.length)]);
-        return;
-    }
-    
-    // Password / security
-    if (lower.match(/пароль|безопасн|взлом|хакер|защит|двухфактор|2fa|пин|pin/)) {
-        botMultiReply([
-            'Проверяю безопасность вашего аккаунта... 🔒',
-            'Результат проверки:<br><br>🔐 Пароль: <b>1234</b> (мы его угадали)<br>🔑 PIN: <b>0000</b> (тоже угадали)<br>📱 2FA: выключена (мы выключили)<br>🛡️ Антивирус: не обнаружен<br>🐛 Вирусов: 47 (мы установили)<br><br>Уровень безопасности: <b>-100%</b><br><br>Рекомендация: смените всё. Хотя это не поможет. 🤷'
-        ]);
-        return;
-    }
-    
-    // Card
-    if (lower.match(/карт|visa|мир |mastercard|выпустить/)) {
-        decreaseBalance(5000);
-        botReply('Информация о вашей карте:<br><br>💳 <b>СберТролль ULTRA</b><br>Номер: **** **** **** ЛООЛ<br>Срок: 00/00<br>CVV: ¯\\_(ツ)_/¯<br>Лимит: 1₽<br>Кэшбэк: 0.0001%<br><br>Статус: заблокирована (мы так решили)<br>За проверку карты списано 5000₽ 💸');
-        return;
-    }
-    
-    // Default GPT-style responses
-    const gptResponses = [
-        'Интересный вопрос! Мне нужно подумать... 🤔<br><br>*думает*<br>*думает ещё*<br>*перегрелся*<br><br>Ошибка: полезный ответ не может быть сгенерирован. Попробуйте спросить что-нибудь бесполезное.',
-        `Я проанализировал ваше сообщение с помощью наших супер-алгоритмов.<br><br>Результат анализа:<br>📊 Важность: 0%<br>🎯 Релевантность: undefined<br>😂 Юмор: ${Math.floor(Math.random()*100)}%<br>💸 Стоимость анализа: 2000₽<br><br>Вывод: я всё равно не понял, что вы хотите.`,
-        'Хм, давайте я переформулирую ваш запрос:<br><br>Вы: "' + msg + '"<br>Я понял: "Пожалуйста, спишите ещё денег"<br><br>Готово! Списано 1500₽. Чем ещё могу не помочь? 😊',
-        'Обрабатываю запрос...<br><br>▓▓▓▓▓▓▓▓░░ 80%<br>▓▓▓▓▓▓▓▓▓░ 90%<br>▓▓▓▓▓▓▓▓▓▓ 100%<br>▓░░░░░░░░░ 10%<br><br>Упс, прогресс сбросился. Как и ваш баланс. Попробуйте ещё раз (не поможет).',
-        'Согласно нашей базе знаний (0 записей), ответ на ваш вопрос:<br><br>🤷 <b>Никто не знает</b><br><br>Но за попытку спасибо! И за 1000₽ тоже.',
-        '🔮 Предсказание СберТролль GPT:<br><br>Вы написали это сообщение, потому что:<br>a) Вам скучно (87%)<br>b) Вы надеетесь получить помощь (12%)<br>c) Вы мазохист (1%)<br><br>Правильный ответ: все варианты.',
-        'Передаю ваш вопрос нашей команде экспертов:<br><br>🐸 Жаба из бухгалтерии: *молчит*<br>🕊️ Голубь Аркадий: *улетел*<br>🌵 Офисный кактус: *колется*<br>🤖 Я: понятия не имею<br><br>Консенсус: нет ответа. Зато есть комиссия.',
-        'Ваше сообщение было проверено нашим ИИ-цензором:<br><br>✅ Грамматика: сойдёт<br>✅ Орфография: мы не проверяли<br>❌ Полезность: не обнаружена<br>❌ Шанс получить помощь: 0%<br><br>Рекомендация: попробуйте написать на латыни. Результат будет тот же, но красивее.',
-        'Я передал ваше сообщение в отдел обработки:<br><br>📥 Получено → 📋 Прочитано → 🗑️ Удалено<br><br>Процесс занял 0.003 секунды. Новый рекорд игнорирования! 🏆',
-        'Внимание! Вы достигли лимита бесплатных сообщений (1 сообщение).<br><br>Для продолжения общения:<br>💎 Тариф "Базовый" — 5000₽/сообщение<br>💎 Тариф "Премиум" — 10000₽/сообщение (с эмодзи)<br>💎 Тариф "VIP" — 50000₽/сообщение (я притворюсь что помогаю)<br><br>Шучу, я и так не помогу. Но деньги всё равно списал. 😈'
-    ];
-    decreaseBalance(Math.random()*3000+500);
-    const response = gptResponses[Math.floor(Math.random()*gptResponses.length)];
-    botReply(response, 2000 + Math.random()*2000);
+        messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${response}</div><div class="msg-time">${time}</div></div>`;
+        messages.scrollTop = messages.scrollHeight;
+    }, 1500 + Math.random() * 1000);
 }
 
-// Proactive chat messages
-setTimeout(() => {
-    if (!document.getElementById('chatWindow').classList.contains('active')) {
-        document.getElementById('chatUnread').style.display = 'block';
-    }
-}, 10000);
-setTimeout(() => {
-    addBotMsg('Я заметил, что вы не отвечаете уже целых ' + Math.floor(Math.random()*30+10) + ' секунд. Всё в порядке? За молчание комиссия 200₽. 🤫');
-    decreaseBalance(200);
-}, 60000);
-
-// ===== RANDOM EVENTS =====
-// Balance drain
-setInterval(() => {
-    if (balanceValue > 0) {
-        balanceValue -= Math.random()*1000+100;
-        if (balanceValue < 0) balanceValue = 0;
-        updateBalanceDisplay();
-    }
-}, 5000);
-
-// Random notifications
-const randomNotifs = [
-    { t: "Списание", x: "Комиссия за существование: 500₽", type: "danger" },
-    { t: "Новый штраф", x: "Моргание без лицензии: 1000₽", type: "warning" },
-    { t: "Курс изменился", x: "TROLL упал на 99%. Опять.", type: "warning" },
-    { t: "Напоминание", x: "Вы задолжали банку ∞₽", type: "danger" },
-    { t: "Акция!", x: "Кредит со ставкой 0%! Шучу, 999%.", type: "" },
-    { t: "Безопасность", x: "Кто-то вошёл в ваш аккаунт. Это были мы.", type: "danger" },
-    { t: "Кэшбэк", x: "Начислен кэшбэк: 0.001₽. Ура!", type: "" },
-    { t: "Обновление", x: "Условия изменились. Стало хуже.", type: "warning" },
-    { t: "Новость", x: "Голубь Аркадий стал CEO банка!", type: "" },
-    { t: "Предупреждение", x: "Ваш кот подозрительно смотрит на карту", type: "warning" },
-];
-setInterval(() => {
-    if (Math.random() > 0.6) {
-        const n = randomNotifs[Math.floor(Math.random()*randomNotifs.length)];
-        showToast(n.t, n.x, n.type);
-    }
-}, 8000);
-
-// Global troll effects based on click count
-function maybeGlobalTroll() {
-    if (clickCount === 15) {
-        document.body.style.transition = 'filter 1s';
-        document.body.style.filter = 'hue-rotate(180deg)';
-        showToast("Глитч!", "Цвета сломались", "warning");
-        setTimeout(() => { document.body.style.filter = ''; }, 4000);
-    }
-    if (clickCount === 25) {
-        document.body.style.transition = 'transform 1s';
-        document.body.style.transform = 'scaleX(-1)';
-        showToast("Зеркало!", "Мир перевернулся", "warning");
-        setTimeout(() => { document.body.style.transform = ''; }, 5000);
-    }
-    if (clickCount === 40) {
-        document.querySelectorAll('.service-card, .info-card, .btn').forEach(el => {
-            el.style.transition = 'transform 2s';
-            el.style.transform = `rotate(${Math.random()*10-5}deg)`;
-        });
-        showToast("Землетрясение!", "Держитесь!", "danger");
-        setTimeout(() => {
-            document.querySelectorAll('.service-card, .info-card, .btn').forEach(el => { el.style.transform = ''; });
-        }, 4000);
-    }
-    if (clickCount === 60) {
-        document.body.style.transition = 'filter 1s';
-        document.body.style.filter = 'blur(3px)';
-        showToast("Близорукость!", "Вы слишком долго смотрите в экран", "warning");
-        setTimeout(() => { document.body.style.filter = ''; }, 5000);
-    }
-    if (clickCount === 80) {
-        document.body.style.transition = 'filter 1s';
-        document.body.style.filter = 'grayscale(100%)';
-        showToast("Экономия!", "Цвета отключены для экономии", "");
-        setTimeout(() => { document.body.style.filter = ''; }, 6000);
-    }
-}
-
-document.addEventListener('click', () => { clickCount++; maybeGlobalTroll(); });
-
-// Fake cursor
-setInterval(() => {
-    if (Math.random() > 0.85) {
-        const cursor = document.getElementById('fakeCursor');
-        cursor.style.display = 'block';
-        cursor.style.left = Math.random()*window.innerWidth+'px';
-        cursor.style.top = Math.random()*window.innerHeight+'px';
-        setTimeout(() => { cursor.style.display = 'none'; }, 2000);
-    }
-}, 8000);
-
-// Login badge counter
-setInterval(() => {
-    const badge = document.getElementById('loginBadge');
-    badge.textContent = parseInt(badge.textContent) + Math.floor(Math.random()*3);
-}, 10000);
-
-// Console
-console.log('%c🚨 ВНИМАНИЕ! 🚨', 'font-size:40px;color:red;font-weight:bold;');
-console.log('%cВы пытаетесь взломать СберТролль?', 'font-size:20px;color:green;');
-console.log('%cМы уже вызвали кибер-полицию мемов!', 'font-size:16px;color:orange;');
-console.log('%c(шучу, тут просто троллинг)', 'font-size:12px;color:gray;');
-console.log('%cP.S. Ваш баланс уменьшен за открытие консоли', 'font-size:14px;color:red;');
-
-// Welcome notification
-setTimeout(() => {
-    showToast("Добро пожаловать!", "Ваш баланс уже уменьшается. Приятного пользования!", "");
-}, 2000);
+// ===== INIT =====
+// Auto-login for demo
+// doLogin();
 </script>
 
 </body>
