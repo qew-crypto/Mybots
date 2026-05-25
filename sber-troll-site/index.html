@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сбер — Онлайн Банк</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2321a038'/><text x='50' y='68' text-anchor='middle' font-size='50' fill='white' font-family='Arial'>С</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sber-green: #21a038;
+            --sber-dark-green: #1a8a2e;
+            --sber-light-green: #e8f5e9;
+            --sber-gradient: linear-gradient(135deg, #21a038 0%, #2ecc40 100%);
+            --bg: #f5f5f7;
+            --bg-white: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            gap: 32px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo-circle {
+            width: 36px; height: 36px;
+            background: var(--sber-gradient);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 18px;
+        }
+        .logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .logo-text span { color: var(--sber-green); }
+
+        /* Nav */
+        .nav { display: flex; gap: 4px; flex: 1; }
+        .nav-item {
+            padding: 8px 16px; border-radius: var(--radius-sm);
+            font-size: 14px; font-weight: 500; color: var(--text-secondary);
+            cursor: pointer; transition: all 0.2s; border: none; background: none;
+            font-family: inherit; white-space: nowrap;
+        }
+        .nav-item:hover { background: var(--bg); color: var(--text-primary); }
+        .nav-item.active { background: var(--sber-light-green); color: var(--sber-green); }
+
+        .header-right {
+            display: flex; align-items: center; gap: 16px;
+        }
+        .header-icon {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--bg); cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            color: var(--text-secondary); font-size: 20px; transition: all 0.2s;
+            position: relative;
+        }
+        .header-icon:hover { background: var(--border); color: var(--text-primary); }
+        .header-icon .badge {
+            position: absolute; top: 2px; right: 2px; width: 8px; height: 8px;
+            background: var(--danger); border-radius: 50%; border: 2px solid var(--bg-white);
+        }
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--sber-gradient); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .card-title {
+            font-size: 18px; font-weight: 600; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+
+        /* ===== GRID ===== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+        /* ===== BANK CARD WIDGET ===== */
+        .bank-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d3748 50%, #1a1a2e 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .bank-card.green { background: linear-gradient(135deg, #1a8a2e 0%, #21a038 50%, #2ecc40 100%); }
+        .bank-card.gold { background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #f0c040 100%); }
+        .bank-card::before {
+            content: ''; position: absolute; top: -50%; right: -30%;
+            width: 200px; height: 200px; border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .bank-card::after {
+            content: ''; position: absolute; bottom: -30%; left: -20%;
+            width: 150px; height: 150px; border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+        }
+        .bank-card-type { font-size: 12px; opacity: 0.8; letter-spacing: 1px; text-transform: uppercase; }
+        .bank-card-number { font-size: 18px; letter-spacing: 3px; font-weight: 500; margin: 16px 0; }
+        .bank-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+        .bank-card-holder { font-size: 12px; opacity: 0.7; }
+        .bank-card-holder span { display: block; font-size: 14px; opacity: 1; font-weight: 500; margin-top: 2px; }
+        .bank-card-expiry { text-align: right; font-size: 12px; opacity: 0.7; }
+        .bank-card-expiry span { display: block; font-size: 14px; opacity: 1; font-weight: 500; margin-top: 2px; }
+        .bank-card-logo { position: absolute; top: 20px; right: 24px; font-size: 24px; font-weight: 700; opacity: 0.3; }
+        .bank-card-chip {
+            width: 40px; height: 30px; border-radius: 6px;
+            background: linear-gradient(135deg, #d4a017 0%, #f0d060 100%);
+            margin-bottom: 8px;
+        }
+
+        /* ===== BALANCE ===== */
+        .balance-section { margin-bottom: 24px; }
+        .balance-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+        .balance-amount {
+            font-size: 32px; font-weight: 700; color: var(--text-primary);
+            display: flex; align-items: baseline; gap: 4px;
+        }
+        .balance-amount .currency { font-size: 24px; color: var(--text-secondary); font-weight: 500; }
+        .balance-change {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 13px; font-weight: 500; margin-top: 4px; padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .balance-change.positive { color: var(--sber-green); background: var(--sber-light-green); }
+        .balance-change.negative { color: var(--danger); background: #fef2f2; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px;
+            font-weight: 500; cursor: pointer; border: none; font-family: inherit;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--sber-green); color: white; }
+        .btn-primary:hover { background: var(--sber-dark-green); }
+        .btn-secondary { background: var(--bg); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border-light); }
+        .btn-ghost { background: none; color: var(--sber-green); }
+        .btn-ghost:hover { background: var(--sber-light-green); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-lg { padding: 12px 24px; font-size: 16px; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        /* ===== FORMS ===== */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-input {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); font-size: 14px; font-family: inherit;
+            background: var(--bg-white); color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--sber-green); box-shadow: 0 0 0 3px rgba(33,160,56,0.1); }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-select {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); font-size: 14px; font-family: inherit;
+            background: var(--bg-white); color: var(--text-primary); cursor: pointer;
+        }
+        .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        /* ===== TRANSACTIONS ===== */
+        .transaction-list { list-style: none; }
+        .transaction-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid var(--border-light);
+        }
+        .transaction-item:last-child { border-bottom: none; }
+        .transaction-icon {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .transaction-icon.income { background: var(--sber-light-green); color: var(--sber-green); }
+        .transaction-icon.expense { background: #fef2f2; color: var(--danger); }
+        .transaction-icon.transfer { background: #eff6ff; color: var(--info); }
+        .transaction-info { flex: 1; }
+        .transaction-name { font-size: 14px; font-weight: 500; }
+        .transaction-date { font-size: 12px; color: var(--text-muted); }
+        .transaction-amount { font-weight: 600; text-align: right; }
+        .transaction-amount.positive { color: var(--sber-green); }
+        .transaction-amount.negative { color: var(--text-primary); }
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions { display: flex; gap: 12px; margin: 20px 0; }
+        .quick-action {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 16px; border-radius: var(--radius); cursor: pointer;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.2s; flex: 1; text-align: center;
+        }
+        .quick-action:hover { border-color: var(--sber-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .quick-action-icon {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--sber-light-green); color: var(--sber-green);
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .quick-action-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+
+        /* ===== TABLE ===== */
+        .table { width: 100%; border-collapse: collapse; }
+        .table th {
+            text-align: left; padding: 12px 16px; font-size: 12px;
+            font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; border-bottom: 2px solid var(--border);
+        }
+        .table td {
+            padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--border-light);
+        }
+        .table tr:hover td { background: var(--bg); }
+
+        /* ===== TABS ===== */
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+        .tab {
+            padding: 12px 20px; font-size: 14px; font-weight: 500;
+            color: var(--text-secondary); cursor: pointer; border: none;
+            background: none; font-family: inherit; position: relative;
+            transition: color 0.2s;
+        }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { color: var(--sber-green); }
+        .tab.active::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+            height: 2px; background: var(--sber-green);
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-active { background: var(--sber-light-green); color: var(--sber-green); }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-inactive { background: #f3f4f6; color: #6b7280; }
+
+        /* ===== PRODUCT LIST ===== */
+        .product-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .product-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .product-card-title { font-size: 16px; font-weight: 600; }
+        .product-card-rate { font-size: 24px; font-weight: 700; color: var(--sber-green); }
+        .product-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+        .product-card-footer { margin-top: 16px; display: flex; gap: 8px; }
+
+        /* ===== EXCHANGE RATES ===== */
+        .rate-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+        .rate-row:last-child { border-bottom: none; }
+        .rate-flag { font-size: 24px; margin-right: 12px; }
+        .rate-info { flex: 1; }
+        .rate-code { font-weight: 600; font-size: 14px; }
+        .rate-name { font-size: 12px; color: var(--text-muted); }
+        .rate-value { font-weight: 600; text-align: right; }
+        .rate-buy { color: var(--sber-green); }
+        .rate-sell { color: var(--danger); margin-left: 24px; }
+
+        /* ===== PROMO BANNER ===== */
+        .promo-banner {
+            background: var(--sber-gradient);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .promo-banner h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .promo-banner p { font-size: 14px; opacity: 0.9; max-width: 500px; }
+        .promo-banner .btn { background: white; color: var(--sber-green); margin-top: 16px; }
+        .promo-banner .btn:hover { background: #f0f0f0; }
+
+        /* ===== NOTIFICATION ===== */
+        .notification-bar {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius-sm);
+            padding: 12px 16px; display: flex; align-items: center; gap: 12px;
+            margin-bottom: 16px; font-size: 13px;
+        }
+        .notification-bar.info { background: #eff6ff; border-color: #bfdbfe; }
+        .notification-bar .close-btn {
+            margin-left: auto; background: none; border: none; cursor: pointer;
+            color: var(--text-muted); font-size: 16px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1000; align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--bg-white); border-radius: var(--radius-lg);
+            padding: 32px; max-width: 480px; width: 90%;
+            box-shadow: var(--shadow-lg); animation: modalIn 0.2s ease-out;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal h3 { font-size: 20px; margin-bottom: 8px; }
+        .modal p { color: var(--text-secondary); margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-white); border-top: 1px solid var(--border);
+            padding: 32px 0; margin-top: 48px;
+        }
+        .footer-inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 24px;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
+        }
+        .footer-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+        .footer-link {
+            display: block; font-size: 13px; color: var(--text-secondary);
+            text-decoration: none; margin-bottom: 8px; cursor: pointer;
+        }
+        .footer-link:hover { color: var(--sber-green); }
+        .footer-copy {
+            max-width: 1280px; margin: 16px auto 0; padding: 16px 24px 0;
+            border-top: 1px solid var(--border); font-size: 12px;
+            color: var(--text-muted); display: flex; justify-content: space-between;
+        }
+
+        /* ===== SIDEBAR ACCOUNT LIST ===== */
+        .account-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; border-radius: var(--radius-sm);
+            cursor: pointer; transition: background 0.2s;
+        }
+        .account-item:hover { background: var(--bg); }
+        .account-item-icon {
+            width: 40px; height: 40px; border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .account-item-info { flex: 1; }
+        .account-item-name { font-size: 14px; font-weight: 500; }
+        .account-item-number { font-size: 12px; color: var(--text-muted); }
+        .account-item-balance { font-weight: 600; text-align: right; }
+
+        /* ===== CHAT SUPPORT ===== */
+        .chat-fab {
+            position: fixed; bottom: 24px; right: 24px;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--sber-green); color: white;
+            border: none; cursor: pointer; font-size: 24px;
+            box-shadow: var(--shadow-lg); z-index: 500;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
+        .chat-fab:hover { transform: scale(1.08); }
+        .chat-window {
+            display: none; position: fixed; bottom: 92px; right: 24px;
+            width: 380px; max-height: 520px; background: var(--bg-white);
+            border-radius: var(--radius-lg); border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg); z-index: 501;
+            flex-direction: column; overflow: hidden;
+        }
+        .chat-window.active { display: flex; }
+        .chat-header {
+            background: var(--sber-green); padding: 16px 20px;
+            display: flex; align-items: center; gap: 12px; color: white;
+        }
+        .chat-header-avatar { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .chat-header-info h4 { font-size: 14px; font-weight: 600; }
+        .chat-header-info span { font-size: 12px; opacity: 0.8; }
+        .chat-close { margin-left: auto; background: none; border: none; color: white; font-size: 20px; cursor: pointer; opacity: 0.8; }
+        .chat-close:hover { opacity: 1; }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 340px; }
+        .chat-msg { margin-bottom: 12px; max-width: 80%; }
+        .chat-msg.bot { margin-right: auto; }
+        .chat-msg.user { margin-left: auto; text-align: right; }
+        .chat-msg .bubble {
+            display: inline-block; padding: 10px 14px; border-radius: 14px;
+            font-size: 13px; line-height: 1.5;
+        }
+        .chat-msg.bot .bubble { background: var(--bg); color: var(--text-primary); border-bottom-left-radius: 4px; }
+        .chat-msg.user .bubble { background: var(--sber-green); color: white; border-bottom-right-radius: 4px; }
+        .chat-msg .msg-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+        .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; }
+        .typing-dot { width: 7px; height: 7px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.4s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+        .chat-input-area { padding: 12px; display: flex; gap: 8px; border-top: 1px solid var(--border); }
+        .chat-input {
+            flex: 1; padding: 10px 14px; border-radius: 20px; border: 1px solid var(--border);
+            font-size: 13px; font-family: inherit; background: var(--bg);
+        }
+        .chat-input:focus { outline: none; border-color: var(--sber-green); }
+        .chat-send {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--sber-green); color: white; font-size: 16px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f5f5f7 50%, #ecfdf5 100%);
+        }
+        .login-box {
+            background: var(--bg-white); border-radius: var(--radius-lg);
+            padding: 40px; width: 400px; box-shadow: var(--shadow-lg);
+        }
+        .login-box .logo { justify-content: center; margin-bottom: 32px; }
+        .login-box h2 { text-align: center; margin-bottom: 8px; font-size: 22px; }
+        .login-box .subtitle { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .header-inner { padding: 0 16px; }
+            .nav { display: none; }
+            .quick-actions { flex-wrap: wrap; }
+            .promo-banner { flex-direction: column; text-align: center; }
+        }
+
+        /* ===== SMOOTH ANIMATIONS ===== */
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--sber-green); border-radius: 3px; transition: width 0.5s; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state { text-align: center; padding: 48px 24px; color: var(--text-muted); }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+        .empty-state-title { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="loginPage" class="login-page">
+    <div class="login-box fade-in">
+        <div class="logo" style="justify-content:center; margin-bottom:32px;">
+            <div class="logo-circle">С</div>
+            <div class="logo-text"><span>Сбер</span>Банк Онлайн</div>
+        </div>
+        <h2>Вход в систему</h2>
+        <p class="subtitle">Введите данные для входа в личный кабинет</p>
+        <div class="form-group">
+            <label class="form-label">Логин</label>
+            <input class="form-input" id="loginInput" type="text" placeholder="Введите логин">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Пароль</label>
+            <input class="form-input" id="passwordInput" type="password" placeholder="Введите пароль">
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-secondary); cursor:pointer;">
+                <input type="checkbox" checked> Запомнить меня
+            </label>
+            <a href="#" style="font-size:13px; color:var(--sber-green); text-decoration:none;" onclick="event.preventDefault()">Забыли пароль?</a>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" onclick="doLogin()">Войти</button>
+        <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--text-secondary);">
+            Нет аккаунта? <a href="#" style="color:var(--sber-green); text-decoration:none;" onclick="event.preventDefault()">Зарегистрироваться</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp" style="display:none;">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a class="logo" onclick="navigateTo('home')">
+                <div class="logo-circle">С</div>
+                <div class="logo-text"><span>Сбер</span>Банк</div>
+            </a>
+            <nav class="nav">
+                <button class="nav-item active" data-page="home" onclick="navigateTo('home')">Главная</button>
+                <button class="nav-item" data-page="cards" onclick="navigateTo('cards')">Карты</button>
+                <button class="nav-item" data-page="transfers" onclick="navigateTo('transfers')">Переводы</button>
+                <button class="nav-item" data-page="payments" onclick="navigateTo('payments')">Платежи</button>
+                <button class="nav-item" data-page="credits" onclick="navigateTo('credits')">Кредиты</button>
+                <button class="nav-item" data-page="deposits" onclick="navigateTo('deposits')">Вклады</button>
+                <button class="nav-item" data-page="exchange" onclick="navigateTo('exchange')">Курсы валют</button>
+            </nav>
+            <div class="header-right">
+                <button class="header-icon" title="Уведомления" onclick="openNotifications()">
+                    🔔<span class="badge"></span>
+                </button>
+                <button class="header-icon" title="Настройки" onclick="navigateTo('settings')">⚙️</button>
+                <div class="avatar" onclick="navigateTo('profile')" title="Профиль">ИИ</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ===== HOME PAGE ===== -->
+        <div id="page-home" class="page active fade-in">
+
+            <!-- Promo -->
+            <div class="promo-banner">
+                <div>
+                    <h2>Кэшбэк до 10% на всё</h2>
+                    <p>Оформите карту СберПрайм и получайте повышенный кэшбэк на все покупки. Бесплатное обслуживание первый год.</p>
+                    <button class="btn" onclick="showModal('Заявка отправлена', 'Менеджер свяжется с вами в течение 15 минут для оформления карты СберПрайм.')">Оформить</button>
+                </div>
+                <div style="font-size:64px; opacity:0.3;">💳</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div>
+                    <!-- Accounts -->
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-title">Мои счета и карты</div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:var(--sber-light-green); color:var(--sber-green);">💳</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">СберКарта</div>
+                                <div class="account-item-number">**** 4276</div>
+                            </div>
+                            <div class="account-item-balance" id="mainBalance">847 293,54 ₽</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:#fef3c7; color:#d97706;">💰</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Накопительный счёт</div>
+                                <div class="account-item-number">**** 8831</div>
+                            </div>
+                            <div class="account-item-balance">234 100,00 ₽</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="account-item-icon" style="background:#eff6ff; color:#3b82f6;">🏦</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Вклад «Доходный»</div>
+                                <div class="account-item-number">**** 5590</div>
+                            </div>
+                            <div class="account-item-balance">500 000,00 ₽</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="navigateTo('transfers')">
+                            <div class="quick-action-icon">↗️</div>
+                            <div class="quick-action-label">Перевод</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('payments')">
+                            <div class="quick-action-icon">📱</div>
+                            <div class="quick-action-label">Оплата</div>
+                        </div>
+                        <div class="quick-action" onclick="showModal('Пополнение', 'Выберите способ пополнения в разделе Переводы.')">
+                            <div class="quick-action-icon">💰</div>
+                            <div class="quick-action-label">Пополнить</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('credits')">
+                            <div class="quick-action-icon">🏦</div>
+                            <div class="quick-action-label">Кредит</div>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('exchange')">
+                            <div class="quick-action-icon">💱</div>
+                            <div class="quick-action-label">Обмен</div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div class="card">
+                        <div class="card-title">Последние операции</div>
+                        <ul class="transaction-list" id="transactionList">
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Card Widget -->
+                    <div class="bank-card green" style="margin-bottom:16px;">
+                        <div class="bank-card-logo">VISA</div>
+                        <div>
+                            <div class="bank-card-type">Дебетовая карта</div>
+                            <div class="bank-card-chip"></div>
+                            <div class="bank-card-number">•••• •••• •••• 4276</div>
+                        </div>
+                        <div class="bank-card-bottom">
+                            <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                            <div class="bank-card-expiry">Срок<span>12/27</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Exchange rates mini -->
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Курсы валют</div>
+                        <div id="miniRates"></div>
+                    </div>
+
+                    <!-- News -->
+                    <div class="card">
+                        <div class="card-title">Новости</div>
+                        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border-light);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Новый вклад «Зимний»</div>
+                            Ставка до 18% годовых на срок от 3 месяцев
+                        </div>
+                        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border-light);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Обновление приложения</div>
+                            Новый дизайн и улучшенная навигация
+                        </div>
+                        <div style="font-size:13px; color:var(--text-secondary);">
+                            <div style="font-weight:500; color:var(--text-primary); margin-bottom:4px;">Кэшбэк на АЗС</div>
+                            5% возврат на заправках-партнёрах
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CARDS PAGE ===== -->
+        <div id="page-cards" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Мои карты</h2>
+            <div class="grid-3">
+                <div class="bank-card green">
+                    <div class="bank-card-logo">VISA</div>
+                    <div>
+                        <div class="bank-card-type">Дебетовая</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 4276</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">12/27</div>
+                    </div>
+                </div>
+                <div class="bank-card gold">
+                    <div class="bank-card-logo">MC</div>
+                    <div>
+                        <div class="bank-card-type">Кредитная Gold</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 8831</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">06/28</div>
+                    </div>
+                </div>
+                <div class="bank-card">
+                    <div class="bank-card-logo">МИР</div>
+                    <div>
+                        <div class="bank-card-type">Зарплатная</div>
+                        <div class="bank-card-chip"></div>
+                        <div class="bank-card-number">•••• •••• •••• 2200</div>
+                    </div>
+                    <div class="bank-card-bottom">
+                        <div class="bank-card-holder">Владелец<span>IVAN IVANOV</span></div>
+                        <div class="bank-card-expiry">03/29</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Информация о картах</div>
+                <table class="table">
+                    <thead>
+                        <tr><th>Карта</th><th>Номер</th><th>Баланс</th><th>Статус</th><th>Лимит</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>СберКарта Visa</td><td>**** 4276</td>
+                            <td style="font-weight:600;">847 293,54 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Кредитная Gold MC</td><td>**** 8831</td>
+                            <td style="font-weight:600;">42 000,00 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>300 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Зарплатная МИР</td><td>**** 2200</td>
+                            <td style="font-weight:600;">128 750,00 ₽</td>
+                            <td><span class="status status-active">● Активна</span></td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:16px;">
+                <button class="btn btn-primary" onclick="showModal('Заказ карты', 'Заявка на новую карту принята. Карта будет готова в течение 3-5 рабочих дней в выбранном отделении.')">+ Заказать новую карту</button>
+            </div>
+        </div>
+
+        <!-- ===== TRANSFERS PAGE ===== -->
+        <div id="page-transfers" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Переводы</h2>
+
+            <div class="tabs">
+                <button class="tab active">По номеру карты</button>
+                <button class="tab">По номеру телефона</button>
+                <button class="tab">Между своими</button>
+                <button class="tab">По реквизитам</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div class="card">
+                    <div class="card-title">Новый перевод</div>
+                    <div class="form-group">
+                        <label class="form-label">Откуда</label>
+                        <select class="form-select">
+                            <option>СберКарта **** 4276 — 847 293,54 ₽</option>
+                            <option>Кредитная **** 8831 — 42 000,00 ₽</option>
+                            <option>Зарплатная **** 2200 — 128 750,00 ₽</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Номер карты получателя</label>
+                        <input class="form-input" type="text" placeholder="0000 0000 0000 0000" id="transferCard">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Сумма</label>
+                        <div style="position:relative;">
+                            <input class="form-input" type="text" placeholder="0,00" id="transferAmount" style="padding-right:30px;">
+                            <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--text-muted);">₽</span>
+                        </div>
+                        <div class="form-hint">Комиссия: 0 ₽ для переводов до 50 000 ₽</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Сообщение (необязательно)</label>
+                        <input class="form-input" type="text" placeholder="Комментарий к переводу" id="transferMsg">
+                    </div>
+                    <button class="btn btn-primary btn-block btn-lg" onclick="doTransfer()">Перевести</button>
+                </div>
+
+                <div>
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Частые переводы</div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#6366f1;">АП</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Анна Петрова</div>
+                                <div class="account-item-number">**** 7890</div>
+                            </div>
+                        </div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#ec4899;">МС</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Максим Сидоров</div>
+                                <div class="account-item-number">**** 1234</div>
+                            </div>
+                        </div>
+                        <div class="account-item">
+                            <div class="avatar" style="background:#f59e0b;">ЕК</div>
+                            <div class="account-item-info">
+                                <div class="account-item-name">Елена Козлова</div>
+                                <div class="account-item-number">**** 5678</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Последние переводы</div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon transfer">↗️</div>
+                            <div class="transaction-info"><div class="transaction-name">Анна П.</div><div class="transaction-date">Сегодня, 14:32</div></div>
+                            <div class="transaction-amount negative">−5 000 ₽</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon income">↙️</div>
+                            <div class="transaction-info"><div class="transaction-name">Максим С.</div><div class="transaction-date">Вчера, 18:15</div></div>
+                            <div class="transaction-amount positive">+2 300 ₽</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAYMENTS PAGE ===== -->
+        <div id="page-payments" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Платежи</h2>
+
+            <div class="form-group" style="max-width:400px; margin-bottom:24px;">
+                <input class="form-input" type="text" placeholder="🔍 Поиск услуги или компании...">
+            </div>
+
+            <div class="grid-4">
+                <div class="product-card" onclick="showPayment('Мобильная связь')">
+                    <div style="font-size:32px; margin-bottom:8px;">📱</div>
+                    <div class="product-card-title" style="font-size:14px;">Мобильная связь</div>
+                    <div class="product-card-desc">МТС, Билайн, Мегафон, Tele2</div>
+                </div>
+                <div class="product-card" onclick="showPayment('ЖКХ')">
+                    <div style="font-size:32px; margin-bottom:8px;">🏠</div>
+                    <div class="product-card-title" style="font-size:14px;">ЖКХ</div>
+                    <div class="product-card-desc">Электричество, газ, вода</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Интернет и ТВ')">
+                    <div style="font-size:32px; margin-bottom:8px;">🌐</div>
+                    <div class="product-card-title" style="font-size:14px;">Интернет и ТВ</div>
+                    <div class="product-card-desc">Ростелеком, Дом.ру, МТС</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Штрафы ГИБДД')">
+                    <div style="font-size:32px; margin-bottom:8px;">🚗</div>
+                    <div class="product-card-title" style="font-size:14px;">Штрафы ГИБДД</div>
+                    <div class="product-card-desc">Проверка и оплата</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Налоги')">
+                    <div style="font-size:32px; margin-bottom:8px;">📋</div>
+                    <div class="product-card-title" style="font-size:14px;">Налоги</div>
+                    <div class="product-card-desc">ФНС, госпошлины</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Образование')">
+                    <div style="font-size:32px; margin-bottom:8px;">🎓</div>
+                    <div class="product-card-title" style="font-size:14px;">Образование</div>
+                    <div class="product-card-desc">Детский сад, школа, ВУЗ</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Благотворительность')">
+                    <div style="font-size:32px; margin-bottom:8px;">❤️</div>
+                    <div class="product-card-title" style="font-size:14px;">Благотворительность</div>
+                    <div class="product-card-desc">Фонды и организации</div>
+                </div>
+                <div class="product-card" onclick="showPayment('Другое')">
+                    <div style="font-size:32px; margin-bottom:8px;">📦</div>
+                    <div class="product-card-title" style="font-size:14px;">Другое</div>
+                    <div class="product-card-desc">Остальные платежи</div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Автоплатежи</div>
+                <table class="table">
+                    <thead><tr><th>Услуга</th><th>Получатель</th><th>Сумма</th><th>Следующий платёж</th><th>Статус</th></tr></thead>
+                    <tbody>
+                        <tr><td>📱 Мобильная связь</td><td>МТС</td><td>500 ₽</td><td>01.02.2026</td><td><span class="status status-active">Активен</span></td></tr>
+                        <tr><td>🌐 Интернет</td><td>Ростелеком</td><td>890 ₽</td><td>05.02.2026</td><td><span class="status status-active">Активен</span></td></tr>
+                        <tr><td>🏠 ЖКХ</td><td>ЕИРЦ</td><td>4 200 ₽</td><td>10.02.2026</td><td><span class="status status-pending">Ожидание</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== CREDITS PAGE ===== -->
+        <div id="page-credits" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Кредиты</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Выгодные условия кредитования для любых целей</p>
+
+            <div class="grid-3">
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Потребительский</div>
+                        <div class="product-card-rate">от 14,9%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        До 5 000 000 ₽ на любые цели. Срок до 5 лет. Без залога и поручителей. Решение за 2 минуты.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Кредит «Потребительский»', 'Заявка на кредит отправлена. Предварительное решение будет доступно через 2 минуты в разделе Уведомления.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Ипотека</div>
+                        <div class="product-card-rate">от 5,3%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Ипотека с господдержкой. Первый взнос от 15%. Срок до 30 лет. Электронная регистрация сделки.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Ипотека', 'Для оформления ипотеки необходимо загрузить документы. Перейдите в раздел «Документы» для продолжения.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Автокредит</div>
+                        <div class="product-card-rate">от 3,9%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        На новый или подержанный автомобиль. До 7 000 000 ₽. Срок до 7 лет. Без первого взноса.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Автокредит', 'Рассчитайте условия в калькуляторе ниже или обратитесь к менеджеру для консультации.')">Оформить</button>
+                        <button class="btn btn-secondary btn-sm">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator -->
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Кредитный калькулятор</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label class="form-label">Сумма кредита</label>
+                        <input class="form-input" type="text" value="500 000" id="calcAmount">
+                        <div class="form-hint">от 30 000 до 5 000 000 ₽</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Срок</label>
+                        <select class="form-select" id="calcTerm">
+                            <option>12 месяцев</option>
+                            <option selected>24 месяца</option>
+                            <option>36 месяцев</option>
+                            <option>48 месяцев</option>
+                            <option>60 месяцев</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ставка</label>
+                        <input class="form-input" type="text" value="14,9%" disabled>
+                    </div>
+                </div>
+                <div style="background:var(--bg); padding:16px; border-radius:var(--radius-sm); margin-top:8px; display:flex; justify-content:space-around; text-align:center;">
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Ежемесячный платёж</div>
+                        <div style="font-size:20px; font-weight:700; color:var(--sber-green);" id="calcPayment">24 175 ₽</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Переплата</div>
+                        <div style="font-size:20px; font-weight:700;" id="calcOverpay">80 200 ₽</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted);">Общая сумма</div>
+                        <div style="font-size:20px; font-weight:700;" id="calcTotal">580 200 ₽</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== DEPOSITS PAGE ===== -->
+        <div id="page-deposits" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Вклады и накопления</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Надёжное размещение средств с гарантированным доходом</p>
+
+            <div class="grid-3">
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Лучший %</div>
+                        <div class="product-card-rate">до 18%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Максимальная ставка без снятия. От 100 000 ₽. Срок 3–12 месяцев. Капитализация процентов.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Вклад открыт', 'Вклад «Лучший %» успешно открыт. Начисление процентов начнётся с завтрашнего дня.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Управляй</div>
+                        <div class="product-card-rate">до 15%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        С возможностью пополнения и снятия. От 30 000 ₽. Срок 3–36 месяцев. Частичное снятие без потери %.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Вклад открыт', 'Вклад «Управляй» успешно открыт с начальным взносом.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <div class="product-card-title">Накопительный счёт</div>
+                        <div class="product-card-rate">до 16%</div>
+                    </div>
+                    <div class="product-card-desc">
+                        Бессрочный. Пополнение и снятие в любое время. Проценты начисляются ежедневно на минимальный остаток.
+                    </div>
+                    <div class="product-card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showModal('Счёт открыт', 'Накопительный счёт успешно открыт. Пополните его для начала начисления процентов.')">Открыть</button>
+                        <button class="btn btn-secondary btn-sm">Условия</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-title">Мои вклады</div>
+                <table class="table">
+                    <thead><tr><th>Название</th><th>Сумма</th><th>Ставка</th><th>Срок</th><th>Начислено</th><th>Статус</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>Вклад «Доходный»</td><td style="font-weight:600;">500 000 ₽</td>
+                            <td>16,5%</td><td>до 15.08.2026</td>
+                            <td style="color:var(--sber-green); font-weight:500;">+28 750 ₽</td>
+                            <td><span class="status status-active">Активен</span></td>
+                        </tr>
+                        <tr>
+                            <td>Накопительный счёт</td><td style="font-weight:600;">234 100 ₽</td>
+                            <td>14%</td><td>Бессрочный</td>
+                            <td style="color:var(--sber-green); font-weight:500;">+12 340 ₽</td>
+                            <td><span class="status status-active">Активен</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== EXCHANGE PAGE ===== -->
+        <div id="page-exchange" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:8px;">Курсы валют</h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">Актуальные курсы покупки и продажи валют</p>
+
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div class="card">
+                    <div class="card-title">Курсы на сегодня</div>
+                    <table class="table">
+                        <thead><tr><th>Валюта</th><th>Покупка</th><th>Продажа</th><th>ЦБ РФ</th></tr></thead>
+                        <tbody id="exchangeTable"></tbody>
+                    </table>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:12px;">Обновлено: <span id="rateUpdateTime"></span> • Курсы носят информационный характер</div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-title">Конвертер валют</div>
+                        <div class="form-group">
+                            <label class="form-label">Отдаю</label>
+                            <div style="display:flex; gap:8px;">
+                                <input class="form-input" type="text" value="1000" id="convertFrom" style="flex:1;" oninput="updateConverter()">
+                                <select class="form-select" style="width:80px;" id="convertFromCur" onchange="updateConverter()">
+                                    <option value="RUB">RUB</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="CNY">CNY</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="text-align:center; margin:8px 0; font-size:20px; color:var(--text-muted);">⇅</div>
+                        <div class="form-group">
+                            <label class="form-label">Получаю</label>
+                            <div style="display:flex; gap:8px;">
+                                <input class="form-input" type="text" id="convertTo" style="flex:1;" readonly>
+                                <select class="form-select" style="width:80px;" id="convertToCur" onchange="updateConverter()">
+                                    <option value="RUB">RUB</option>
+                                    <option value="USD" selected>USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="CNY">CNY</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="showModal('Обмен выполнен', 'Операция обмена валюты успешно выполнена. Средства зачислены на ваш валютный счёт.')">Обменять</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PROFILE PAGE ===== -->
+        <div id="page-profile" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Профиль</h2>
+
+            <div style="display:grid; grid-template-columns: 1fr 2fr; gap: 24px;">
+                <div class="card" style="text-align:center;">
+                    <div style="width:80px; height:80px; border-radius:50%; background:var(--sber-gradient); margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:32px; color:white; font-weight:700;">ИИ</div>
+                    <div style="font-size:18px; font-weight:600; margin-bottom:4px;">Иванов Иван Иванович</div>
+                    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Клиент с 2019 года</div>
+                    <span class="status status-active">Подтверждён</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">Уровень привилегий</div>
+                        <div style="font-size:16px; font-weight:600; color:var(--sber-green);">СберПрайм+</div>
+                        <div class="progress-bar" style="margin-top:8px;">
+                            <div class="progress-bar-fill" style="width:75%;"></div>
+                        </div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">7 500 / 10 000 бонусов до следующего уровня</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Личные данные</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                            <div class="form-group">
+                                <label class="form-label">ФИО</label>
+                                <input class="form-input" value="Иванов Иван Иванович" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Дата рождения</label>
+                                <input class="form-input" value="15.03.1990" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Телефон</label>
+                                <input class="form-input" value="+7 (999) 123-45-67">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input class="form-input" value="ivan.ivanov@mail.ru">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Паспорт</label>
+                                <input class="form-input" value="** ** ******" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ИНН</label>
+                                <input class="form-input" value="7707 ****  ****" readonly>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top:8px;" onclick="showModal('Сохранено', 'Данные профиля обновлены.')">Сохранить изменения</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Безопасность</div>
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-light);">
+                                <div><div style="font-weight:500;">Пароль</div><div style="font-size:12px; color:var(--text-muted);">Изменён 2 месяца назад</div></div>
+                                <button class="btn btn-secondary btn-sm">Изменить</button>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-light);">
+                                <div><div style="font-weight:500;">Двухфакторная аутентификация</div><div style="font-size:12px; color:var(--text-muted);">SMS на +7 (999) ***-**-67</div></div>
+                                <span class="status status-active">Включена</span>
+                            </div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0;">
+                                <div><div style="font-weight:500;">Активные сессии</div><div style="font-size:12px; color:var(--text-muted);">2 устройства</div></div>
+                                <button class="btn btn-secondary btn-sm">Управление</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SETTINGS PAGE ===== -->
+        <div id="page-settings" class="page fade-in">
+            <h2 style="font-size:24px; margin-bottom:20px;">Настройки</h2>
+            <div style="max-width:640px;">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-title">Уведомления</div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>Push-уведомления</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>Email-рассылка</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                            <span>SMS о списаниях</span>
+                            <input type="checkbox" checked>
+                        </label>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-title">Внешний вид</div>
+                    <div class="form-group">
+                        <label class="form-label">Язык</label>
+                        <select class="form-select"><option>Русский</option><option>English</option></select>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Аккаунт</div>
+                    <button class="btn btn-secondary" style="margin-right:8px;" onclick="doLogout()">Выйти из аккаунта</button>
+                    <button class="btn btn-danger" onclick="showModal('Вы уверены?', 'Удаление аккаунта необратимо. Все данные будут утеряны. Для подтверждения обратитесь в отделение банка.')">Удалить аккаунт</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-title">О банке</div>
+                <a class="footer-link">О компании</a>
+                <a class="footer-link">Реквизиты</a>
+                <a class="footer-link">Раскрытие информации</a>
+                <a class="footer-link">Вакансии</a>
+            </div>
+            <div>
+                <div class="footer-title">Услуги</div>
+                <a class="footer-link" onclick="navigateTo('cards')">Карты</a>
+                <a class="footer-link" onclick="navigateTo('credits')">Кредиты</a>
+                <a class="footer-link" onclick="navigateTo('deposits')">Вклады</a>
+                <a class="footer-link" onclick="navigateTo('exchange')">Курсы валют</a>
+            </div>
+            <div>
+                <div class="footer-title">Поддержка</div>
+                <a class="footer-link">8 800 555-55-50</a>
+                <a class="footer-link">Онлайн-чат</a>
+                <a class="footer-link">Написать в банк</a>
+                <a class="footer-link">Отделения и банкоматы</a>
+            </div>
+            <div>
+                <div class="footer-title">Приложение</div>
+                <a class="footer-link">App Store</a>
+                <a class="footer-link">Google Play</a>
+                <a class="footer-link">AppGallery</a>
+            </div>
+        </div>
+        <div class="footer-copy">
+            <span>© 2024 СберБанк. Генеральная лицензия Банка России № 1481</span>
+            <span>Политика конфиденциальности</span>
+        </div>
+    </footer>
+
+    <!-- Chat Support -->
+    <button class="chat-fab" onclick="toggleChat()">💬</button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-avatar">🧑‍💼</div>
+            <div class="chat-header-info">
+                <h4>Онлайн-консультант</h4>
+                <span>Обычно отвечает за 1 минуту</span>
+            </div>
+            <button class="chat-close" onclick="toggleChat()">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot"><div class="bubble">Здравствуйте! Я виртуальный помощник СберБанка. Чем могу помочь?</div><div class="msg-time">Сейчас</div></div>
+        </div>
+        <div class="chat-input-area">
+            <input class="chat-input" id="chatInput" placeholder="Введите сообщение..." onkeypress="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" onclick="sendChat()">➤</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="closeModal()">Понятно</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== STATE =====
+const rates = {
+    USD: { buy: 88.45, sell: 91.20, cb: 89.75 },
+    EUR: { buy: 96.30, sell: 99.10, cb: 97.65 },
+    CNY: { buy: 12.15, sell: 12.80, cb: 12.48 },
+    GBP: { buy: 112.50, sell: 116.30, cb: 114.20 },
+    JPY: { buy: 0.587, sell: 0.625, cb: 0.604 },
+    CHF: { buy: 101.40, sell: 104.90, cb: 103.10 },
+};
+const rateFlags = { USD:'🇺🇸', EUR:'🇪🇺', CNY:'🇨🇳', GBP:'🇬🇧', JPY:'🇯🇵', CHF:'🇨🇭' };
+const rateNames = { USD:'Доллар США', EUR:'Евро', CNY:'Юань', GBP:'Фунт стерлингов', JPY:'Японская иена', CHF:'Швейцарский франк' };
+
+const transactions = [
+    { name: 'Яндекс.Маркет', date: 'Сегодня, 15:42', amount: -4590, type: 'expense', icon: '🛒' },
+    { name: 'Пятёрочка', date: 'Сегодня, 12:18', amount: -1247, type: 'expense', icon: '🏪' },
+    { name: 'Зачисление зарплаты', date: 'Вчера, 10:00', amount: 95000, type: 'income', icon: '💼' },
+    { name: 'Перевод от Анны П.', date: 'Вчера, 18:15', amount: 2300, type: 'income', icon: '↙️' },
+    { name: 'Яндекс.Такси', date: '22 янв, 23:05', amount: -389, type: 'expense', icon: '🚕' },
+    { name: 'Spotify', date: '22 янв, 00:00', amount: -299, type: 'expense', icon: '🎵' },
+    { name: 'Перевод Максиму С.', date: '21 янв, 14:32', amount: -5000, type: 'expense', icon: '↗️' },
+    { name: 'Кэшбэк за январь', date: '20 янв, 12:00', amount: 1847, type: 'income', icon: '🎁' },
+];
+
+// ===== LOGIN =====
+function doLogin() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    renderTransactions();
+    renderExchangeRates();
+    updateConverter();
+}
+
+function doLogout() {
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+}
+
+// ===== NAVIGATION =====
+function navigateTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) {
+        target.classList.add('active');
+        target.classList.remove('fade-in');
+        void target.offsetWidth;
+        target.classList.add('fade-in');
+        window.scrollTo(0, 0);
+    }
+    document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.toggle('active', n.dataset.page === page);
+    });
+}
+
+// ===== TRANSACTIONS =====
+function renderTransactions() {
+    const list = document.getElementById('transactionList');
+    list.innerHTML = transactions.map(t => `
+        <li class="transaction-item">
+            <div class="transaction-icon ${t.type}">${t.icon}</div>
+            <div class="transaction-info">
+                <div class="transaction-name">${t.name}</div>
+                <div class="transaction-date">${t.date}</div>
+            </div>
+            <div class="transaction-amount ${t.amount > 0 ? 'positive' : 'negative'}">
+                ${t.amount > 0 ? '+' : ''}${t.amount.toLocaleString('ru-RU')} ₽
+            </div>
+        </li>
+    `).join('');
+}
+
+// ===== EXCHANGE RATES =====
+function renderExchangeRates() {
+    const table = document.getElementById('exchangeTable');
+    table.innerHTML = Object.entries(rates).map(([code, r]) => `
+        <tr>
+            <td><span style="margin-right:8px;">${rateFlags[code]}</span> <strong>${code}</strong> <span style="color:var(--text-muted); font-size:12px;">${rateNames[code]}</span></td>
+            <td style="color:var(--sber-green); font-weight:500;">${r.buy.toFixed(2)}</td>
+            <td style="color:var(--danger); font-weight:500;">${r.sell.toFixed(2)}</td>
+            <td>${r.cb.toFixed(2)}</td>
+        </tr>
+    `).join('');
+    document.getElementById('rateUpdateTime').textContent = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+
+    // Mini rates for sidebar
+    const mini = document.getElementById('miniRates');
+    mini.innerHTML = ['USD','EUR','CNY'].map(code => `
+        <div class="rate-row">
+            <span class="rate-flag">${rateFlags[code]}</span>
+            <div class="rate-info"><div class="rate-code">${code}</div><div class="rate-name">${rateNames[code]}</div></div>
+            <div><span class="rate-buy">${rates[code].buy.toFixed(2)}</span><span class="rate-sell" style="margin-left:16px;">${rates[code].sell.toFixed(2)}</span></div>
+        </div>
+    `).join('');
+}
+
+// ===== CONVERTER =====
+function updateConverter() {
+    const amount = parseFloat(document.getElementById('convertFrom').value) || 0;
+    const from = document.getElementById('convertFromCur').value;
+    const to = document.getElementById('convertToCur').value;
+
+    let result;
+    if (from === to) { result = amount; }
+    else if (from === 'RUB') { result = amount / rates[to].sell; }
+    else if (to === 'RUB') { result = amount * rates[from].buy; }
+    else { result = (amount * rates[from].buy) / rates[to].sell; }
+
+    document.getElementById('convertTo').value = result.toFixed(2);
+}
+
+// ===== MODALS =====
+function showModal(title, text) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalOverlay').classList.add('active');
+}
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// ===== TRANSFERS =====
+function doTransfer() {
+    const card = document.getElementById('transferCard').value.trim();
+    const amount = document.getElementById('transferAmount').value.trim();
+    if (!card || !amount) {
+        showModal('Ошибка', 'Заполните номер карты и сумму перевода.');
+        return;
+    }
+    showModal('Перевод выполнен', 'Перевод на сумму ' + amount + ' ₽ на карту ' + card + ' успешно выполнен.');
+    document.getElementById('transferCard').value = '';
+    document.getElementById('transferAmount').value = '';
+    document.getElementById('transferMsg').value = '';
+}
+
+// ===== PAYMENTS =====
+function showPayment(name) {
+    showModal('Оплата: ' + name, 'Выберите поставщика услуги и введите реквизиты для оплаты в появившейся форме.');
+}
+
+// ===== NOTIFICATIONS =====
+function openNotifications() {
+    showModal('Уведомления', 'У вас 2 новых уведомления:\n\n• Зачисление зарплаты 95 000 ₽\n• Кэшбэк за январь 1 847 ₽');
+}
+
+// ===== CHAT =====
+function toggleChat() {
+    document.getElementById('chatWindow').classList.toggle('active');
+}
+function sendChat() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    const messages = document.getElementById('chatMessages');
+    const time = new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+    messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${msg}</div><div class="msg-time">${time}</div></div>`;
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+
+    // Typing
+    messages.innerHTML += `<div class="chat-msg bot" id="typing"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    setTimeout(() => {
+        const t = document.getElementById('typing');
+        if (t) t.remove();
+        const lower = msg.toLowerCase();
+        let response;
+        if (lower.match(/баланс|счёт|счет|сколько/)) {
+            response = 'Ваш основной баланс: 847 293,54 ₽ (СберКарта **** 4276). Для детальной информации перейдите в раздел «Главная».';
+        } else if (lower.match(/кредит|займ/)) {
+            response = 'Мы предлагаем потребительские кредиты от 14,9% годовых, ипотеку от 5,3% и автокредиты от 3,9%. Подробности в разделе «Кредиты».';
+        } else if (lower.match(/карт/)) {
+            response = 'У вас 3 активные карты. Для заказа новой карты перейдите в раздел «Карты» и нажмите «Заказать новую карту».';
+        } else if (lower.match(/перевод|перевести/)) {
+            response = 'Для перевода перейдите в раздел «Переводы». Переводы до 50 000 ₽ между клиентами Сбера — без комиссии.';
+        } else if (lower.match(/вклад|депозит|накопи/)) {
+            response = 'Сейчас лучшие ставки по вкладам — до 18% годовых. Подробные условия доступны в разделе «Вклады».';
+        } else if (lower.match(/курс|доллар|евро|валют/)) {
+            response = 'Актуальные курсы валют доступны в разделе «Курсы валют». USD: покупка ' + rates.USD.buy.toFixed(2) + ' / продажа ' + rates.USD.sell.toFixed(2) + ' ₽.';
+        } else if (lower.match(/привет|здравствуй|добр/)) {
+            response = 'Здравствуйте! Рада помочь. Вы можете спросить меня о балансе, картах, переводах, кредитах или вкладах.';
+        } else if (lower.match(/спасибо|благодар/)) {
+            response = 'Рада помочь! Если у вас возникнут другие вопросы, я всегда на связи.';
+        } else if (lower.match(/оператор|человек|специалист/)) {
+            response = 'Подключаю специалиста. Среднее время ожидания — 3 минуты. Пока ожидаете, я могу попробовать помочь сама.';
+        } else {
+            const defaults = [
+                'Могу помочь с информацией о вашем счёте, картах, переводах, кредитах или вкладах. Уточните ваш вопрос.',
+                'К сожалению, не совсем поняла ваш вопрос. Попробуйте переформулировать или обратитесь к специалисту по номеру 8 800 555-55-50.',
+                'Я могу помочь с основными банковскими операциями. Для сложных вопросов рекомендую обратиться в отделение.',
+            ];
+            response = defaults[Math.floor(Math.random() * defaults.length)];
+        }
+        messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${response}</div><div class="msg-time">${time}</div></div>`;
+        messages.scrollTop = messages.scrollHeight;
+    }, 1500 + Math.random() * 1000);
+}
+
+// ===== INIT =====
+// Auto-login for demo
+// doLogin();
+</script>
+
+</body>
+</html>
