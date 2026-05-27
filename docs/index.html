@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hawkuy — Bio</title>
+  <title>Hawkuy — Гарант</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --red: #c0392b;
-      --dark-red: #8b0000;
       --crimson: #dc143c;
-      --bg: #0a0a0a;
-      --card-bg: rgba(15, 15, 15, 0.85);
-      --text: #e0e0e0;
-      --text-dim: #888;
+      --dark-red: #8b0000;
+      --red-glow: rgba(220,20,60,0.35);
+      --bg: #060608;
+      --card: rgba(12,12,18,0.9);
+      --card-border: rgba(220,20,60,0.12);
+      --card-hover: rgba(220,20,60,0.06);
+      --text: #eaeaea;
+      --text-dim: #777;
+      --accent: #ff1744;
     }
 
     html { scroll-behavior: smooth; }
@@ -29,923 +32,500 @@
       min-height: 100vh;
     }
 
-    /* ===== BACKGROUND EFFECTS ===== */
-    .bg-layer {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
+    /* ===== BG ===== */
+    .bg {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden;
     }
-
-    .bg-layer::before {
+    .bg::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(220,20,60,0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(192,57,43,0.08) 0%, transparent 50%);
+        radial-gradient(ellipse 600px 600px at 25% 20%, rgba(220,20,60,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 75% 70%, rgba(139,0,0,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 800px 400px at 50% 100%, rgba(220,20,60,0.04) 0%, transparent 50%);
+    }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(220,20,60,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(220,20,60,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(60px,60px); }
     }
 
-    .bg-layer::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect fill="%230a0a0a" width="200" height="200"/><circle fill="%23ffffff" cx="100" cy="100" r="0.5" opacity="0.3"/><circle fill="%23ffffff" cx="30" cy="40" r="0.3" opacity="0.2"/><circle fill="%23ffffff" cx="170" cy="80" r="0.4" opacity="0.25"/><circle fill="%23ffffff" cx="60" cy="160" r="0.3" opacity="0.15"/><circle fill="%23ffffff" cx="140" cy="30" r="0.35" opacity="0.2"/></svg>') repeat;
-      background-size: 200px 200px;
-      opacity: 0.5;
-    }
-
-    /* Floating blood particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
+    /* Particles */
+    .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
     .particle {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
+      position: absolute; border-radius: 50%; pointer-events: none;
       animation: floatUp linear infinite;
     }
-
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(0); opacity: 0; }
       10% { opacity: 1; }
-      90% { opacity: 0.6; }
+      90% { opacity: 0.5; }
       100% { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
-    /* ===== SLASH EFFECTS ===== */
-    .slash-container {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
+    /* Slash FX */
+    .slash-fx { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
     .slash {
       position: absolute;
-      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.6), rgba(255,255,255,0.8), rgba(220,20,60,0.6), transparent);
-      height: 2px;
-      width: 0;
-      transform-origin: center;
-      opacity: 0;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.5), rgba(255,255,255,0.7), rgba(220,20,60,0.5), transparent);
+      height: 2px; width: 0; opacity: 0;
     }
-
-    .slash-1 {
-      top: 30%;
-      left: -10%;
-      transform: rotate(-25deg);
-      animation: slashAnim 8s ease-in-out infinite;
-    }
-
-    .slash-2 {
-      top: 60%;
-      right: -10%;
-      transform: rotate(15deg);
-      animation: slashAnim 8s ease-in-out 4s infinite;
-    }
-
+    .slash-1 { top: 25%; left: -10%; transform: rotate(-20deg); animation: slashAnim 10s ease-in-out infinite; }
+    .slash-2 { top: 65%; right: -10%; transform: rotate(12deg); animation: slashAnim 10s ease-in-out 5s infinite; }
     @keyframes slashAnim {
-      0%, 90%, 100% { width: 0; opacity: 0; }
-      45% { width: 120vw; opacity: 1; }
+      0%,92%,100% { width: 0; opacity: 0; }
+      46% { width: 120vw; opacity: 1; }
       50% { width: 120vw; opacity: 0; }
     }
 
-    /* ===== MAIN CONTENT ===== */
-    .content {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
+    /* ===== LAYOUT ===== */
+    .page {
+      position: relative; z-index: 10;
+      max-width: 520px; margin: 0 auto;
+      padding: 50px 20px 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
 
-    /* ===== HERO ===== */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      position: relative;
+    /* ===== AVATAR ===== */
+    .avatar-wrap {
+      position: relative; width: 130px; height: 130px;
+      animation: fadeScale 0.8s ease-out 0.2s both;
     }
-
-    .avatar-ring {
-      position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 30px;
-      animation: fadeInScale 1s ease-out 0.3s both;
-    }
-
-    .avatar-ring::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
+    .avatar-wrap::before {
+      content: ''; position: absolute; inset: -5px; border-radius: 50%;
       background: conic-gradient(var(--crimson), var(--dark-red), transparent, var(--crimson));
-      animation: rotateRing 4s linear infinite;
+      animation: spin 3s linear infinite;
     }
-
-    @keyframes rotateRing {
-      to { transform: rotate(360deg); }
+    .avatar-wrap::after {
+      content: ''; position: absolute; inset: -12px; border-radius: 50%;
+      border: 1px solid rgba(220,20,60,0.15);
+      animation: spin 6s linear infinite reverse;
     }
-
+    @keyframes spin { to { transform: rotate(360deg); } }
     .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, #12121a, #1a1025);
       border: 3px solid var(--bg);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 48px;
-      font-weight: 900;
-      color: var(--crimson);
-      text-shadow: 0 0 20px rgba(220,20,60,0.5);
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900;
+      color: var(--crimson); text-shadow: 0 0 25px var(--red-glow);
     }
 
-    .avatar .kanji {
-      font-size: 64px;
-      line-height: 1;
-    }
-
-    .username {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      letter-spacing: 4px;
-      text-transform: uppercase;
+    /* ===== NAME + TAG ===== */
+    .name {
+      font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+      letter-spacing: 3px; text-transform: uppercase;
       background: linear-gradient(135deg, #fff 0%, var(--crimson) 50%, #fff 100%);
       background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: fadeInScale 1s ease-out 0.6s both, shimmer 3s ease-in-out infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: fadeScale 0.8s ease-out 0.4s both, shimmer 4s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100% { background-position: 0% center; } 50% { background-position: 200% center; } }
+    @keyframes fadeScale { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 20px;
+      background: rgba(220,20,60,0.1); border: 1px solid rgba(220,20,60,0.25);
+      font-size: 0.8rem; font-weight: 600; color: var(--crimson);
+      letter-spacing: 2px; text-transform: uppercase;
+      animation: fadeIn 0.8s ease-out 0.6s both;
+    }
+    .badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--crimson); box-shadow: 0 0 8px var(--crimson);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      width: 100%; height: 1px; position: relative;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.3), transparent);
     }
 
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% center; }
-      50% { background-position: 200% center; }
-    }
-
-    .tagline {
-      font-size: 1rem;
-      color: var(--text-dim);
-      margin-top: 12px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      font-weight: 300;
-      animation: fadeIn 1s ease-out 0.9s both;
-    }
-
-    .quote-section {
-      margin-top: 40px;
-      max-width: 500px;
-      animation: fadeIn 1s ease-out 1.2s both;
-    }
-
-    .quote {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: rgba(220,20,60,0.8);
-      line-height: 1.8;
-      position: relative;
-      padding: 0 20px;
-    }
-
-    .quote::before, .quote::after {
-      font-size: 2rem;
-      color: var(--dark-red);
-      font-style: normal;
-      line-height: 1;
-    }
-
-    .quote::before { content: '「'; }
-    .quote::after { content: '」'; }
-
-    .quote-author {
-      margin-top: 10px;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 30px;
-      animation: fadeIn 1s ease-out 1.5s both, bounce 2s ease-in-out infinite;
-    }
-
-    .scroll-indicator svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--crimson);
-      opacity: 0.6;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(10px); }
-    }
-
-    /* ===== CARDS SECTION ===== */
-    .cards-section {
+    /* ===== SECTION ===== */
+    .section {
       width: 100%;
-      max-width: 600px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding-bottom: 60px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(220,20,60,0.15);
+      background: var(--card);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 28px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0;
-      transform: translateY(40px);
+      padding: 24px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
     }
+    .section.visible { opacity: 1; transform: translateY(0); }
 
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card:hover {
-      border-color: rgba(220,20,60,0.4);
-      box-shadow: 0 8px 40px rgba(220,20,60,0.1), inset 0 0 60px rgba(220,20,60,0.03);
-      transform: translateY(-4px);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .section-label {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Russo One', sans-serif; font-size: 0.85rem;
+      color: var(--crimson); letter-spacing: 2px; text-transform: uppercase;
       margin-bottom: 16px;
     }
-
-    .card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      background: rgba(220,20,60,0.1);
-      border: 1px solid rgba(220,20,60,0.2);
-      flex-shrink: 0;
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(220,20,60,0.3), transparent);
     }
 
-    .card-title {
-      font-family: 'Russo One', sans-serif;
-      font-size: 1.1rem;
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .about-item {
+      padding: 14px; border-radius: 12px;
+      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.08);
+      text-align: center;
+    }
+    .about-item .val {
+      font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700;
       color: #fff;
-      letter-spacing: 1px;
     }
-
-    .card-text {
-      color: var(--text-dim);
-      line-height: 1.7;
-      font-size: 0.95rem;
+    .about-item .lbl {
+      font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;
+      text-transform: uppercase; letter-spacing: 1px;
     }
-
-    /* ===== LINKS ===== */
-    .links-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+    .about-desc {
+      margin-top: 14px;
+      padding: 14px; border-radius: 12px;
+      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.08);
+      font-size: 0.9rem; line-height: 1.6; color: var(--text-dim);
     }
+    .about-desc span { color: var(--crimson); font-weight: 600; }
 
-    .link-btn {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 22px;
+    /* ===== BUTTONS ===== */
+    .btn-stack { display: flex; flex-direction: column; gap: 10px; }
+
+    .btn {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 20px;
+      background: rgba(220,20,60,0.04);
+      border: 1px solid rgba(220,20,60,0.12);
+      border-radius: 14px;
+      color: var(--text); text-decoration: none;
+      font-weight: 500; font-size: 0.95rem;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative; overflow: hidden;
+    }
+    .btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.08), transparent);
+      transform: translateX(-100%); transition: transform 0.5s ease;
+    }
+    .btn:hover::before { transform: translateX(100%); }
+    .btn:hover {
+      border-color: rgba(220,20,60,0.4);
+      background: rgba(220,20,60,0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(220,20,60,0.12);
+    }
+    .btn:active { transform: translateY(0) scale(0.98); }
+
+    .btn-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .btn-icon.tg { background: rgba(0,136,204,0.12); color: #0088cc; }
+    .btn-icon.proof { background: rgba(76,175,80,0.12); color: #4caf50; }
+    .btn-icon.vouch { background: rgba(255,193,7,0.12); color: #ffc107; }
+    .btn-icon.bot { background: rgba(156,39,176,0.12); color: #ce93d8; }
+    .btn-icon.trust { background: rgba(33,150,243,0.12); color: #42a5f5; }
+    .btn-icon.warn { background: rgba(255,87,34,0.12); color: #ff5722; }
+    .btn-icon.spam { background: rgba(220,20,60,0.12); color: var(--crimson); }
+
+    .btn-text { flex: 1; }
+    .btn-text .main { display: block; font-weight: 600; }
+    .btn-text .sub { display: block; font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+
+    .btn .arrow {
+      margin-left: auto; opacity: 0; transform: translateX(-8px);
+      transition: all 0.3s ease; color: var(--crimson); font-size: 1.1rem;
+    }
+    .btn:hover .arrow { opacity: 1; transform: translateX(0); }
+
+    /* ===== GASD NOTE ===== */
+    .note {
+      width: 100%; padding: 16px 20px; border-radius: 14px;
+      background: rgba(255,87,34,0.05);
+      border: 1px solid rgba(255,87,34,0.15);
+      font-size: 0.85rem; line-height: 1.6; color: var(--text-dim);
+      opacity: 0; transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+    .note.visible { opacity: 1; transform: translateY(0); }
+    .note strong { color: #ff5722; }
+
+    /* ===== SPAM BAN ===== */
+    .spam-section {
+      width: 100%; text-align: center;
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid rgba(220,20,60,0.15);
+      border-radius: 16px;
+      opacity: 0; transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+    .spam-section.visible { opacity: 1; transform: translateY(0); }
+    .spam-title {
+      font-family: 'Russo One', sans-serif; font-size: 0.85rem;
+      color: var(--crimson); letter-spacing: 2px; margin-bottom: 8px;
+    }
+    .spam-desc { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 14px; }
+    .spam-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .spam-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 10px;
       background: rgba(220,20,60,0.06);
       border: 1px solid rgba(220,20,60,0.15);
-      border-radius: 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
+      color: var(--text); text-decoration: none; font-size: 0.85rem; font-weight: 500;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
-
-    .link-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.1), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.5s ease;
-    }
-
-    .link-btn:hover::before {
-      transform: translateX(100%);
-    }
-
-    .link-btn:hover {
-      border-color: rgba(220,20,60,0.5);
-      background: rgba(220,20,60,0.1);
-      transform: translateX(6px);
-      box-shadow: 0 4px 20px rgba(220,20,60,0.15);
-    }
-
-    .link-btn .icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .link-btn .arrow {
-      margin-left: auto;
-      opacity: 0;
-      transform: translateX(-10px);
-      transition: all 0.3s ease;
-      color: var(--crimson);
-    }
-
-    .link-btn:hover .arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .tg-icon { background: rgba(0,136,204,0.15); color: #0088cc; }
-    .gh-icon { background: rgba(255,255,255,0.1); color: #fff; }
-    .ds-icon { background: rgba(88,101,242,0.15); color: #5865f2; }
-
-    /* ===== ANIME SCENE CARD ===== */
-    .scene-visual {
-      width: 100%;
-      height: 200px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #0d0d0d 0%, #1a0a0a 30%, #2d0a0a 60%, #0d0d0d 100%);
-    }
-
-    .scene-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 30% 50%, rgba(220,20,60,0.3) 0%, transparent 50%),
-        radial-gradient(circle at 70% 40%, rgba(139,0,0,0.2) 0%, transparent 40%);
-      animation: scenePulse 4s ease-in-out infinite;
-    }
-
-    .scene-visual::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60%;
-      background: linear-gradient(to top, var(--card-bg), transparent);
-    }
-
-    @keyframes scenePulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-
-    .scene-text {
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      z-index: 2;
-      font-family: 'Russo One', sans-serif;
-      font-size: 1.3rem;
-      color: var(--crimson);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-    }
-
-    .scene-kanji {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 5rem;
-      color: rgba(220,20,60,0.08);
-      font-family: serif;
-      z-index: 1;
-      animation: kanjiFade 6s ease-in-out infinite;
-    }
-
-    @keyframes kanjiFade {
-      0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.05); }
-    }
-
-    /* Sword particles in scene */
-    .spark {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--crimson);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--crimson);
-      animation: sparkAnim linear infinite;
-      z-index: 1;
-    }
-
-    @keyframes sparkAnim {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
-    }
-
-    /* ===== STATS ===== */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .stat {
-      text-align: center;
-      padding: 14px 8px;
-      background: rgba(220,20,60,0.04);
-      border-radius: 10px;
-      border: 1px solid rgba(220,20,60,0.08);
-    }
-
-    .stat-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--crimson);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-top: 4px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .spam-btn:hover {
+      background: rgba(220,20,60,0.12); border-color: rgba(220,20,60,0.4);
+      transform: translateY(-2px); box-shadow: 0 4px 15px rgba(220,20,60,0.1);
     }
 
     /* ===== FOOTER ===== */
     .footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: var(--text-dim);
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      border-top: 1px solid rgba(220,20,60,0.1);
-      width: 100%;
-      max-width: 600px;
+      padding: 20px; text-align: center;
+      font-size: 0.7rem; color: rgba(255,255,255,0.15);
+      letter-spacing: 3px; text-transform: uppercase;
     }
 
-    .footer span {
-      color: var(--crimson);
-    }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    /* ===== GLITCH EFFECT ===== */
-    .glitch {
-      position: relative;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    /* ===== LOADER ===== */
+    .loader {
+      position: fixed; inset: 0; z-index: 10000;
       background: var(--bg);
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
-
-    .glitch::before {
-      animation: glitch-1 4s infinite linear alternate-reverse;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-      -webkit-text-fill-color: var(--crimson);
-      opacity: 0.8;
+    .loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-text {
+      font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
+      color: var(--crimson); letter-spacing: 5px;
+      animation: loaderPulse 1s ease-in-out infinite;
     }
-
-    .glitch::after {
-      animation: glitch-2 4s infinite linear alternate-reverse;
-      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-      -webkit-text-fill-color: rgba(0,136,204,0.8);
-      opacity: 0.8;
+    .loader-bar {
+      width: 180px; height: 2px; background: rgba(220,20,60,0.15);
+      margin-top: 16px; border-radius: 2px; overflow: hidden;
     }
-
-    @keyframes glitch-1 {
-      0%, 95%, 100% { transform: translate(0); }
-      96% { transform: translate(-3px, 2px); }
-      97% { transform: translate(3px, -1px); }
-      98% { transform: translate(-2px, -2px); }
-      99% { transform: translate(2px, 1px); }
+    .loader-fill {
+      height: 100%; background: var(--crimson);
+      border-radius: 2px; box-shadow: 0 0 10px var(--crimson);
+      animation: fill 1.2s ease-in-out forwards;
     }
+    @keyframes loaderPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    @keyframes fill { 0% { width: 0; } 100% { width: 100%; } }
 
-    @keyframes glitch-2 {
-      0%, 95%, 100% { transform: translate(0); }
-      96% { transform: translate(3px, -2px); }
-      97% { transform: translate(-3px, 1px); }
-      98% { transform: translate(2px, 2px); }
-      99% { transform: translate(-2px, -1px); }
+    /* Cursor trail (desktop) */
+    .trail {
+      position: fixed; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--crimson); pointer-events: none; z-index: 9999;
+      opacity: 0; transition: opacity 0.3s;
+      box-shadow: 0 0 12px var(--crimson), 0 0 24px rgba(220,20,60,0.2);
     }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 480px) {
-      .username {
-        font-size: 1.8rem;
-        letter-spacing: 2px;
-      }
-
-      .tagline {
-        font-size: 0.85rem;
-        letter-spacing: 3px;
-      }
-
-      .quote { font-size: 0.95rem; }
-
-      .avatar-ring {
-        width: 130px;
-        height: 130px;
-      }
-
-      .avatar .kanji { font-size: 50px; }
-
-      .card { padding: 22px; }
-
-      .stats-row {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-      }
-
-      .stat-value { font-size: 1.1rem; }
-      .stat-label { font-size: 0.7rem; }
-
-      .scene-visual { height: 160px; }
-      .scene-text { font-size: 1.1rem; }
-      .scene-kanji { font-size: 3.5rem; }
-
-      .link-btn {
-        padding: 14px 18px;
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .links-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    /* ===== CURSOR TRAIL ===== */
-    .cursor-trail {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--crimson);
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.3s;
-      box-shadow: 0 0 10px var(--crimson), 0 0 20px rgba(220,20,60,0.3);
-    }
-
-    /* ===== LOADING SCREEN ===== */
-    .loader {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-
-    .loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader-text {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      color: var(--crimson);
-      letter-spacing: 4px;
-      animation: loaderPulse 1.2s ease-in-out infinite;
-    }
-
-    .loader-bar {
-      width: 200px;
-      height: 2px;
-      background: rgba(220,20,60,0.2);
-      margin-top: 20px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .loader-bar-fill {
-      height: 100%;
-      background: var(--crimson);
-      border-radius: 2px;
-      animation: loaderFill 1.5s ease-in-out forwards;
-      box-shadow: 0 0 10px var(--crimson);
-    }
-
-    @keyframes loaderPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes loaderFill {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-
-    /* Blood drip accents */
-    .blood-drip {
-      position: fixed;
-      top: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, transparent, var(--crimson), transparent);
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0;
-      animation: dripAnim var(--duration) ease-in var(--delay) infinite;
-    }
-
-    @keyframes dripAnim {
-      0% { height: 0; top: -10px; opacity: 0; }
-      10% { opacity: 0.6; }
-      100% { height: 100px; top: 110vh; opacity: 0; }
+      .page { padding: 35px 16px 30px; gap: 16px; }
+      .avatar-wrap { width: 110px; height: 110px; }
+      .avatar { font-size: 34px; }
+      .name { font-size: 1.6rem; letter-spacing: 2px; }
+      .section { padding: 20px; border-radius: 14px; }
+      .about-grid { gap: 8px; }
+      .about-item { padding: 12px; }
+      .about-item .val { font-size: 0.9rem; }
+      .btn { padding: 13px 16px; }
+      .btn-icon { width: 34px; height: 34px; }
+      .spam-buttons { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Loading screen -->
+  <!-- Loader -->
   <div class="loader" id="loader">
     <div class="loader-text">HAWKUY</div>
-    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
   </div>
 
-  <!-- Background -->
-  <div class="bg-layer"></div>
-
-  <!-- Blood drips -->
-  <div class="blood-drip" style="left:5%; --duration:7s; --delay:0s;"></div>
-  <div class="blood-drip" style="left:15%; --duration:9s; --delay:2s;"></div>
-  <div class="blood-drip" style="left:35%; --duration:6s; --delay:1s;"></div>
-  <div class="blood-drip" style="left:55%; --duration:8s; --delay:3s;"></div>
-  <div class="blood-drip" style="left:75%; --duration:7s; --delay:1.5s;"></div>
-  <div class="blood-drip" style="left:90%; --duration:10s; --delay:4s;"></div>
-
-  <!-- Particles -->
+  <!-- BG -->
+  <div class="bg"><div class="bg-grid"></div></div>
   <div class="particles" id="particles"></div>
+  <div class="slash-fx"><div class="slash slash-1"></div><div class="slash slash-2"></div></div>
+  <div class="trail" id="trail"></div>
 
-  <!-- Slash effects -->
-  <div class="slash-container">
-    <div class="slash slash-1"></div>
-    <div class="slash slash-2"></div>
-  </div>
+  <!-- PAGE -->
+  <div class="page">
 
-  <!-- Cursor trail -->
-  <div class="cursor-trail" id="cursorTrail"></div>
-
-  <!-- Main content -->
-  <div class="content">
-
-    <!-- Hero -->
-    <section class="hero">
-      <div class="avatar-ring">
-        <div class="avatar">
-          <span class="kanji">鷹</span>
-        </div>
-      </div>
-
-      <h1 class="username glitch" data-text="HAWKUY">HAWKUY</h1>
-      <p class="tagline">殺 &nbsp; A K A M E &nbsp; G A &nbsp; K I L L &nbsp; 殺</p>
-
-      <div class="quote-section">
-        <p class="quote">Даже если мое тело сломано... моя воля никогда не погаснет. Я передам свою силу тебе — живи и сражайся!</p>
-        <p class="quote-author">— Булат · Инкурсио</p>
-      </div>
-
-      <div class="scroll-indicator">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </div>
-    </section>
-
-    <!-- Cards -->
-    <div class="cards-section">
-
-      <!-- Anime scene card -->
-      <div class="card" data-reveal>
-        <div class="scene-visual">
-          <div class="scene-kanji">斬</div>
-          <div class="spark" style="top:30%;left:40%;--dx:50px;--dy:-30px;animation-duration:2s;animation-delay:0s;"></div>
-          <div class="spark" style="top:50%;left:60%;--dx:-40px;--dy:20px;animation-duration:1.5s;animation-delay:0.3s;"></div>
-          <div class="spark" style="top:40%;left:50%;--dx:30px;--dy:40px;animation-duration:2.2s;animation-delay:0.7s;"></div>
-          <div class="spark" style="top:60%;left:30%;--dx:-50px;--dy:-20px;animation-duration:1.8s;animation-delay:1s;"></div>
-          <div class="spark" style="top:35%;left:70%;--dx:20px;--dy:-40px;animation-duration:2s;animation-delay:0.5s;"></div>
-          <div class="spark" style="top:55%;left:45%;--dx:-30px;--dy:30px;animation-duration:1.7s;animation-delay:0.2s;"></div>
-          <p class="scene-text">Последний бой Булата</p>
-        </div>
-        <div class="card-text">
-          Булат — Аники — отдал свою жизнь в бою против Трёх Зверей, чтобы защитить Тацуми. 
-          Его Тэйгу «Инкурсио» был передан дальше — и его дух продолжил сражаться.
-          Момент, который навсегда запомнился каждому фанату Akame ga Kill.
-        </div>
-      </div>
-
-      <!-- About card -->
-      <div class="card" data-reveal>
-        <div class="card-header">
-          <div class="card-icon">⚔️</div>
-          <div class="card-title">Обо мне</div>
-        </div>
-        <div class="card-text">
-          Ценю силу духа и верность. Как Булат передал Инкурсио Тацуми — 
-          так и настоящая сила передаётся через поступки, а не слова.
-        </div>
-        <div class="stats-row">
-          <div class="stat">
-            <div class="stat-value">Night</div>
-            <div class="stat-label">Raid</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">斬</div>
-            <div class="stat-label">Kill</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">∞</div>
-            <div class="stat-label">Spirit</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Links card -->
-      <div class="card" data-reveal>
-        <div class="card-header">
-          <div class="card-icon">🔗</div>
-          <div class="card-title">Ссылки</div>
-        </div>
-        <div class="links-grid">
-          <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="link-btn">
-            <div class="icon tg-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.014 12.014 0 0 0 11.944 0Zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg>
-            </div>
-            Telegram
-            <span class="arrow">→</span>
-          </a>
-          <a href="https://github.com/qew-crypto" target="_blank" rel="noopener" class="link-btn">
-            <div class="icon gh-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/></svg>
-            </div>
-            GitHub
-            <span class="arrow">→</span>
-          </a>
-        </div>
-      </div>
-
+    <!-- Avatar -->
+    <div class="avatar-wrap">
+      <div class="avatar">鷹</div>
     </div>
 
-    <div class="footer">
-      <span>鷹</span> &nbsp; HAWKUY &copy; 2025 &nbsp; <span>殺</span>
+    <h1 class="name">HAWKUY</h1>
+    <div class="badge">Гарант</div>
+
+    <div class="divider"></div>
+
+    <!-- About Me -->
+    <div class="section" data-reveal>
+      <div class="section-label">Обо мне</div>
+      <div class="about-grid">
+        <div class="about-item"><div class="val">Денис</div><div class="lbl">Имя</div></div>
+        <div class="about-item"><div class="val">15 y.o</div><div class="lbl">Возраст</div></div>
+        <div class="about-item"><div class="val">20 декабря</div><div class="lbl">День рождения</div></div>
+        <div class="about-item"><div class="val">Python</div><div class="lbl">Стек</div></div>
+      </div>
+      <div class="about-desc">
+        <span>Кодер</span> — Python + вайбкодинг. Делаю ботов, сервисы и всё что нужно. Крутой и точка.
+      </div>
     </div>
+
+    <!-- Bio -->
+    <div class="section" data-reveal>
+      <div class="section-label">Био</div>
+      <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="btn">
+        <div class="btn-icon tg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056 12.014 12.014 0 0 0 11.944 0Zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg>
+        </div>
+        <div class="btn-text"><span class="main">@Hawkuy</span><span class="sub">Telegram</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Пруфы -->
+    <div class="section" data-reveal>
+      <div class="section-label">Пруфы</div>
+      <a href="https://t.me/dehnc2000Proof" target="_blank" rel="noopener" class="btn">
+        <div class="btn-icon proof">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="btn-text"><span class="main">@dehnc2000Proof</span><span class="sub">Мои пруфы</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Ручения -->
+    <div class="section" data-reveal>
+      <div class="section-label">Ручения</div>
+      <a href="https://t.me/handsHawkuy" target="_blank" rel="noopener" class="btn">
+        <div class="btn-icon vouch">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="btn-text"><span class="main">@handsHawkuy</span><span class="sub">Мои ручения</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Проекты -->
+    <div class="section" data-reveal>
+      <div class="section-label">Мои проекты</div>
+      <div class="btn-stack">
+        <a href="https://t.me/SharkBalanceBot" target="_blank" rel="noopener" class="btn">
+          <div class="btn-icon bot">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="btn-text"><span class="main">@SharkBalanceBot</span><span class="sub">Магазин цифровых товаров</span></div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="https://t.me/genncalls_bot" target="_blank" rel="noopener" class="btn">
+          <div class="btn-icon bot">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="btn-text"><span class="main">@genncalls_bot</span><span class="sub">Пранк бот</span></div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="https://t.me/gencals_bot" target="_blank" rel="noopener" class="btn">
+          <div class="btn-icon bot">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="btn-text"><span class="main">@gencals_bot</span><span class="sub">Пранк + бомбер + анонимки и т.п.</span></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Трасты -->
+    <div class="section" data-reveal>
+      <div class="section-label">Трасты в базах</div>
+      <a href="https://t.me/Impex_Antiscam" target="_blank" rel="noopener" class="btn">
+        <div class="btn-icon trust">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="btn-text"><span class="main">@Impex_Antiscam</span><span class="sub">Траст в базе</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- GASD Note -->
+    <div class="note" data-reveal>
+      <strong>⚠ ГАСД:</strong> Занесён без доквы. Писал апелляцию — проигнорировали.
+    </div>
+
+    <!-- Spam Ban -->
+    <div class="spam-section" data-reveal>
+      <div class="spam-title">СПАМ-БАН?</div>
+      <div class="spam-desc">Пишите в сообщения каналу или используйте бота:</div>
+      <div class="spam-buttons">
+        <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="spam-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Написать
+        </a>
+        <a href="https://t.me/Spikespam_bot" target="_blank" rel="noopener" class="spam-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          @Spikespam_bot
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">鷹 HAWKUY © 2025</div>
 
   </div>
 
   <script>
-    // Loading screen
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1600);
+      setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1300);
     });
 
-    // Create floating particles
-    const particlesContainer = document.getElementById('particles');
-    function createParticle() {
+    // Particles
+    const pc = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
-      const size = Math.random() * 4 + 1;
-      const left = Math.random() * 100;
-      const dur = Math.random() * 8 + 6;
-      const delay = Math.random() * 5;
-      const hue = Math.random() > 0.5 ? '0' : '348';
-      p.style.cssText = `
-        width: ${size}px;
-        height: ${size}px;
-        left: ${left}%;
-        background: hsla(${hue}, 80%, 40%, ${Math.random() * 0.5 + 0.3});
-        box-shadow: 0 0 ${size * 2}px hsla(${hue}, 80%, 40%, 0.3);
-        animation-duration: ${dur}s;
-        animation-delay: ${delay}s;
-      `;
-      particlesContainer.appendChild(p);
-    }
-    for (let i = 0; i < 30; i++) createParticle();
-
-    // Cursor trail (desktop only)
-    const trail = document.getElementById('cursorTrail');
-    if (window.matchMedia('(pointer: fine)').matches) {
-      let mx = 0, my = 0, tx = 0, ty = 0;
-      document.addEventListener('mousemove', e => {
-        mx = e.clientX;
-        my = e.clientY;
-        trail.style.opacity = '1';
-      });
-      document.addEventListener('mouseleave', () => {
-        trail.style.opacity = '0';
-      });
-      function animateTrail() {
-        tx += (mx - tx) * 0.15;
-        ty += (my - ty) * 0.15;
-        trail.style.transform = `translate(${tx - 4}px, ${ty - 4}px)`;
-        requestAnimationFrame(animateTrail);
-      }
-      animateTrail();
+      const s = Math.random() * 3 + 1;
+      p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;background:hsla(${Math.random()>0.5?'0':'348'},80%,40%,${Math.random()*0.4+0.2});box-shadow:0 0 ${s*2}px hsla(348,80%,40%,0.3);animation-duration:${Math.random()*7+5}s;animation-delay:${Math.random()*4}s;`;
+      pc.appendChild(p);
     }
 
-    // Intersection Observer for card reveals
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, i * 150);
-          observer.unobserve(entry.target);
+    // Cursor trail
+    const t = document.getElementById('trail');
+    if (window.matchMedia('(pointer:fine)').matches) {
+      let mx=0,my=0,tx=0,ty=0;
+      document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; t.style.opacity='1'; });
+      document.addEventListener('mouseleave', () => t.style.opacity='0');
+      (function anim() { tx+=(mx-tx)*0.13; ty+=(my-ty)*0.13; t.style.transform=`translate(${tx-4}px,${ty-4}px)`; requestAnimationFrame(anim); })();
+    }
+
+    // Reveal on scroll
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 100);
+          obs.unobserve(e.target);
         }
       });
     }, { threshold: 0.1 });
-
-    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
-
-    // Parallax on scroll
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrolled = window.scrollY;
-          const hero = document.querySelector('.hero');
-          if (hero) {
-            hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-            hero.style.opacity = Math.max(0, 1 - scrolled / 600);
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-
-    // Typing effect on quote (optional subtle re-glow)
-    const quote = document.querySelector('.quote');
-    if (quote) {
-      setInterval(() => {
-        quote.style.textShadow = `0 0 ${Math.random() * 10 + 5}px rgba(220,20,60,${Math.random() * 0.3 + 0.1})`;
-      }, 2000);
-    }
+    document.querySelectorAll('[data-reveal]').forEach(el => obs.observe(el));
   </script>
 
 </body>
