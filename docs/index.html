@@ -14,16 +14,13 @@
       --dark-red: #8b0000;
       --red-glow: rgba(220,20,60,0.35);
       --bg: #060608;
-      --card: rgba(12,12,18,0.9);
-      --card-border: rgba(220,20,60,0.12);
-      --card-hover: rgba(220,20,60,0.06);
+      --card: rgba(12,12,18,0.92);
+      --card-border: rgba(220,20,60,0.1);
       --text: #eaeaea;
-      --text-dim: #777;
-      --accent: #ff1744;
+      --text-dim: #888;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
@@ -33,40 +30,30 @@
     }
 
     /* ===== BG ===== */
-    .bg {
-      position: fixed; inset: 0; z-index: 0; overflow: hidden;
-    }
+    .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
     .bg::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 600px 600px at 25% 20%, rgba(220,20,60,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 500px 500px at 75% 70%, rgba(139,0,0,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 800px 400px at 50% 100%, rgba(220,20,60,0.04) 0%, transparent 50%);
+        radial-gradient(ellipse 800px 800px at 20% 15%, rgba(220,20,60,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 600px at 80% 75%, rgba(139,0,0,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 1000px 500px at 50% 100%, rgba(220,20,60,0.03) 0%, transparent 50%);
     }
     .bg-grid {
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(220,20,60,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(220,20,60,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridMove 20s linear infinite;
+        linear-gradient(rgba(220,20,60,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(220,20,60,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: gridMove 25s linear infinite;
     }
-    @keyframes gridMove {
-      0% { transform: translate(0,0); }
-      100% { transform: translate(60px,60px); }
-    }
+    @keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(80px,80px); } }
 
     /* Particles */
     .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-    .particle {
-      position: absolute; border-radius: 50%; pointer-events: none;
-      animation: floatUp linear infinite;
-    }
+    .particle { position: absolute; border-radius: 50%; pointer-events: none; animation: floatUp linear infinite; }
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 0.5; }
+      10% { opacity: 1; } 90% { opacity: 0.5; }
       100% { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
@@ -74,11 +61,11 @@
     .slash-fx { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
     .slash {
       position: absolute;
-      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.5), rgba(255,255,255,0.7), rgba(220,20,60,0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.4), rgba(255,255,255,0.6), rgba(220,20,60,0.4), transparent);
       height: 2px; width: 0; opacity: 0;
     }
-    .slash-1 { top: 25%; left: -10%; transform: rotate(-20deg); animation: slashAnim 10s ease-in-out infinite; }
-    .slash-2 { top: 65%; right: -10%; transform: rotate(12deg); animation: slashAnim 10s ease-in-out 5s infinite; }
+    .slash-1 { top: 25%; left: -10%; transform: rotate(-18deg); animation: slashAnim 12s ease-in-out infinite; }
+    .slash-2 { top: 65%; right: -10%; transform: rotate(10deg); animation: slashAnim 12s ease-in-out 6s infinite; }
     @keyframes slashAnim {
       0%,92%,100% { width: 0; opacity: 0; }
       46% { width: 120vw; opacity: 1; }
@@ -86,17 +73,36 @@
     }
 
     /* ===== LAYOUT ===== */
-    .page {
+    .wrapper {
       position: relative; z-index: 10;
-      max-width: 520px; margin: 0 auto;
-      padding: 50px 20px 40px;
-      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      min-height: 100vh;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 40px 20px;
     }
 
-    /* ===== AVATAR ===== */
+    .container {
+      width: 100%; max-width: 960px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* LEFT PANEL — sticky profile */
+    .left-panel {
+      position: sticky; top: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      animation: fadeScale 0.8s ease-out both;
+    }
+
+    /* Avatar */
     .avatar-wrap {
-      position: relative; width: 130px; height: 130px;
-      animation: fadeScale 0.8s ease-out 0.2s both;
+      position: relative; width: 140px; height: 140px;
     }
     .avatar-wrap::before {
       content: ''; position: absolute; inset: -5px; border-radius: 50%;
@@ -104,9 +110,9 @@
       animation: spin 3s linear infinite;
     }
     .avatar-wrap::after {
-      content: ''; position: absolute; inset: -12px; border-radius: 50%;
-      border: 1px solid rgba(220,20,60,0.15);
-      animation: spin 6s linear infinite reverse;
+      content: ''; position: absolute; inset: -14px; border-radius: 50%;
+      border: 1px solid rgba(220,20,60,0.12);
+      animation: spin 7s linear infinite reverse;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .avatar {
@@ -114,101 +120,113 @@
       background: linear-gradient(135deg, #12121a, #1a1025);
       border: 3px solid var(--bg);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900;
-      color: var(--crimson); text-shadow: 0 0 25px var(--red-glow);
+      font-family: 'Orbitron', sans-serif; font-size: 48px; font-weight: 900;
+      color: var(--crimson); text-shadow: 0 0 30px var(--red-glow);
     }
 
-    /* ===== NAME + TAG ===== */
     .name {
-      font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+      font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900;
       letter-spacing: 3px; text-transform: uppercase;
       background: linear-gradient(135deg, #fff 0%, var(--crimson) 50%, #fff 100%);
       background-size: 200% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      animation: fadeScale 0.8s ease-out 0.4s both, shimmer 4s ease-in-out infinite;
+      animation: shimmer 4s ease-in-out infinite;
     }
     @keyframes shimmer { 0%,100% { background-position: 0% center; } 50% { background-position: 200% center; } }
-    @keyframes fadeScale { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 16px; border-radius: 20px;
+      padding: 6px 18px; border-radius: 20px;
       background: rgba(220,20,60,0.1); border: 1px solid rgba(220,20,60,0.25);
-      font-size: 0.8rem; font-weight: 600; color: var(--crimson);
+      font-size: 0.75rem; font-weight: 600; color: var(--crimson);
       letter-spacing: 2px; text-transform: uppercase;
-      animation: fadeIn 0.8s ease-out 0.6s both;
     }
     .badge::before {
       content: ''; width: 6px; height: 6px; border-radius: 50%;
       background: var(--crimson); box-shadow: 0 0 8px var(--crimson);
       animation: pulse 2s ease-in-out infinite;
     }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    /* ===== DIVIDER ===== */
     .divider {
-      width: 100%; height: 1px; position: relative;
-      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.3), transparent);
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.25), transparent);
     }
 
-    /* ===== SECTION ===== */
+    /* About stats in left panel */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;
+    }
+    .about-item {
+      padding: 12px 8px; border-radius: 10px;
+      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.06);
+      text-align: center;
+    }
+    .about-item .val {
+      font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; color: #fff;
+    }
+    .about-item .lbl {
+      font-size: 0.65rem; color: var(--text-dim); margin-top: 3px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .about-desc {
+      width: 100%; padding: 12px 14px; border-radius: 10px;
+      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.06);
+      font-size: 0.85rem; line-height: 1.6; color: var(--text-dim); text-align: center;
+    }
+    .about-desc span { color: var(--crimson); font-weight: 600; }
+
+    /* Bio button in left panel */
+    .bio-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 14px;
+      background: rgba(0,136,204,0.08); border: 1px solid rgba(0,136,204,0.2);
+      border-radius: 12px;
+      color: #0088cc; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+    .bio-btn:hover {
+      background: rgba(0,136,204,0.15); border-color: rgba(0,136,204,0.4);
+      transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,136,204,0.12);
+    }
+
+    /* RIGHT PANEL — cards */
+    .right-panel {
+      display: flex; flex-direction: column; gap: 18px;
+    }
+
     .section {
       width: 100%;
       background: var(--card);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 18px;
+      padding: 26px;
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      opacity: 0; transform: translateY(30px);
+      opacity: 0; transform: translateY(25px);
       transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
     }
     .section.visible { opacity: 1; transform: translateY(0); }
 
     .section-label {
       display: flex; align-items: center; gap: 10px;
-      font-family: 'Russo One', sans-serif; font-size: 0.85rem;
+      font-family: 'Russo One', sans-serif; font-size: 0.8rem;
       color: var(--crimson); letter-spacing: 2px; text-transform: uppercase;
       margin-bottom: 16px;
     }
     .section-label::after {
       content: ''; flex: 1; height: 1px;
-      background: linear-gradient(90deg, rgba(220,20,60,0.3), transparent);
+      background: linear-gradient(90deg, rgba(220,20,60,0.25), transparent);
     }
 
-    /* ===== ABOUT ===== */
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
-    .about-item {
-      padding: 14px; border-radius: 12px;
-      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.08);
-      text-align: center;
-    }
-    .about-item .val {
-      font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700;
-      color: #fff;
-    }
-    .about-item .lbl {
-      font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .about-desc {
-      margin-top: 14px;
-      padding: 14px; border-radius: 12px;
-      background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.08);
-      font-size: 0.9rem; line-height: 1.6; color: var(--text-dim);
-    }
-    .about-desc span { color: var(--crimson); font-weight: 600; }
-
-    /* ===== BUTTONS ===== */
+    /* Buttons */
     .btn-stack { display: flex; flex-direction: column; gap: 10px; }
 
     .btn {
       display: flex; align-items: center; gap: 14px;
-      padding: 15px 20px;
-      background: rgba(220,20,60,0.04);
-      border: 1px solid rgba(220,20,60,0.12);
+      padding: 16px 20px;
+      background: rgba(220,20,60,0.03);
+      border: 1px solid rgba(220,20,60,0.1);
       border-radius: 14px;
       color: var(--text); text-decoration: none;
       font-weight: 500; font-size: 0.95rem;
@@ -217,62 +235,59 @@
     }
     .btn::before {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.08), transparent);
+      background: linear-gradient(90deg, transparent, rgba(220,20,60,0.06), transparent);
       transform: translateX(-100%); transition: transform 0.5s ease;
     }
     .btn:hover::before { transform: translateX(100%); }
     .btn:hover {
-      border-color: rgba(220,20,60,0.4);
-      background: rgba(220,20,60,0.08);
+      border-color: rgba(220,20,60,0.35);
+      background: rgba(220,20,60,0.07);
       transform: translateY(-2px);
-      box-shadow: 0 6px 30px rgba(220,20,60,0.12);
+      box-shadow: 0 8px 30px rgba(220,20,60,0.1);
     }
     .btn:active { transform: translateY(0) scale(0.98); }
 
     .btn-icon {
-      width: 38px; height: 38px; border-radius: 10px;
+      width: 40px; height: 40px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-size: 18px; flex-shrink: 0;
     }
-    .btn-icon.tg { background: rgba(0,136,204,0.12); color: #0088cc; }
-    .btn-icon.proof { background: rgba(76,175,80,0.12); color: #4caf50; }
-    .btn-icon.vouch { background: rgba(255,193,7,0.12); color: #ffc107; }
-    .btn-icon.bot { background: rgba(156,39,176,0.12); color: #ce93d8; }
-    .btn-icon.trust { background: rgba(33,150,243,0.12); color: #42a5f5; }
-    .btn-icon.warn { background: rgba(255,87,34,0.12); color: #ff5722; }
-    .btn-icon.spam { background: rgba(220,20,60,0.12); color: var(--crimson); }
+    .btn-icon.tg { background: rgba(0,136,204,0.1); color: #0088cc; }
+    .btn-icon.proof { background: rgba(76,175,80,0.1); color: #4caf50; }
+    .btn-icon.vouch { background: rgba(255,193,7,0.1); color: #ffc107; }
+    .btn-icon.bot { background: rgba(156,39,176,0.1); color: #ce93d8; }
+    .btn-icon.trust { background: rgba(33,150,243,0.1); color: #42a5f5; }
 
     .btn-text { flex: 1; }
     .btn-text .main { display: block; font-weight: 600; }
     .btn-text .sub { display: block; font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
 
     .btn .arrow {
-      margin-left: auto; opacity: 0; transform: translateX(-8px);
+      opacity: 0; transform: translateX(-8px);
       transition: all 0.3s ease; color: var(--crimson); font-size: 1.1rem;
     }
     .btn:hover .arrow { opacity: 1; transform: translateX(0); }
 
-    /* ===== GASD NOTE ===== */
+    /* Two-col buttons on desktop */
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Note */
     .note {
       width: 100%; padding: 16px 20px; border-radius: 14px;
-      background: rgba(255,87,34,0.05);
-      border: 1px solid rgba(255,87,34,0.15);
+      background: rgba(255,87,34,0.04);
+      border: 1px solid rgba(255,87,34,0.12);
       font-size: 0.85rem; line-height: 1.6; color: var(--text-dim);
-      opacity: 0; transform: translateY(20px);
-      transition: all 0.5s ease;
+      opacity: 0; transform: translateY(20px); transition: all 0.5s ease;
     }
     .note.visible { opacity: 1; transform: translateY(0); }
     .note strong { color: #ff5722; }
 
-    /* ===== SPAM BAN ===== */
+    /* Spam section */
     .spam-section {
-      width: 100%; text-align: center;
-      padding: 20px;
-      background: var(--card);
-      border: 1px solid rgba(220,20,60,0.15);
-      border-radius: 16px;
-      opacity: 0; transform: translateY(20px);
-      transition: all 0.5s ease;
+      width: 100%; text-align: center; padding: 24px;
+      background: var(--card); border: 1px solid rgba(220,20,60,0.12);
+      border-radius: 18px;
+      opacity: 0; transform: translateY(20px); transition: all 0.5s ease;
     }
     .spam-section.visible { opacity: 1; transform: translateY(0); }
     .spam-title {
@@ -283,50 +298,48 @@
     .spam-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .spam-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 20px; border-radius: 10px;
-      background: rgba(220,20,60,0.06);
-      border: 1px solid rgba(220,20,60,0.15);
-      color: var(--text); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      padding: 12px 24px; border-radius: 12px;
+      background: rgba(220,20,60,0.05); border: 1px solid rgba(220,20,60,0.12);
+      color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500;
       transition: all 0.3s ease;
     }
     .spam-btn:hover {
-      background: rgba(220,20,60,0.12); border-color: rgba(220,20,60,0.4);
-      transform: translateY(-2px); box-shadow: 0 4px 15px rgba(220,20,60,0.1);
+      background: rgba(220,20,60,0.1); border-color: rgba(220,20,60,0.35);
+      transform: translateY(-2px); box-shadow: 0 4px 15px rgba(220,20,60,0.08);
     }
 
-    /* ===== FOOTER ===== */
+    /* Footer */
     .footer {
-      padding: 20px; text-align: center;
-      font-size: 0.7rem; color: rgba(255,255,255,0.15);
+      padding: 24px; text-align: center;
+      font-size: 0.7rem; color: rgba(255,255,255,0.12);
       letter-spacing: 3px; text-transform: uppercase;
     }
 
     /* ===== LOADER ===== */
     .loader {
-      position: fixed; inset: 0; z-index: 10000;
-      background: var(--bg);
+      position: fixed; inset: 0; z-index: 10000; background: var(--bg);
       display: flex; align-items: center; justify-content: center; flex-direction: column;
       transition: opacity 0.5s ease, visibility 0.5s ease;
     }
-    .loader.hidden { opacity: 0; visibility: hidden; }
+    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
     .loader-text {
-      font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
-      color: var(--crimson); letter-spacing: 5px;
+      font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+      color: var(--crimson); letter-spacing: 6px;
       animation: loaderPulse 1s ease-in-out infinite;
     }
     .loader-bar {
-      width: 180px; height: 2px; background: rgba(220,20,60,0.15);
-      margin-top: 16px; border-radius: 2px; overflow: hidden;
+      width: 200px; height: 2px; background: rgba(220,20,60,0.12);
+      margin-top: 18px; border-radius: 2px; overflow: hidden;
     }
     .loader-fill {
       height: 100%; background: var(--crimson);
-      border-radius: 2px; box-shadow: 0 0 10px var(--crimson);
+      border-radius: 2px; box-shadow: 0 0 12px var(--crimson);
       animation: fill 1.2s ease-in-out forwards;
     }
-    @keyframes loaderPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    @keyframes loaderPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
     @keyframes fill { 0% { width: 0; } 100% { width: 100%; } }
 
-    /* Cursor trail (desktop) */
+    /* Cursor trail */
     .trail {
       position: fixed; width: 8px; height: 8px; border-radius: 50%;
       background: var(--crimson); pointer-events: none; z-index: 9999;
@@ -334,19 +347,35 @@
       box-shadow: 0 0 12px var(--crimson), 0 0 24px rgba(220,20,60,0.2);
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 480px) {
-      .page { padding: 35px 16px 30px; gap: 16px; }
-      .avatar-wrap { width: 110px; height: 110px; }
-      .avatar { font-size: 34px; }
-      .name { font-size: 1.6rem; letter-spacing: 2px; }
-      .section { padding: 20px; border-radius: 14px; }
-      .about-grid { gap: 8px; }
-      .about-item { padding: 12px; }
-      .about-item .val { font-size: 0.9rem; }
-      .btn { padding: 13px 16px; }
-      .btn-icon { width: 34px; height: 34px; }
-      .spam-buttons { flex-direction: column; }
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+      }
+      .left-panel {
+        position: relative; top: auto;
+        padding: 28px 22px;
+        border-radius: 18px;
+      }
+      .avatar-wrap { width: 115px; height: 115px; }
+      .avatar { font-size: 38px; }
+      .name { font-size: 1.5rem; letter-spacing: 2px; }
+      .section { padding: 22px; border-radius: 16px; }
+      .btn { padding: 14px 16px; }
+      .btn-icon { width: 36px; height: 36px; }
+      .btn-grid { grid-template-columns: 1fr; }
+      .spam-buttons { flex-direction: column; align-items: center; }
+    }
+
+    @media (max-width: 380px) {
+      .wrapper { padding: 24px 12px; }
+      .left-panel { padding: 22px 16px; }
+      .avatar-wrap { width: 100px; height: 100px; }
+      .avatar { font-size: 32px; }
+      .name { font-size: 1.3rem; }
+      .about-item { padding: 10px 6px; }
+      .about-item .val { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -364,132 +393,125 @@
   <div class="slash-fx"><div class="slash slash-1"></div><div class="slash slash-2"></div></div>
   <div class="trail" id="trail"></div>
 
-  <!-- PAGE -->
-  <div class="page">
+  <!-- MAIN -->
+  <div class="wrapper">
+    <div class="container">
 
-    <!-- Avatar -->
-    <div class="avatar-wrap">
-      <div class="avatar">鷹</div>
-    </div>
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+        <div class="avatar-wrap">
+          <div class="avatar">鷹</div>
+        </div>
+        <h1 class="name">HAWKUY</h1>
+        <div class="badge">Гарант</div>
+        <div class="divider"></div>
 
-    <h1 class="name">HAWKUY</h1>
-    <div class="badge">Гарант</div>
+        <div class="about-grid">
+          <div class="about-item"><div class="val">Денис</div><div class="lbl">Имя</div></div>
+          <div class="about-item"><div class="val">15 y.o</div><div class="lbl">Возраст</div></div>
+          <div class="about-item"><div class="val">20 дек</div><div class="lbl">День рождения</div></div>
+          <div class="about-item"><div class="val">Python</div><div class="lbl">Стек</div></div>
+        </div>
 
-    <div class="divider"></div>
+        <div class="about-desc">
+          <span>Кодер</span> — Python + вайбкодинг. Делаю ботов, сервисы и всё что нужно. Крутой и точка.
+        </div>
 
-    <!-- About Me -->
-    <div class="section" data-reveal>
-      <div class="section-label">Обо мне</div>
-      <div class="about-grid">
-        <div class="about-item"><div class="val">Денис</div><div class="lbl">Имя</div></div>
-        <div class="about-item"><div class="val">15 y.o</div><div class="lbl">Возраст</div></div>
-        <div class="about-item"><div class="val">20 декабря</div><div class="lbl">День рождения</div></div>
-        <div class="about-item"><div class="val">Python</div><div class="lbl">Стек</div></div>
-      </div>
-      <div class="about-desc">
-        <span>Кодер</span> — Python + вайбкодинг. Делаю ботов, сервисы и всё что нужно. Крутой и точка.
-      </div>
-    </div>
-
-    <!-- Bio -->
-    <div class="section" data-reveal>
-      <div class="section-label">Био</div>
-      <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="btn">
-        <div class="btn-icon tg">
+        <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="bio-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056 12.014 12.014 0 0 0 11.944 0Zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg>
-        </div>
-        <div class="btn-text"><span class="main">@Hawkuy</span><span class="sub">Telegram</span></div>
-        <span class="arrow">→</span>
-      </a>
-    </div>
-
-    <!-- Пруфы -->
-    <div class="section" data-reveal>
-      <div class="section-label">Пруфы</div>
-      <a href="https://t.me/dehnc2000Proof" target="_blank" rel="noopener" class="btn">
-        <div class="btn-icon proof">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        </div>
-        <div class="btn-text"><span class="main">@dehnc2000Proof</span><span class="sub">Мои пруфы</span></div>
-        <span class="arrow">→</span>
-      </a>
-    </div>
-
-    <!-- Ручения -->
-    <div class="section" data-reveal>
-      <div class="section-label">Ручения</div>
-      <a href="https://t.me/handsHawkuy" target="_blank" rel="noopener" class="btn">
-        <div class="btn-icon vouch">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div class="btn-text"><span class="main">@handsHawkuy</span><span class="sub">Мои ручения</span></div>
-        <span class="arrow">→</span>
-      </a>
-    </div>
-
-    <!-- Проекты -->
-    <div class="section" data-reveal>
-      <div class="section-label">Мои проекты</div>
-      <div class="btn-stack">
-        <a href="https://t.me/SharkBalanceBot" target="_blank" rel="noopener" class="btn">
-          <div class="btn-icon bot">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="btn-text"><span class="main">@SharkBalanceBot</span><span class="sub">Магазин цифровых товаров</span></div>
-          <span class="arrow">→</span>
-        </a>
-        <a href="https://t.me/genncalls_bot" target="_blank" rel="noopener" class="btn">
-          <div class="btn-icon bot">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <div class="btn-text"><span class="main">@genncalls_bot</span><span class="sub">Пранк бот</span></div>
-          <span class="arrow">→</span>
-        </a>
-        <a href="https://t.me/gencals_bot" target="_blank" rel="noopener" class="btn">
-          <div class="btn-icon bot">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          </div>
-          <div class="btn-text"><span class="main">@gencals_bot</span><span class="sub">Пранк + бомбер + анонимки и т.п.</span></div>
-          <span class="arrow">→</span>
+          @Hawkuy
         </a>
       </div>
-    </div>
 
-    <!-- Трасты -->
-    <div class="section" data-reveal>
-      <div class="section-label">Трасты в базах</div>
-      <a href="https://t.me/Impex_Antiscam" target="_blank" rel="noopener" class="btn">
-        <div class="btn-icon trust">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+
+        <!-- Пруфы + Ручения -->
+        <div class="section" data-reveal>
+          <div class="section-label">Репутация</div>
+          <div class="btn-grid">
+            <a href="https://t.me/dehnc2000Proof" target="_blank" rel="noopener" class="btn">
+              <div class="btn-icon proof">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="btn-text"><span class="main">Пруфы</span><span class="sub">@dehnc2000Proof</span></div>
+              <span class="arrow">→</span>
+            </a>
+            <a href="https://t.me/handsHawkuy" target="_blank" rel="noopener" class="btn">
+              <div class="btn-icon vouch">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="btn-text"><span class="main">Ручения</span><span class="sub">@handsHawkuy</span></div>
+              <span class="arrow">→</span>
+            </a>
+          </div>
         </div>
-        <div class="btn-text"><span class="main">@Impex_Antiscam</span><span class="sub">Траст в базе</span></div>
-        <span class="arrow">→</span>
-      </a>
-    </div>
 
-    <!-- GASD Note -->
-    <div class="note" data-reveal>
-      <strong>⚠ ГАСД:</strong> Занесён без доквы. Писал апелляцию — проигнорировали.
-    </div>
+        <!-- Проекты -->
+        <div class="section" data-reveal>
+          <div class="section-label">Мои проекты</div>
+          <div class="btn-stack">
+            <a href="https://t.me/SharkBalanceBot" target="_blank" rel="noopener" class="btn">
+              <div class="btn-icon bot">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div class="btn-text"><span class="main">@SharkBalanceBot</span><span class="sub">Магазин цифровых товаров</span></div>
+              <span class="arrow">→</span>
+            </a>
+            <a href="https://t.me/genncalls_bot" target="_blank" rel="noopener" class="btn">
+              <div class="btn-icon bot">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div class="btn-text"><span class="main">@genncalls_bot</span><span class="sub">Пранк бот</span></div>
+              <span class="arrow">→</span>
+            </a>
+            <a href="https://t.me/gencals_bot" target="_blank" rel="noopener" class="btn">
+              <div class="btn-icon bot">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div class="btn-text"><span class="main">@gencals_bot</span><span class="sub">Пранк + бомбер + анонимки и т.п.</span></div>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
 
-    <!-- Spam Ban -->
-    <div class="spam-section" data-reveal>
-      <div class="spam-title">СПАМ-БАН?</div>
-      <div class="spam-desc">Пишите в сообщения каналу или используйте бота:</div>
-      <div class="spam-buttons">
-        <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="spam-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Написать
-        </a>
-        <a href="https://t.me/Spikespam_bot" target="_blank" rel="noopener" class="spam-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          @Spikespam_bot
-        </a>
+        <!-- Трасты -->
+        <div class="section" data-reveal>
+          <div class="section-label">Трасты в базах</div>
+          <a href="https://t.me/Impex_Antiscam" target="_blank" rel="noopener" class="btn">
+            <div class="btn-icon trust">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="btn-text"><span class="main">@Impex_Antiscam</span><span class="sub">Траст в базе</span></div>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <!-- GASD -->
+        <div class="note" data-reveal>
+          <strong>ГАСД:</strong> Занесён без доквы. Писал апелляцию — проигнорировали.
+        </div>
+
+        <!-- Spam Ban -->
+        <div class="spam-section" data-reveal>
+          <div class="spam-title">СПАМ-БАН?</div>
+          <div class="spam-desc">Пишите в сообщения каналу или используйте бота</div>
+          <div class="spam-buttons">
+            <a href="https://t.me/hawkuy" target="_blank" rel="noopener" class="spam-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Написать
+            </a>
+            <a href="https://t.me/Spikespam_bot" target="_blank" rel="noopener" class="spam-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              @Spikespam_bot
+            </a>
+          </div>
+        </div>
+
+        <div class="footer">鷹 HAWKUY © 2025</div>
+
       </div>
     </div>
-
-    <div class="footer">鷹 HAWKUY © 2025</div>
-
   </div>
 
   <script>
@@ -513,14 +535,14 @@
       let mx=0,my=0,tx=0,ty=0;
       document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; t.style.opacity='1'; });
       document.addEventListener('mouseleave', () => t.style.opacity='0');
-      (function anim() { tx+=(mx-tx)*0.13; ty+=(my-ty)*0.13; t.style.transform=`translate(${tx-4}px,${ty-4}px)`; requestAnimationFrame(anim); })();
+      (function anim() { tx+=(mx-tx)*0.12; ty+=(my-ty)*0.12; t.style.transform=`translate(${tx-4}px,${ty-4}px)`; requestAnimationFrame(anim); })();
     }
 
-    // Reveal on scroll
+    // Reveal
     const obs = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 100);
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
           obs.unobserve(e.target);
         }
       });
