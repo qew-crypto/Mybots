@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SC Aimbot</string>
+    <string name="accessibility_description">Сервис для управления аимботом в Standchillow (офлайн режим). Используется для симуляции жестов наведения.</string>
+</resources>
